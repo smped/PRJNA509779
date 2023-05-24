@@ -1,4 +1,4 @@
-rule callpeak:
+rule macs2_callpeak:
     input:
         treatment = os.path.join(dedup_path, "{sample}.sorted.bam"),  
         control = lambda wildcards: expand(

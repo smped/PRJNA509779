@@ -1,4 +1,4 @@
-rule markduplicates:
+rule picard_markduplicates:
     input:
         bams = os.path.join(aln_path, "{accession}.sorted.bam"),
     output:

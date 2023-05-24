@@ -3,7 +3,7 @@ cluster:
   mkdir -p $logdir &&
   sbatch
     --account=biohub
-    --partition=batch
+    --partition=skylake
     --nodes=1
     --cpus-per-task={threads}
     --mem={resources.mem_mb}
