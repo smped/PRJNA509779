@@ -11,6 +11,8 @@ params:
     index: ""
   markduplicates:
     extra: "--REMOVE_DUPLICATES true"
+  macs2:
+    callpeak: "-f BAM -g hs --keep-dup -q 0.05 --bdg --SPMR"
 
 reference: 
   path: "/hpcfs/users/a1018048/refs/gencode-release-33/GRCh37/dna/bt2"

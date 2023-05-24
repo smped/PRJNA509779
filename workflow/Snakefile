@@ -4,25 +4,34 @@ import re
 
 configfile: "config/config.yml"
 
-samples = pd.read_table(config['samples'])
-accessions = list(set(samples['accession']))
+df = pd.read_table(config['samples'])
+samples = list(set(df['accession']))
+input = list(set(df['input']))
+accessions = samples + input
 raw_path = "data/raw"
 trim_path = "data/trimmed"
 aln_path = "data/aligned"
 dedup_path = "data/deduplicated"
+macs2_path = "output/macs2"
 
 wildcard_constraints:
 	accession = "(" + '|'.join(accessions) + ")",
+	sample = "(" + '|'.join(samples) + ")",
 
 # Define se fastq output only
-ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
+# ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
 ALL_BAM = expand(
 	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
+ALL_PEAKS = expand(
+	os.path.join(macs2_path, "{f}_{suffix}"),
+	f = samples, suffix = ['peaks.narrowPeak', 'summits.bed']
+)
 
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_BAM)
+ALL_OUTPUTS.extend(ALL_PEAKS)
 
 rule all:
 	input:
@@ -33,3 +42,4 @@ include: "rules/adapterremoval.smk"
 include: "rules/bowtie2_align.smk"
 include: "rules/samtools.smk"
 include: "rules/picard_markduplicates.smk"
+include: "rules/macs2.smk"

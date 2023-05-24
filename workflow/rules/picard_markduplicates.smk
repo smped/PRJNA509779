@@ -1,11 +1,11 @@
 rule markduplicates:
     input:
-        bams = os.path.join(aln_path, "{sample}.bam"),
+        bams = os.path.join(aln_path, "{accession}.sorted.bam"),
     output:
-        bam = os.path.join(dedup_path, "{sample}.bam"),
-        metrics = "output/markDuplicates/{sample}.metrics.txt",
+        bam = os.path.join(dedup_path, "{accession}.sorted.bam"),
+        metrics = "output/markDuplicates/{accession}.metrics.txt",
     log:
-        "logs/dedup_bam/{sample}.log",
+        "logs/dedup_bam/{accession}.log",
     params:
         extra = config['params']['markduplicates']['extra'],
     resources:
