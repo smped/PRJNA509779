@@ -13,6 +13,10 @@ Full details for each step are given below.
 
 ## Download Raw Data
 
+The example files provided are from the European Nucleotide Archive dataset [PRJNA509779](https://www.omicsdi.org/dataset/omics_ena_project/PRJNA509779).
+These data files were generated in ZR-75-1 cells under Vehicle (E2) and DHT (E2+DHT) with antibodies targeting the Androgen Receptor (AR), the Estrogen Receptor (ER) and the histone mark H3K27ac.
+All fastq files are 1x75bp
+
 ## Trim and Filter Reads
 
 ## Align Reads

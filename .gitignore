@@ -7,3 +7,6 @@
 *fq.gz
 *gtf
 *gtf.gz
+logs
+.snakemake
+.vscode

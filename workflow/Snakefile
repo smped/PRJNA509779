@@ -1,0 +1,35 @@
+import pandas as pd
+import os
+import re
+
+configfile: "config/config.yml"
+
+samples = pd.read_table(config['samples'])
+accessions = list(set(samples['accession']))
+raw_path = "data/raw"
+trim_path = "data/trimmed"
+aln_path = "data/aligned"
+dedup_path = "data/deduplicated"
+
+wildcard_constraints:
+	accession = "(" + '|'.join(accessions) + ")",
+
+# Define se fastq output only
+ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
+ALL_BAM = expand(
+	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
+	f = accessions, suffix = ['bam', 'bam.bai']
+)
+
+ALL_OUTPUTS = []
+ALL_OUTPUTS.extend(ALL_BAM)
+
+rule all:
+	input:
+		ALL_OUTPUTS
+
+include: "rules/fasterq-dump.smk"
+include: "rules/adapterremoval.smk"
+include: "rules/bowtie2_align.smk"
+include: "rules/samtools.smk"
+include: "rules/picard_markduplicates.smk"
