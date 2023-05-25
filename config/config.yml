@@ -13,7 +13,8 @@ params:
     extra: "--REMOVE_DUPLICATES true"
   macs2:
     callpeak: "-f BAM -g hs --keep-dup -q 0.05 --bdg --SPMR"
+    bdgcmp: "-m FE"
 
 reference: 
-  path: "/hpcfs/users/a1018048/refs/gencode-release-33/GRCh37/dna/bt2"
-  index: "GRCh37.primary_assembly.genome"
+  path: "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/"
+  index: "GRCh37"
