@@ -26,13 +26,18 @@ rule get_chrom_sizes:
     output:
         chrom_sizes
     params:
-        ref = ref_path
+        ref = ref_path,
     log:
         "logs2/bowtie2/get_chrom_sizes.log"
     threads: 1
     conda: "..envs/bowtie2.yml"
     shell:
         """
+        DIR=$(dirname {output})
+        if [[ ! -d $DIR ]]; then
+            mkdir -p $DIR
+        fi
+        
         bowtie2-inspect --summary {params.ref} | \
           sed -r 's/ /\\t/g' | \
           cut -f2,4 > {output}
