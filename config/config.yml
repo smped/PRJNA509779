@@ -6,14 +6,16 @@ params:
     adapter1: "--adapter1 AGATCGGAAGAGC"
   bowtie2:
     extra: ""
-  samtools:
-    sort: "-m 4G"
-    index: ""
-  markduplicates:
-    extra: "--REMOVE_DUPLICATES true"
+  fastqc:
+    extra: "--nogroup --noextract"
   macs2:
     callpeak: "-f BAM -g hs --keep-dup -q 0.05 --bdg --SPMR"
     bdgcmp: "-m FE"
+  markduplicates:
+    extra: "--REMOVE_DUPLICATES true"
+  samtools:
+    sort: "-m 4G"
+    index: ""
 
 reference: 
   path: "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/"

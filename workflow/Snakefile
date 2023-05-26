@@ -15,10 +15,12 @@ comb_target_treats = df[['target','treatment']].apply(
 )
 
 accessions = samples + input
-raw_path = "data/raw"
-trim_path = "data/trimmed"
+fq_path = "data/fastq"
+raw_path = os.path.join(fq_path, "raw")
+trim_path = os.path.join(fq_path, "trimmed")
 aln_path = "data/aligned"
 dedup_path = "data/deduplicated"
+fqc_path = "output/FastQC"
 macs2_path = "output/macs2"
 ref_path = os.path.join(
 	config['reference']['path'], config['reference']['index']
@@ -33,19 +35,29 @@ wildcard_constraints:
 	treat =  "(" + '|'.join(treats) + ")",
 
 # Define se fastq output only
-# ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
+ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
 ALL_BAM = expand(
 	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
+ALL_QC = expand(
+	os.path.join(fqc_path, "{step}", "{f}_fastqc{suffix}"),
+	step = ['raw', 'trimmed'], f = accessions, suffix = ['.html', '.zip']
+)
+ALL_QC.extend(
+	expand(
+		os.path.join(fqc_path, "{step}", "multiqc.html"), 
+		step = ['raw', 'trimmed']
+	)
+)
+
 ## Start with Individual Peaks
 ALL_PEAKS = expand(
 	os.path.join(macs2_path, "{f}_{suffix}"),
 	f = samples, suffix = ['peaks.narrowPeak', 'summits.bed']
 )
 ALL_BIGWIG = expand(
-	os.path.join(macs2_path, "{f}_treat_pileup.bw"),
-	f = samples
+	os.path.join(macs2_path, "{f}_treat_pileup.bw"), f = samples
 )
 ## Add the merged peaks
 ALL_PEAKS.extend(
@@ -62,6 +74,7 @@ ALL_BIGWIG.extend(
 )
 
 ALL_OUTPUTS = []
+ALL_OUTPUTS.extend(ALL_QC)
 ALL_OUTPUTS.extend(ALL_BAM)
 ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
@@ -71,6 +84,8 @@ rule all:
 		ALL_OUTPUTS
 
 include: "rules/fasterq-dump.smk"
+include: "rules/fastqc.smk"
+include: "rules/multiqc.smk"
 include: "rules/adapterremoval.smk"
 include: "rules/bowtie2.smk"
 include: "rules/samtools.smk"

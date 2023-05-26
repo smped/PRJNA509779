@@ -30,7 +30,7 @@ rule get_chrom_sizes:
     log:
         "logs2/bowtie2/get_chrom_sizes.log"
     threads: 1
-    conda: "..envs/bowtie2.yml"
+    conda: "../envs/bowtie2.yml"
     shell:
         """
         DIR=$(dirname {output})
