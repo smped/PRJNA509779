@@ -28,7 +28,7 @@ rule get_chrom_sizes:
     params:
         ref = ref_pre,
     log:
-        "logs2/bowtie2/get_chrom_sizes.log"
+        "logs/bowtie2/get_chrom_sizes.log"
     threads: 1
     conda: "../envs/bowtie2.yml"
     shell:
