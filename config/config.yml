@@ -9,7 +9,7 @@ params:
   fastqc:
     extra: "--nogroup --noextract"
   macs2:
-    callpeak: "-f BAM -g hs --keep-dup -q 0.05 --bdg --SPMR"
+    callpeak: "-g hs --keep-dup -q 0.05"
     bdgcmp: "-m FE"
   markduplicates:
     extra: "--REMOVE_DUPLICATES true"

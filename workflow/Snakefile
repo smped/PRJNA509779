@@ -22,7 +22,7 @@ aln_path = "data/aligned"
 dedup_path = "data/deduplicated"
 fqc_path = "output/FastQC"
 macs2_path = "output/macs2"
-ref_path = os.path.join(
+ref_pre = os.path.join(
 	config['reference']['path'], config['reference']['index']
 )
 chrom_sizes = os.path.join("output", "annotations", "chrom.sizes")
