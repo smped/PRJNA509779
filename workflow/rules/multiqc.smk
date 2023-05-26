@@ -12,6 +12,8 @@ rule multiqc:
         extra = config['params']['multiqc'],
         outdir = os.path.join(qc_path, "{step}")
     log: "workflow/logs/multiqc/{step}_multiqc.log"
+    resources:
+        runtime="15m"
     shell:
         """
         multiqc \
