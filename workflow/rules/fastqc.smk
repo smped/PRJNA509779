@@ -5,7 +5,7 @@ rule fastqc:
         html = os.path.join(fqc_path, "{step}", "{accession}_fastqc.html"),
         zip = os.path.join(fqc_path, "{step}", "{accession}_fastqc.zip"),
     params:
-        extra = config['params']['fastqc']['extra'],
+        extra = config['params']['fastqc'],
         outdir = os.path.join(fqc_path, "{step}")
     conda: "../envs/fastqc.yml"
     log: os.path.join("logs/fastqc", "{step}", "{accession}.log")

@@ -11,7 +11,7 @@ rule bowtie2_align:
     log:
         "logs/bowtie2/{accession}.log",
     params:
-        extra = config['params']['bowtie2']['extra'],
+        extra = config['params']['bowtie2'],
     threads: 8  
     wrapper:
         "v1.31.1/bio/bowtie2/align"

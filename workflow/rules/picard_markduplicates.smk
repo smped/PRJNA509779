@@ -7,7 +7,7 @@ rule picard_markduplicates:
     log:
         "logs/dedup_bam/{accession}.log",
     params:
-        extra = config['params']['markduplicates']['extra'],
+        extra = config['params']['markduplicates'],
     resources:
         mem_mb=1024,
     wrapper:

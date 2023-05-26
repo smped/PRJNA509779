@@ -4,15 +4,12 @@ params:
   adapterremoval: 
     extra: "--maxns 1 --minlength 50 --minquality 30 --gzip --trimqualities"
     adapter1: "--adapter1 AGATCGGAAGAGC"
-  bowtie2:
-    extra: ""
-  fastqc:
-    extra: "--nogroup --noextract"
+  bowtie2: ""
+  fastqc: "--nogroup --noextract"
   macs2:
     callpeak: "-g hs --keep-dup -q 0.05"
     bdgcmp: "-m FE"
-  markduplicates:
-    extra: "--REMOVE_DUPLICATES true"
+  markduplicates: "--REMOVE_DUPLICATES true"
   samtools:
     sort: "-m 4G"
     index: ""
