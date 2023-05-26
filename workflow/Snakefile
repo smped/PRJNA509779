@@ -11,6 +11,7 @@ n = len(df.accession)
 assert (n > 0), "No accessions were specified"
 for column in df:
 	assert(len(df[column]) == n), "Missing values in " + column
+print("config/samples.tsv has been validated")
 
 ## Define key values
 samples = list(set(df['accession']))
@@ -37,7 +38,7 @@ raw_path = os.path.join(fq_path, "raw")
 trim_path = os.path.join(fq_path, "trimmed")
 aln_path = "data/aligned"
 dedup_path = "data/deduplicated"
-fqc_path = "output/FastQC"
+qc_path = "output/qc"
 macs2_path = "output/macs2"
 ref_pre = os.path.join(
 	config['reference']['path'], config['reference']['index']
@@ -50,12 +51,12 @@ ALL_BAM = expand(
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
 ALL_QC = expand(
-	os.path.join(fqc_path, "{step}", "{f}_fastqc{suffix}"),
+	os.path.join(qc_path, "{step}", "{f}_fastqc{suffix}"),
 	step = ['raw', 'trimmed'], f = accessions, suffix = ['.html', '.zip']
 )
 ALL_QC.extend(
 	expand(
-		os.path.join(fqc_path, "{step}", "multiqc.html"), 
+		os.path.join(qc_path, "{step}", "multiqc.html"), 
 		step = ['raw', 'trimmed']
 	)
 )

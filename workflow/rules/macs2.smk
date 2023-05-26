@@ -64,7 +64,7 @@ rule macs2_callpeak:
     params:
         extra = config['params']['macs2']['callpeak'],
         prefix = "{sample}",
-        outdir = macs2_path
+        outdir = os.path.join(macs2_path, "{sample}")
     threads: 1
     resources:
         mem_mb = 8192,
@@ -90,23 +90,23 @@ rule macs2_callpeak_merged:
         control_bai = get_treat_input_bai
     output:
         files = multiext(
-            os.path.join(macs2_path, "{target}/{treat}_merged_"),
+            os.path.join(macs2_path, "{target}", "{treat}_merged_"),
             "peaks.xls", "peaks.narrowPeak", "summits.bed", "model.r"
         ),
         bdg = temp(
             multiext(
-                os.path.join(macs2_path, "{target}/{treat}_merged_"),
+                os.path.join(macs2_path, "{target}", "{treat}_merged_"),
                 "control_lambda.bdg", "treat_pileup.bdg"
             )
         ),
-        log = os.path.join(macs2_path, "{target}/{treat}_merged_callpeak.log")
+        log = os.path.join(macs2_path, "{target}", "{treat}_merged_callpeak.log")
     conda: "../envs/macs2.yml"        
     log:
         "workflow/logs/macs2_callpeak/{target}_{treat}_merged_callpeak.log"
     params:
         extra = config['params']['macs2']['callpeak'],
-        prefix = "{target}/{treat}",
-        outdir = macs2_path
+        prefix = "{treat}",
+        outdir = os.path.join(macs2_path, "{target}")
     threads: 1
     resources:
         mem_mb = 8192,

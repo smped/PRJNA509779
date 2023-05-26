@@ -1,16 +1,16 @@
 rule multiqc:
     input:
         expand(
-            os.path.join(fqc_path, "{{step}}", "{accession}_fastqc.zip"),
+            os.path.join(qc_path, "{{step}}", "{accession}_fastqc.zip"),
             accession = accessions
         )
     output:
-        os.path.join(fqc_path, "{step}", "multiqc.html")
+        os.path.join(qc_path, "{step}", "multiqc.html")
     conda: "../envs/multiqc.yml"
     threads: 1
     params:
         extra = config['params']['multiqc'],
-        outdir = os.path.join(fqc_path, "{step}")
+        outdir = os.path.join(qc_path, "{step}")
     log: "workflow/logs/multiqc/{step}_multiqc.log"
     shell:
         """

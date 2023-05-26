@@ -49,7 +49,7 @@ snakemake --use-conda --until get_fastq --cores 2
 ### Outputs
 
 - Downloaded files will be gzipped and written to `data/fastq/raw`.
-- `FastQC` and `MultiQC` will also be run, with output in `output/FastQC/raw`
+- `FastQC` and `MultiQC` will also be run, with output in `output/qc/raw`
 
 ## Read Filtering
 
@@ -61,7 +61,7 @@ Default settings are customisable using config.yml, with the defaults set to dis
 ### Outputs
 
 - Trimmed fastq.gz files will be written to `data/fastq/trimmed`
-- `FastQC` and `MultiQC` will also be run, with output in `output/FastQC/trimmed`
+- `FastQC` and `MultiQC` will also be run, with output in `output/qc/trimmed`
 - AdapterRemoval 'settings' files will be written to `output/adapterremoval`
 
 ## Alignments
