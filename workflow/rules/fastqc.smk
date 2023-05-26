@@ -8,7 +8,7 @@ rule fastqc:
         extra = config['params']['fastqc'],
         outdir = os.path.join(fqc_path, "{step}")
     conda: "../envs/fastqc.yml"
-    log: os.path.join("logs/fastqc", "{step}", "{accession}.log")
+    log: "workflow/logs/fastqc/{step}/{accession}.log"
     threads: 4
     resources:
         runtime="2h"

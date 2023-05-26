@@ -1,7 +1,7 @@
-name: macs2
+name: multiqc
 channels:
   - conda-forge
   - bioconda
   - nodefaults
 dependencies:
-  - macs2=2.2.6
+  - multiqc =1.14

@@ -7,9 +7,10 @@ params:
   bowtie2: ""
   fastqc: "--nogroup --noextract"
   macs2:
-    callpeak: "-g hs --keep-dup -q 0.05"
+    callpeak: "-g hs --keep-dup all -q 0.05"
     bdgcmp: "-m FE"
   markduplicates: "--REMOVE_DUPLICATES true"
+  multiqc: ""
   samtools:
     sort: "-m 4G"
     index: ""

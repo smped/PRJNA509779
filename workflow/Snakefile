@@ -6,15 +6,32 @@ configfile: "config/config.yml"
 
 ## Load samples
 df = pd.read_table(config['samples'])
+## Check there are no missing values
+n = len(df.accession)
+assert (n > 0), "No accessions were specified"
+for column in df:
+	assert(len(df[column]) == n), "Missing values in " + column
+
+## Define key values
 samples = list(set(df['accession']))
 input = list(set(df['input']))
 targets = list(set(df['target']))
 treats = list(set(df['treatment']))
 comb_target_treats = df[['target','treatment']].apply(
-	lambda row: '_'.join(row.values.astype(str)), axis=1
+	lambda row: '/'.join(row.values.astype(str)), axis=1
 )
-
 accessions = samples + input
+chrom_sizes = os.path.join("output", "annotations", "chrom.sizes")
+bdgcmp_type = re.search("-m (.+) *", config['params']['macs2']['bdgcmp']).group(1)
+
+## Constrain wildcards
+wildcard_constraints:
+	accession = "(" + '|'.join(accessions) + ")",
+	sample = "(" + '|'.join(samples) + ")",
+	target =   "(" + '|'.join(targets) + ")",
+	treat =  "(" + '|'.join(treats) + ")",
+
+## Define key paths
 fq_path = "data/fastq"
 raw_path = os.path.join(fq_path, "raw")
 trim_path = os.path.join(fq_path, "trimmed")
@@ -25,14 +42,6 @@ macs2_path = "output/macs2"
 ref_pre = os.path.join(
 	config['reference']['path'], config['reference']['index']
 )
-chrom_sizes = os.path.join("output", "annotations", "chrom.sizes")
-bdgcmp_type = re.search("-m (.+) *", config['params']['macs2']['bdgcmp']).group(1)
-
-wildcard_constraints:
-	accession = "(" + '|'.join(accessions) + ")",
-	sample = "(" + '|'.join(samples) + ")",
-	target =   "(" + '|'.join(targets) + ")",
-	treat =  "(" + '|'.join(treats) + ")",
 
 # Define se fastq output only
 ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
@@ -53,11 +62,11 @@ ALL_QC.extend(
 
 ## Start with Individual Peaks
 ALL_PEAKS = expand(
-	os.path.join(macs2_path, "{f}_{suffix}"),
+	os.path.join(macs2_path, "{f}", "{f}_{suffix}"),
 	f = samples, suffix = ['peaks.narrowPeak', 'summits.bed']
 )
 ALL_BIGWIG = expand(
-	os.path.join(macs2_path, "{f}_treat_pileup.bw"), f = samples
+	os.path.join(macs2_path, "{f}", "{f}_treat_pileup.bw"), f = samples
 )
 ## Add the merged peaks
 ALL_PEAKS.extend(

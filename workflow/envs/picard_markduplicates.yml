@@ -1,9 +1,9 @@
-name: bowtie2
+name: picard_markduplicates
 channels:
   - conda-forge
   - bioconda
   - nodefaults
 dependencies:
-  - bowtie2 =2.5.1
+  - picard =3.0.0
   - samtools =1.17
   - snakemake-wrapper-utils =0.5.3

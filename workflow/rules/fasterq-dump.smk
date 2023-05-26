@@ -1,14 +1,15 @@
 rule get_fastq:
     output:
         os.path.join(raw_path, "{accession}.fastq.gz")
-    log:
-        "logs/fasterq-dump/{accession}.fastq.gz.log"
+    log: "workflow/logs/fasterq-dump/{accession}.fastq.gz.log"
+    conda: "../envs/fasterq-dump.yml"
     params:
-        extra="--skip-technical"
+        extra="--skip-technical",
     threads: 2
     resources:
         runtime = "2h"    
-    wrapper:
-        "v1.31.1/bio/sra-tools/fasterq-dump"
+    script:
+        "../scripts/fasterq-dump.py" # Taken from the wrapper
+
 
 

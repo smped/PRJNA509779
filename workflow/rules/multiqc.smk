@@ -6,11 +6,19 @@ rule multiqc:
         )
     output:
         os.path.join(fqc_path, "{step}", "multiqc.html")
+    conda: "../envs/multiqc.yml"
     threads: 1
     params:
-        extra = ""
-    log:
-        "logs/{step}_multiqc.log"
-    wrapper:
-        "v1.31.1/bio/multiqc"
+        extra = config['params']['multiqc'],
+        outdir = os.path.join(fqc_path, "{step}")
+    log: "workflow/logs/multiqc/{step}_multiqc.log"
+    shell:
+        """
+        multiqc \
+          {params.extra} \
+          --force \
+          -o {params.outdir} \
+          -n multiqc.html \
+          {input} 2> {log}
+        """
     

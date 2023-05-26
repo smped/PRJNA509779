@@ -48,19 +48,19 @@ rule macs2_callpeak:
         )
     output:
         files = multiext(
-            os.path.join(macs2_path, "{sample}_"),
+            os.path.join(macs2_path, "{sample}", "{sample}_"),
             "peaks.xls", "peaks.narrowPeak", "summits.bed", "model.r"
         ),
         bdg = temp(
             multiext(
-                os.path.join(macs2_path, "{sample}_"),
+                os.path.join(macs2_path, "{sample}", "{sample}_"),
                 "control_lambda.bdg", "treat_pileup.bdg"
             )      
         ),
-        log = os.path.join(macs2_path, "{sample}_callpeak.log")
+        log = os.path.join(macs2_path, "{sample}", "{sample}_callpeak.log")
     conda: "../envs/macs2.yml"
     log: 
-        "logs/macs2_callpeak/{sample}_callpeak.log"
+        "workflow/logs/macs2_callpeak/{sample}_callpeak.log"
     params:
         extra = config['params']['macs2']['callpeak'],
         prefix = "{sample}",
@@ -82,7 +82,7 @@ rule macs2_callpeak:
             --outdir {params.outdir} 2> {output.log}
         """
 
-rule macs2_call_peak_merged:
+rule macs2_callpeak_merged:
     input:
         bam = get_treat_bam,
         bai = get_treat_bai,
@@ -90,22 +90,22 @@ rule macs2_call_peak_merged:
         control_bai = get_treat_input_bai
     output:
         files = multiext(
-            os.path.join(macs2_path, "{target}_{treat}_merged_"),
+            os.path.join(macs2_path, "{target}/{treat}_merged_"),
             "peaks.xls", "peaks.narrowPeak", "summits.bed", "model.r"
         ),
         bdg = temp(
             multiext(
-                os.path.join(macs2_path, "{target}_{treat}_merged_"),
+                os.path.join(macs2_path, "{target}/{treat}_merged_"),
                 "control_lambda.bdg", "treat_pileup.bdg"
             )
         ),
-        log = os.path.join(macs2_path, "{target}_{treat}_merged_callpeak.log")
+        log = os.path.join(macs2_path, "{target}/{treat}_merged_callpeak.log")
     conda: "../envs/macs2.yml"        
     log:
-        "logs/macs2_callpeak/{target}/{treat}_merged_callpeak.log"
+        "workflow/logs/macs2_callpeak/{target}_{treat}_merged_callpeak.log"
     params:
         extra = config['params']['macs2']['callpeak'],
-        prefix = "{target}_{treat}",
+        prefix = "{target}/{treat}",
         outdir = macs2_path
     threads: 1
     resources:
@@ -127,22 +127,22 @@ rule macs2_call_peak_merged:
 rule macs2_bdgcmp_merged:
     input:
         treatment = os.path.join(
-            macs2_path, "{target}_{treat}_merged_treat_pileup.bdg"
+            macs2_path, "{target}/{treat}_merged_treat_pileup.bdg"
         ),
         control = os.path.join(
-            macs2_path, "{target}_{treat}_merged_control_lambda.bdg"
+            macs2_path, "{target}/{treat}_merged_control_lambda.bdg"
         )
     output:
         temp(
             expand(
-                os.path.join(macs2_path, "{{target}}_{{treat}}_{type}.bdg"),
+                os.path.join(macs2_path, "{{target}}/{{treat}}_{type}.bdg"),
                 type = bdgcmp_type
             )
         )
     params:
         config['params']['macs2']['bdgcmp']
     log:
-        "logs/macs2_bdgcmp/{target}/{treat}_bdgcmp.log"
+        "workflow/logs/macs2_bdgcmp/{target}_{treat}_bdgcmp.log"
     conda: "../envs/macs2.yml"
     threads: 1
     resources:
@@ -165,7 +165,7 @@ rule bedgraph_to_bigwig:
     output:
         bigwig = "{file}.bw"
     conda: "../envs/bedgraph_to_bigwig.yml"
-    log: "logs/bedgraph_to_bigwig/{file}.log"
+    log: "workflow/logs/bedgraph_to_bigwig/{file}.log"
     threads: 1
     resources:
         runtime = "2h",
