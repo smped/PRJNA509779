@@ -1,16 +1,13 @@
 # prepareChIPs
 
-This is a simple `snakemake` workflow template for preparing single-end ChIP-Seq data.
+This is a simple `snakemake` workflow template for preparing **single-end** ChIP-Seq data.
 The steps implemented are:
 
 1. Download raw fastq files from SRA
-2. Trim and Filter raw fastq files ()`AdapterRemoval`)
-	+ `FastQC` and `MultiQC` will also be run on these files 
-3. Align to the supplied genome ()`bowtie2`)
-	+ Alignments will also be sorted
-4. Deduplicate Alignments (`Picard MarkDuplicates`)
-	+ These files will be indexed and sorted
-5. Call Macs2 Peaks (`macs2`)
+2. Trim and Filter raw fastq files using `AdapterRemoval`
+3. Align to the supplied genome using `bowtie2`
+4. Deduplicate Alignments using `Picard MarkDuplicates`
+5. Call Macs2 Peaks using `macs2`
 
 Full details for each step are given below.
 Any additional parameters for tools can be specified using `config/config.yml`.
@@ -21,7 +18,7 @@ To run the workflow with default settings, simply run as follows (after editing 
 snakemake --use-conda --cores 16
 ```
 
-If running on an HPC cluster, a snakemake profile will required for submission to the queueing system and approrate resource allocation.
+If running on an HPC cluster, a snakemake profile will required for submission to the queueing system and appropriate resource allocation.
 Please discuss this will your HPC support team.
 
 Whilst no snakemake wrappers are explicitly used in this workflow, the underlying scripts are utilised where possible to minimise any issues with HPC clusters with restrictions on internet access.
@@ -111,10 +108,10 @@ This is performed using [`macs2 callpeak`](https://pypi.org/project/MACS2/).
 
 ### Outputs
 
-- Individual outputs are written to `output/macs2/accession`
+- Individual outputs are written to `output/macs2/{accession}`
 	+ Peaks are written in `narrowPeak` format along with `summits.bed`
 	+ bedGraph files are automatically converted to bigWig files, and the originals are marked with `temp()` for subsequent deletion
 	+ callpeak log files are also added to this directory
-- Merged outputs are written to `output/macs2/target/treatment/`
+- Merged outputs are written to `output/macs2/{target}/{treatment}/`
 	+ bedGraph Files are also converted to bigWig and marked with `temp()`
 	+ Fold-Enrichment bigWig files are also created withe original bedGraph files marked with `temp()`
