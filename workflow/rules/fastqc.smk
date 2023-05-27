@@ -11,7 +11,7 @@ rule fastqc:
     log: "workflow/logs/fastqc/{step}/{accession}.log"
     threads: 4
     resources:
-        runtime="2h"
+        runtime="1h"
     shell:
         """
         fastqc \

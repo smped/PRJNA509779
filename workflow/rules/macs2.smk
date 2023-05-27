@@ -68,7 +68,7 @@ rule macs2_callpeak:
     threads: 1
     resources:
         mem_mb = 8192,
-        runtime = "2h",
+        runtime = "1h",
     shell:
         """
         echo -e "Running macs2 call peak on:\n{input.bam}" >> {log}
@@ -105,12 +105,12 @@ rule macs2_callpeak_merged:
         "workflow/logs/macs2_callpeak/{target}_{treat}_merged_callpeak.log"
     params:
         extra = config['params']['macs2']['callpeak'],
-        prefix = "{treat}",
+        prefix = "{treat}_merged",
         outdir = os.path.join(macs2_path, "{target}")
     threads: 1
     resources:
         mem_mb = 8192,
-        runtime = "2h"
+        runtime = "1h"
     shell:
         """
         echo -e "Running macs2 call peak on:\n{input.bam}" >> {log}
@@ -146,8 +146,8 @@ rule macs2_bdgcmp_merged:
     conda: "../envs/macs2.yml"
     threads: 1
     resources:
-        mem_mb = 8192,
-        runtime = "1h"
+        mem_mb = 16384,
+        runtime = lambda wildcards, input: 120 + (input.treatment.size / 1e6) // 40
     shell:
         """
         macs2 bdgcmp \
@@ -168,23 +168,27 @@ rule bedgraph_to_bigwig:
     log: "workflow/logs/bedgraph_to_bigwig/{file}.log"
     threads: 1
     resources:
-        runtime = "2h",
+        runtime = lambda wildcards, input: 60 + (input.bedgraph.size / 1e6) // 20, # This gives 60m + 45m/Gb
         mem_mb = 8192
     shell:
         """
-        echo -e "\nConverting {input.bedgraph} to BigWig\n" >> {log}
+        echo -e "Converting {input.bedgraph} to BigWig\n" >> {log}
+        echo -e "Starting conversion at $(date)\n" >> {log}
+
         TEMPDIR=$(mktemp -d -t bdgXXXXXXXXXX)
         SORTED_BDG=$TEMPDIR/temp.bdg
 
         ## Sort the file
-        echo -e "\nSorting as $SORTED_BDG..." >> {log}
+        echo -e "Sorting as $SORTED_BDG...\n" >> {log}
         sort -k1,1 -k2,2n {input.bedgraph} | egrep $'^chr[0-9XY]+\t' > $SORTED_BDG
 
         ## Convert the file
-        echo -e "Done\nConverting..." >> {log}
+        echo -e "Sorting complete\nConverting to bigWig...\n" >> {log}
         bedGraphToBigWig $SORTED_BDG {input.chrom_sizes} {output.bigwig}
-        echo -e "Done" >> {log}
+        echo -e "Finished conversion at $(date)\n" >> {log}
 
         ## Remove the temp sorted file
+        echo -e "Cleaning up temp files\n" >> {log}
         rm -rf $TEMPDIR
+        echo -e "Done" >> {log}
         """

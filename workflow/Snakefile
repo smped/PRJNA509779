@@ -1,17 +1,19 @@
 import pandas as pd
+import numpy as np
 import os
 import re
 
 configfile: "config/config.yml"
 
-## Load samples
+## Load samples & set all columns to strings
 df = pd.read_table(config['samples'])
-## Check there are no missing values
+df = df.astype(str)
+## Check there are accessions
 n = len(df.accession)
 assert (n > 0), "No accessions were specified"
-for column in df:
-	assert(len(df[column]) == n), "Missing values in " + column
-print("config/samples.tsv has been validated")
+## Check for missing values
+missing = np.where(df.applymap(lambda x: x == 'nan'))
+assert (len(missing[0]) == 0), "Missing values found. Aborting..."
 
 ## Define key values
 samples = list(set(df['accession']))
