@@ -1,0 +1,20 @@
+samples: "config/samples.tsv"
+
+params:
+  adapterremoval: 
+    extra: "--maxns 1 --minlength 50 --minquality 30 --gzip --trimqualities"
+    adapter1: "--adapter1 AGATCGGAAGAGC"
+  bowtie2: ""
+  fastqc: "--nogroup --noextract"
+  macs2:
+    callpeak: "-g hs --keep-dup all -q 0.05"
+    bdgcmp: "-m FE"
+  markduplicates: "--REMOVE_DUPLICATES true"
+  multiqc: ""
+  samtools:
+    sort: "-m 4G"
+    index: ""
+
+reference: 
+  path: "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/"
+  index: "GRCh37"

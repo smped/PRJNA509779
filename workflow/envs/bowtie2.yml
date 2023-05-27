@@ -1,0 +1,9 @@
+name: bowtie2
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - bowtie2 =2.5.1
+  - samtools =1.17
+  - snakemake-wrapper-utils =0.5.3

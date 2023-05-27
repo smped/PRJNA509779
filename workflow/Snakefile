@@ -1,0 +1,105 @@
+import pandas as pd
+import numpy as np
+import os
+import re
+
+configfile: "config/config.yml"
+
+## Load samples & set all columns to strings
+df = pd.read_table(config['samples'])
+df = df.astype(str)
+## Check there are accessions
+n = len(df.accession)
+assert (n > 0), "No accessions were specified. Please add at least one SRA ID"
+## Check for missing values
+missing = np.where(df.applymap(lambda x: x == 'nan'))
+assert (len(missing[0]) == 0), "Missing values found. Aborting..."
+
+## Define key values
+samples = list(set(df['accession']))
+input = list(set(df['input']))
+targets = list(set(df['target']))
+treats = list(set(df['treatment']))
+comb_target_treats = df[['target','treatment']].apply(
+	lambda row: '/'.join(row.values.astype(str)), axis=1
+)
+accessions = samples + input
+chrom_sizes = os.path.join("output", "annotations", "chrom.sizes")
+bdgcmp_type = re.search("-m (.+) *", config['params']['macs2']['bdgcmp']).group(1)
+
+## Constrain wildcards
+wildcard_constraints:
+	accession = "(" + '|'.join(accessions) + ")",
+	sample = "(" + '|'.join(samples) + ")",
+	target =   "(" + '|'.join(targets) + ")",
+	treat =  "(" + '|'.join(treats) + ")",
+
+## Define key paths
+fq_path = "data/fastq"
+raw_path = os.path.join(fq_path, "raw")
+trim_path = os.path.join(fq_path, "trimmed")
+aln_path = "data/aligned"
+dedup_path = "data/deduplicated"
+qc_path = "output/qc"
+macs2_path = "output/macs2"
+ref_pre = os.path.join(
+	config['reference']['path'], config['reference']['index']
+)
+
+# Define se fastq output only
+ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
+ALL_BAM = expand(
+	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
+	f = accessions, suffix = ['bam', 'bam.bai']
+)
+ALL_QC = expand(
+	os.path.join(qc_path, "{step}", "{f}_fastqc{suffix}"),
+	step = ['raw', 'trimmed'], f = accessions, suffix = ['.html', '.zip']
+)
+ALL_QC.extend(
+	expand(
+		os.path.join(qc_path, "{step}", "multiqc.html"), 
+		step = ['raw', 'trimmed']
+	)
+)
+
+## Start with Individual Peaks
+ALL_PEAKS = expand(
+	os.path.join(macs2_path, "{f}", "{f}_{suffix}"),
+	f = samples, suffix = ['peaks.narrowPeak', 'summits.bed']
+)
+ALL_BIGWIG = expand(
+	os.path.join(macs2_path, "{f}", "{f}_treat_pileup.bw"), f = samples
+)
+## Add the merged peaks
+ALL_PEAKS.extend(
+	expand(
+		os.path.join(macs2_path, "{f}_merged_{suffix}"),
+		f = comb_target_treats, suffix = ['peaks.narrowPeak', 'summits.bed']
+	)
+)
+ALL_BIGWIG.extend(
+	expand(
+		os.path.join(macs2_path, "{f}_{type}.bw"),
+		f = comb_target_treats, type = ['merged_treat_pileup', bdgcmp_type]
+	)
+)
+
+ALL_OUTPUTS = []
+ALL_OUTPUTS.extend(ALL_QC)
+ALL_OUTPUTS.extend(ALL_BAM)
+ALL_OUTPUTS.extend(ALL_PEAKS)
+ALL_OUTPUTS.extend(ALL_BIGWIG)
+
+rule all:
+	input:
+		ALL_OUTPUTS
+
+include: "rules/fasterq-dump.smk"
+include: "rules/fastqc.smk"
+include: "rules/multiqc.smk"
+include: "rules/adapterremoval.smk"
+include: "rules/bowtie2.smk"
+include: "rules/samtools.smk"
+include: "rules/picard_markduplicates.smk"
+include: "rules/macs2.smk"
