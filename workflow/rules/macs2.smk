@@ -147,7 +147,7 @@ rule macs2_bdgcmp_merged:
     threads: 1
     resources:
         mem_mb = 16384,
-        runtime = lambda wildcards, input: 120 + (input.treatment.size / 1e6) // 40
+        runtime = "3h"
     shell:
         """
         macs2 bdgcmp \
@@ -168,7 +168,7 @@ rule bedgraph_to_bigwig:
     log: "workflow/logs/bedgraph_to_bigwig/{file}.log"
     threads: 1
     resources:
-        runtime = lambda wildcards, input: 60 + (input.bedgraph.size / 1e6) // 20, # This gives 60m + 45m/Gb
+        runtime = "4h",
         mem_mb = 8192
     shell:
         """

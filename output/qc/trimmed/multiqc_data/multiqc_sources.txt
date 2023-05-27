@@ -1,0 +1,5 @@
+Module	Section	Sample Name	Source
+FastQC	all_sections	SRR8315182	/data/tki_bodl/pederson/prepareChIPs/output/qc/trimmed/SRR8315182_fastqc.zip
+FastQC	all_sections	SRR8315181	/data/tki_bodl/pederson/prepareChIPs/output/qc/trimmed/SRR8315181_fastqc.zip
+FastQC	all_sections	SRR8315180	/data/tki_bodl/pederson/prepareChIPs/output/qc/trimmed/SRR8315180_fastqc.zip
+FastQC	all_sections	SRR8315192	/data/tki_bodl/pederson/prepareChIPs/output/qc/trimmed/SRR8315192_fastqc.zip
