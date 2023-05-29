@@ -1,0 +1,48 @@
+---
+title: "QC: Trimmed Data"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+bibliography: references.bib
+link-citations: true
+---
+
+```{r setup}
+knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10, fig.align = 'center'
+)
+```
+
+```{r packages}
+library(tidyverse)
+library(glue)
+library(yaml)
+library(here)
+library(reactable)
+library(pander)
+library(ngsReports)
+library(scales)
+library(htmltools)
+library(Polychrome)
+myTheme <- theme(
+    plot.title = element_text(hjust = 0.5),
+    text = element_text(size = 13)
+  )
+```
+
+```{r load-data}
+config <- read_yaml(here::here("config/config.yml"))
+samples <- read_tsv(here::here(config$samples)) %>% 
+  bind_rows(
+    tibble(
+      accession = unique(.$input), target = "Input"
+    )
+  )
+n <- length(samples$accession)
+pal <- createPalette(n, c("#2A95E8", "#E5629C"), range = c(10, 60), M = 100000)
+names(pal) <- samples$accession
+colours <- scale_colour_manual(values = pal)
+fl <- here::here("output", "qc", "trimmed", glue("{samples$accession}_fastqc.zip")) %>% 
+  setNames(samples$accession)
+rawFqc <- FastqcDataList(fl[file.exists(fl)])
+names(rawFqc) <- names(fl)[file.exists(fl)]
+```
