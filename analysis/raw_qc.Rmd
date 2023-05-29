@@ -50,7 +50,7 @@ names(rawFqc) <- names(fl)[file.exists(fl)]
 ## Introduction
 
 This page provides summary statistics and diagnostics for the raw data as obtained at the commencement of the workflow.
-Most data was obtained from [FastQC]() and parsed using the Bioconductor package ngsReports [@Ward2020-fn].
+Most data was obtained from [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and parsed using the Bioconductor package ngsReports [@Ward2020-fn].
 FastQC reports for `r length(rawFqc)` files were found.
 
 A conventional MultiQC report [@Ewels2016-ix] can also be found [here](../output/qc/raw/multiqc.html)

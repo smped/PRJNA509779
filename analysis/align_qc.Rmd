@@ -1,0 +1,140 @@
+---
+title: "QC: Aligned Data"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+bibliography: references.bib
+link-citations: true
+---
+
+```{r setup}
+knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10, fig.align = 'center'
+)
+```
+
+```{r packages}
+library(tidyverse)
+library(glue)
+library(yaml)
+library(here)
+library(reactable)
+library(pander)
+library(ngsReports)
+library(scales)
+library(htmltools)
+myTheme <- theme(
+    plot.title = element_text(hjust = 0.5),
+    text = element_text(size = 13)
+  )
+```
+
+```{r load-data}
+config <- read_yaml(here::here("config/config.yml"))
+samples <- read_tsv(here::here(config$samples)) %>% 
+  bind_rows(
+    tibble(
+      accession = unique(.$input), target = "Input"
+    )
+  )
+bwt2_logs <- here::here("output", "bowtie2", glue("{samples$accession}.log")) %>% 
+  setNames(samples$accession) %>% 
+  .[file.exists(.)] 
+duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metrics.txt")) %>%
+  setNames(samples$accession) %>% 
+  .[file.exists(.)] %>% 
+  importNgsLogs()
+```
+
+## Introduction
+
+This final QC worksheet summarises the alignments and de-duplication metrics.
+Single-end alignments were performed using `bowtie2` [@Langmead2012-qc] before being de-duplicated using `markDuplicates` from the Picard suite of tools (https://broadinstitute.github.io/picard)
+
+
+### Alignment Rates
+
+```{r plot-aln-summary, eval = length(bwt2_logs) > 0}
+bwt2_logs %>% 
+  # importNgsLogs() %>% 
+  mutate(Filename = str_remove_all(Filename, ".log")) %>% 
+  dplyr::select(Filename, Unique_Unpaired, Multiple_Unpaired, Not_Aligned) %>% 
+  pivot_longer(cols = contains("_"), names_to = "Status", values_to = "Reads") %>% 
+  mutate(
+    Status = Status %>% 
+      str_remove_all("_Unpaired") %>% 
+      str_replace_all("_", " ") %>% 
+      factor() %>%
+      relevel(ref = "Unique")
+  ) %>% 
+  arrange(Status) %>% 
+  mutate(cumsum = cumsum(Reads), p = Reads / sum(Reads), .by = "Filename") %>% 
+  mutate(y = cumsum - 0.5 * Reads) %>% 
+  ggplot(aes(Filename, Reads, fill = fct_rev(Status))) +
+  geom_col() +
+  geom_label(
+    aes(Filename, y, label = percent(p, 0.1)),
+    data = . %>% dplyr::filter(p > 0.01),
+    fill = "white", alpha = 0.6, show.legend = FALSE
+  ) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_viridis_d(direction = -1) +
+  labs(y = "Reads (millions)", fill = "Alignment\nStatus") +
+  theme_bw() +
+  myTheme
+```
+
+## DeDuplication Summary
+
+```{r tbl-duplication}
+div(
+  class = "table",
+  div(
+    class = "table-header",
+    htmltools::tags$caption(
+      htmltools::em(
+        "Library sizes with links to all FastQC reports generated after
+        processing with AdapterRemoval"
+      )
+    )
+  ),
+  duplogs %>% 
+    dplyr::select(
+      Filename = Library, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
+      Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
+    ) %>% 
+    mutate(
+      Filename = str_remove_all(basename(Filename), ".sorted.bam")
+    ) %>% 
+    left_join(samples, by = c("Filename" = "accession")) %>% 
+    dplyr::select(-input) %>% 
+    setNames(str_replace_all(names(.), "_", " ")) %>% 
+    setNames(str_to_title(names(.))) %>% 
+    reactable(
+      sortable = TRUE, filterable = TRUE, resizable = TRUE,
+      showPageSizeOptions = TRUE,
+      columns = list(
+        Reads = colDef(format = colFormat(separators = TRUE)),
+        `Unmapped Reads` = colDef(format = colFormat(separators = TRUE)),
+        Duplicates = colDef(format = colFormat(separators = TRUE)),
+        `Percent Duplication` = colDef(format = colFormat(percent = TRUE, digits = 2))
+      )
+    )
+)
+```
+
+## References
+
+<div id="refs"></div>
+
+<br>
+<button type="button" class="btn btn-default btn-sessioninfo" data-toggle="collapse" data-target="#sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="sessioninfo" class="collapse">
+```{r session-info, echo=FALSE}
+pander::pander(sessionInfo())
+```
+</div>
