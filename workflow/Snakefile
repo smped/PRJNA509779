@@ -85,11 +85,18 @@ ALL_BIGWIG.extend(
 	)
 )
 
+## The HTML files
+ALL_HTML = expand(
+	os.path.join("docs", "{f}.html"),
+	f = ['index']
+)
+
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_QC)
 ALL_OUTPUTS.extend(ALL_BAM)
 ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
+ALL_OUTPUTS.extend(ALL_HTML)
 
 rule all:
 	input:
@@ -103,3 +110,4 @@ include: "rules/bowtie2.smk"
 include: "rules/samtools.smk"
 include: "rules/picard_markduplicates.smk"
 include: "rules/macs2.smk"
+include: "rules/rmarkdown.smk"
