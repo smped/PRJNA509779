@@ -6,12 +6,16 @@ channels:
   - nodefaults
 dependencies:
   - r-base=4.3
+  - r-biocmanager=1.30
   - r-diagrammer
   - r-glue=1.6
+  - r-here=1.0
   - r-knitr=1.42
   - r-pander=0.6
+  - r-polychrome=1.5
   - r-reactable=0.4
   - r-rmarkdown=2.14
+  - r-scales=1.2
   - r-tidyverse=2.0
   - r-yaml=2.3
   - bioconductor-extrachips
