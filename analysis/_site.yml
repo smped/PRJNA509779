@@ -10,7 +10,7 @@ navbar:
     - text: Raw Data
       href: raw_qc.html
     - text: Trimmed Data
-      href: trim_qc.html
+      href: trimmed_qc.html
     - text: Alignments
       href: align_qc.html
   - text: Results
