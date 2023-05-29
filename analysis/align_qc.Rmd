@@ -55,7 +55,7 @@ Single-end alignments were performed using `bowtie2` [@Langmead2012-qc] before b
 
 ```{r plot-aln-summary, eval = length(bwt2_logs) > 0}
 bwt2_logs %>% 
-  # importNgsLogs() %>% 
+  importNgsLogs() %>% 
   mutate(Filename = str_remove_all(Filename, ".log")) %>% 
   dplyr::select(Filename, Unique_Unpaired, Multiple_Unpaired, Not_Aligned) %>% 
   pivot_longer(cols = contains("_"), names_to = "Status", values_to = "Reads") %>% 
