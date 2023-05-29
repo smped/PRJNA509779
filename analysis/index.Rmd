@@ -1,0 +1,95 @@
+---
+title: "Home"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+bibliography: references.bib
+link-citations: true
+---
+
+```{r setup}
+knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10
+)
+```
+
+```{r packages}
+library(DiagrammeR)
+library(tidyverse)
+library(glue)
+library(yaml)
+library(here)
+library(reactable)
+library(pander)
+```
+
+```{r load-data}
+config <- read_yaml(here::here("config/config.yml"))
+samples <- read_tsv(here::here(config$samples))
+```
+
+
+
+## Introduction
+
+This is a simple `snakemake` workflow for preparing *single-end* ChIP-Seq libraries.
+The key steps involved are:
+
+1. Download files from the [Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra)
+2. Remove adapter sequences and low quality reads using AdapterRemoval [@Schubert2016-br]
+3. Use `bowtie2` to align to the genome [@Langmead2012-qc] 
+4. De-duplicate reads is [`markDuplicates`](https://broadinstitute.github.io/picard)
+5. Run `macs2 callpeak` [@Zhang2008-ms] on
+    a. All individual samples
+    b. All samples within a common target and treatment group
+ 
+Multiple QC reports are created throughout the workflow using [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/), MultiQC [@Ewels2016-ix] and ngsReports [@Ward2020-fn]
+  
+A full description of the workflow is available at https://github.com/smped/prepareChIPs, with the rulegraph summarised below.
+
+```{r plot-rulegraph, fig.cap = "*Snakemake rulegraph for the prepareChIPs workflow*"}
+here::here("workflow", "rules", "rulegraph.dot") %>%
+  readLines() %>%
+  str_replace_all("(.+graph.+)(\\];)", "\\1, rankdir = LR\\2") %>% 
+  str_replace_all("fontsize=10", "fontsize=12") %>% 
+  str_replace_all("_", "\n") %>% 
+  str_replace_all("snakemake\ndag", "snakemakg_dag") %>% 
+  grViz()
+```
+
+## Provided Samples
+
+The complete set of samples provided is shown in the following table
+
+```{r tbl-samples}
+samples %>% 
+  rename_with(function(x) str_replace_all(x, "_", " "), everything()) %>% 
+  rename_with(str_to_title, everything()) %>% 
+  reactable(
+    sortable = TRUE, filterable = TRUE, resizable = TRUE,
+    showPageSizeOptions = TRUE
+  )
+```
+
+## Workflow Parameters
+
+Downloaded files are to be aligned to a genome located in `r config$reference$path` with the prefix `r config$reference$index`
+
+All other parameters were specified to be
+
+`r pander(config$params[vapply(config$params, length, integer(1)) > 0])`
+
+
+## References
+
+<div id="refs"></div>
+
+<br>
+<button type="button" class="btn btn-default btn-sessioninfo" data-toggle="collapse" data-target="#sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="sessioninfo" class="collapse">
+```{r session-info, echo=FALSE}
+pander::pander(sessionInfo())
+```
+</div>
