@@ -25,7 +25,7 @@ site_yaml <- list(
       list(
         text = "QC", menu = list(
           list(text = "Raw Data", href = "raw_qc.html"),
-          list(text = "Trimmed Data", href = "trim_qc.html"),
+          list(text = "Trimmed Data", href = "trimmed_qc.html"),
           list(text = "Alignments", href = "align_qc.html")
         )
       ),
