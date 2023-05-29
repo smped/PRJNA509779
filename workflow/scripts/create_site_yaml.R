@@ -13,12 +13,13 @@ library(magrittr)
 config <- read_yaml(here::here("config", "config.yml"))
 samples <- read_tsv(here::here(config$samples))
 targets <- sort(unique(samples$target))
+dir <- basename(getwd())
 
 site_yaml <- list(
-  name = "prepareChIPs",
+  name = dir,
   output_dir = "../docs",
   navbar = list(
-    title = "prepareChIPs",
+    title = dir,
     left = list(
       list(text = "Home", href = "index.html"),
       list(
