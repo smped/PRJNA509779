@@ -29,3 +29,25 @@ rule compile_index_html:
 		"""
 		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
 		"""
+
+rule compile_qc_html:
+	input:
+		fqc = expand(
+			os.path.join("output", "qc", "{{step}}", "{f}_fastqc.{suffix}"),
+			f = accessions, suffix = ['zip', 'html']
+		),
+		references = "analysis/references.bib",
+		rmd = "analysis/{step}_qc.Rmd",
+		site = "analysis/_site.yml",
+		yaml = "config/config.yml"		
+	output:
+		html = "docs/{step}_qc.html"
+	threads: 1
+	conda: "../envs/rmarkdown.yml"
+	log: "workflow/logs/compile_{step}_qc_ html"
+	resources:
+		runtime = "5m"
+	shell:
+		"""
+		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+		"""
