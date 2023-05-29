@@ -88,7 +88,7 @@ ALL_BIGWIG.extend(
 ## The HTML files
 ALL_HTML = expand(
 	os.path.join("docs", "{f}.html"),
-	f = ['index']
+	f = ['index', 'raw_qc']
 )
 
 ALL_OUTPUTS = []
