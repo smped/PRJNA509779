@@ -24,7 +24,7 @@ rule compile_index_html:
 	conda: "../envs/rmarkdown.yml"
 	log: "workflow/logs/compile_index_html"
 	resources:
-		runtime = "5m"
+		runtime = "10m"
 	shell:
 		"""
 		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
@@ -46,8 +46,33 @@ rule compile_qc_html:
 	conda: "../envs/rmarkdown.yml"
 	log: "workflow/logs/compile_{step}_qc_ html"
 	resources:
-		runtime = "5m"
+		runtime = "10m"
 	shell:
 		"""
 		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
 		"""
+
+rule compile_alignment_qc_html:
+	input:
+		bwt2_logs = expand(
+			os.path.join("output", "bowtie2", "{f}.log"), f = accessions
+		),
+		dup_logs = expand(
+			os.path.join("output", "markDuplicates", "{f}.metrics.txt"),
+			f = accessions
+		),
+		references = "analysis/references.bib",
+		rmd = "analysis/align_qc.Rmd",
+		site = "analysis/_site.yml",
+		yaml = "config/config.yml"
+	output:
+		html = "docs/align_qc.html"
+	conda: "../envs/rmarkdown.yml"
+	log: "workflow/logs/compile_align_qc_ html"
+	resources:
+		runtime = "5m"
+	shell:
+		"""
+		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+		"""		
+	
