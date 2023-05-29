@@ -37,9 +37,12 @@ site_yaml <- list(
     )
   ),
   output = list(
-    "workflowr::wflow_html" = list(
-      code_folding = "hide", toc = TRUE, toc_float = TRUE, theme = "sandstone",
-      highlight = "textmate")
+    html_document = list(
+      code_folding = "hide",
+      toc = TRUE, toc_float = TRUE,
+      theme = "sandstone", highlight = "textmate",
+      includes = list(after_body = "footer.html")
+    )
   )
 )
 

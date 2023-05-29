@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Home</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<script src="site_libs/viz-1.8.2/viz.js"></script>
+<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="site_libs/grViz-binding-1.0.9/grViz.js"></script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-17.0.0/react.min.js"></script>
+<script src="site_libs/react-17.0.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet" />
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">prepareChIPs</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    QC
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="raw_qc.html">Raw Data</a>
+    </li>
+    <li>
+      <a href="trim_qc.html">Trimmed Data</a>
+    </li>
+    <li>
+      <a href="align_qc.html">Alignments</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ar_macs2_summary.html">AR</a>
+    </li>
+    <li>
+      <a href="era_macs2_summary.html">ERa</a>
+    </li>
+    <li>
+      <a href="h3k27ac_macs2_summary.html">H3K27ac</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/smped/prepareChIPs">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Home</h1>
+<h4 class="date">29 May, 2023</h4>
+
+</div>
+
+
+<pre class="r"><code>knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10
+)</code></pre>
+<pre class="r"><code>library(DiagrammeR)
+library(tidyverse)
+library(glue)
+library(yaml)
+library(here)
+library(reactable)
+library(pander)</code></pre>
+<pre class="r"><code>config &lt;- read_yaml(here::here(&quot;config/config.yml&quot;))
+samples &lt;- read_tsv(here::here(config$samples))</code></pre>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This is a simple <code>snakemake</code> workflow for preparing
+<em>single-end</em> ChIP-Seq libraries. The key steps involved are:</p>
+<ol style="list-style-type: decimal">
+<li>Download files from the <a
+href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive</a></li>
+<li>Remove adapter sequences and low quality reads using AdapterRemoval
+<span class="citation">(<a href="#ref-Schubert2016-br"
+role="doc-biblioref">Schubert, Lindgreen, and Orlando
+2016</a>)</span></li>
+<li>Use <code>bowtie2</code> to align to the genome <span
+class="citation">(<a href="#ref-Langmead2012-qc"
+role="doc-biblioref">Langmead and Salzberg 2012</a>)</span></li>
+<li>De-duplicate reads is <a
+href="https://broadinstitute.github.io/picard"><code>markDuplicates</code></a></li>
+<li>Run <code>macs2 callpeak</code> <span class="citation">(<a
+href="#ref-Zhang2008-ms" role="doc-biblioref">Zhang et al.
+2008</a>)</span> on
+<ol style="list-style-type: lower-alpha">
+<li>All individual samples</li>
+<li>All samples within a common target and treatment group</li>
+</ol></li>
+</ol>
+<p>Multiple QC reports are created throughout the workflow using <a
+href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>,
+MultiQC <span class="citation">(<a href="#ref-Ewels2016-ix"
+role="doc-biblioref">Ewels et al. 2016</a>)</span> and ngsReports <span
+class="citation">(<a href="#ref-Ward2020-fn" role="doc-biblioref">Ward,
+To, and Pederson 2020</a>)</span></p>
+<p>A full description of the workflow is available at <a
+href="https://github.com/smped/prepareChIPs"
+class="uri">https://github.com/smped/prepareChIPs</a>, with the
+rulegraph summarised below.</p>
+<pre class="r"><code>here::here(&quot;workflow&quot;, &quot;rules&quot;, &quot;rulegraph.dot&quot;) %&gt;%
+  readLines() %&gt;%
+  str_replace_all(&quot;(.+graph.+)(\\];)&quot;, &quot;\\1, rankdir = LR\\2&quot;) %&gt;% 
+  str_replace_all(&quot;fontsize=10&quot;, &quot;fontsize=12&quot;) %&gt;% 
+  str_replace_all(&quot;_&quot;, &quot;\n&quot;) %&gt;% 
+  str_replace_all(&quot;snakemake\ndag&quot;, &quot;snakemakg_dag&quot;) %&gt;% 
+  grViz()</code></pre>
+<div class="figure">
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-795ccdc94505c9283af5" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-795ccdc94505c9283af5">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"0.33 0.6 0.85\", style=\"rounded\"];\n\t1[label = \"fastqc\", color = \"0.14 0.6 0.85\", style=\"rounded\"];\n\t2[label = \"get\nfastq\", color = \"0.19 0.6 0.85\", style=\"rounded\"];\n\t3[label = \"adapterremoval\", color = \"0.48 0.6 0.85\", style=\"rounded\"];\n\t4[label = \"multiqc\", color = \"0.05 0.6 0.85\", style=\"rounded\"];\n\t5[label = \"picard\nmarkduplicates\", color = \"0.38 0.6 0.85\", style=\"rounded\"];\n\t6[label = \"samtools\nsort\", color = \"0.10 0.6 0.85\", style=\"rounded\"];\n\t7[label = \"bowtie2\nalign\", color = \"0.24 0.6 0.85\", style=\"rounded\"];\n\t8[label = \"samtools\nindex\", color = \"0.43 0.6 0.85\", style=\"rounded\"];\n\t9[label = \"macs2\ncallpeak\", color = \"0.57 0.6 0.85\", style=\"rounded\"];\n\t10[label = \"macs2\ncall\npeak\nmerged\", color = \"0.00 0.6 0.85\", style=\"rounded\"];\n\t11[label = \"bedgraph\nto\nbigwig\", color = \"0.29 0.6 0.85\", style=\"rounded\", rankdir = LR];\n\t12[label = \"get\nchrom\nsizes\", color = \"0.62 0.6 0.85\", style=\"rounded\"];\n\t13[label = \"macs2\nbdgcmp\nmerged\", color = \"0.52 0.6 0.85\", style=\"rounded\"];\n\t4 -> 0\n\t1 -> 0\n\t11 -> 0\n\t5 -> 0\n\t8 -> 0\n\t9 -> 0\n\t10 -> 0\n\t2 -> 1\n\t3 -> 1\n\t2 -> 3\n\t1 -> 4\n\t6 -> 5\n\t7 -> 6\n\t3 -> 7\n\t5 -> 8\n\t8 -> 9\n\t5 -> 9\n\t8 -> 10\n\t5 -> 10\n\t10 -> 11\n\t13 -> 11\n\t9 -> 11\n\t12 -> 11\n\t10 -> 13\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p class="caption">
+<em>Snakemake rulegraph for the prepareChIPs workflow</em>
+</p>
+</div>
+</div>
+<div id="provided-samples" class="section level2">
+<h2>Provided Samples</h2>
+<p>The complete set of samples provided is shown in the following
+table</p>
+<pre class="r"><code>samples %&gt;% 
+  rename_with(function(x) str_replace_all(x, &quot;_&quot;, &quot; &quot;), everything()) %&gt;% 
+  rename_with(str_to_title, everything()) %&gt;% 
+  reactable(
+    sortable = TRUE, filterable = TRUE, resizable = TRUE,
+    showPageSizeOptions = TRUE
+  )</code></pre>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-99e132740ddfe26ca3b3" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-99e132740ddfe26ca3b3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315174","SRR8315175","SRR8315176","SRR8315177","SRR8315178","SRR8315179","SRR8315180","SRR8315181","SRR8315182","SRR8315183","SRR8315184","SRR8315185","SRR8315186","SRR8315187","SRR8315188","SRR8315189","SRR8315190","SRR8315191"],"Target":["AR","AR","AR","AR","AR","AR","ERa","ERa","ERa","ERa","ERa","ERa","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac"],"Treatment":["E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT"],"Input":["SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192"],"Cell Line":["ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1"],"Sample Name":["GSM3511082","GSM3511082","GSM3511082","GSM3511083","GSM3511083","GSM3511083","GSM3511084","GSM3511084","GSM3511084","GSM3511085","GSM3511085","GSM3511085","GSM3511086","GSM3511086","GSM3511086","GSM3511087","GSM3511087","GSM3511087"],"Experiment":["SRX5128130","SRX5128130","SRX5128130","SRX5128131","SRX5128131","SRX5128131","SRX5128132","SRX5128132","SRX5128132","SRX5128133","SRX5128133","SRX5128133","SRX5128134","SRX5128134","SRX5128134","SRX5128135","SRX5128135","SRX5128135"],"Source Name":["ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"},{"id":"Cell Line","name":"Cell Line","type":"character"},{"id":"Sample Name","name":"Sample Name","type":"character"},{"id":"Experiment","name":"Experiment","type":"character"},{"id":"Source Name","name":"Source Name","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"15a5dd100e375a221ed3f11cdf2da6ac"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="workflow-parameters" class="section level2">
+<h2>Workflow Parameters</h2>
+<p>Downloaded files are to be aligned to a genome located in
+/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/ with the prefix
+GRCh37</p>
+<p>All other parameters were specified to be</p>
+<ul>
+<li><p><strong>adapterremoval</strong>:</p>
+<ul>
+<li><strong>extra</strong>: –maxns 1 –minlength 50 –minquality 30 –gzip
+–trimqualities</li>
+<li><strong>adapter1</strong>: –adapter1 AGATCGGAAGAGC</li>
+</ul></li>
+<li><p><strong>bowtie2</strong>:</p></li>
+<li><p><strong>fastqc</strong>: –nogroup –noextract</p></li>
+<li><p><strong>macs2</strong>:</p>
+<ul>
+<li><strong>callpeak</strong>: -g hs –keep-dup all -q 0.05</li>
+<li><strong>bdgcmp</strong>: -m FE</li>
+</ul></li>
+<li><p><strong>markduplicates</strong>: –REMOVE_DUPLICATES true</p></li>
+<li><p><strong>multiqc</strong>:</p></li>
+<li><p><strong>samtools</strong>:</p>
+<ul>
+<li><strong>sort</strong>: -m 4G</li>
+<li><strong>index</strong>:</li>
+</ul></li>
+</ul>
+<!-- end of list -->
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Ewels2016-ix" class="csl-entry">
+Ewels, Philip, Måns Magnusson, Sverker Lundin, and Max Käller. 2016.
+<span>“<span>MultiQC</span>: Summarize Analysis Results for Multiple
+Tools and Samples in a Single Report.”</span> <em>Bioinformatics</em> 32
+(19): 3047–48.
+</div>
+<div id="ref-Langmead2012-qc" class="csl-entry">
+Langmead, Ben, and Steven L Salzberg. 2012. <span>“Fast Gapped-Read
+Alignment with Bowtie 2.”</span> <em>Nat. Methods</em> 9 (4): 357–59.
+</div>
+<div id="ref-Schubert2016-br" class="csl-entry">
+Schubert, Mikkel, Stinus Lindgreen, and Ludovic Orlando. 2016.
+<span>“<span>AdapterRemoval</span> V2: Rapid Adapter Trimming,
+Identification, and Read Merging.”</span> <em>BMC Res. Notes</em> 9
+(February): 88.
+</div>
+<div id="ref-Ward2020-fn" class="csl-entry">
+Ward, Christopher M, Thu-Hien To, and Stephen M Pederson. 2020.
+<span>“ngsReports: A Bioconductor Package for Managing
+<span>FastQC</span> Reports and Other <span>NGS</span> Related Log
+Files.”</span> <em>Bioinformatics</em> 36 (8): 2587–88.
+</div>
+<div id="ref-Zhang2008-ms" class="csl-entry">
+Zhang, Yong, Tao Liu, Clifford A Meyer, Jérôme Eeckhoute, David S
+Johnson, Bradley E Bernstein, Chad Nusbaum, et al. 2008.
+<span>“Model-Based Analysis of <span>ChIP-Seq</span>
+(<span>MACS</span>).”</span> <em>Genome Biol.</em> 9 (9): R137.
+</div>
+</div>
+<br>
+<button type="button" class="btn btn-default btn-sessioninfo" data-toggle="collapse" data-target="#sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+Session information </button>
+</p>
+<div id="sessioninfo" class="collapse">
+<p><strong>R version 4.3.0 (2023-04-21)</strong></p>
+<p><strong>Platform:</strong> x86_64-pc-linux-gnu (64-bit)</p>
+<p><strong>locale:</strong> <em>LC_CTYPE=en_AU.UTF-8</em>,
+<em>LC_NUMERIC=C</em>, <em>LC_TIME=en_AU.UTF-8</em>,
+<em>LC_COLLATE=en_AU.UTF-8</em>, <em>LC_MONETARY=en_AU.UTF-8</em>,
+<em>LC_MESSAGES=en_AU.UTF-8</em>, <em>LC_PAPER=en_AU.UTF-8</em>,
+<em>LC_NAME=C</em>, <em>LC_ADDRESS=C</em>, <em>LC_TELEPHONE=C</em>,
+<em>LC_MEASUREMENT=en_AU.UTF-8</em> and <em>LC_IDENTIFICATION=C</em></p>
+<p><strong>attached base packages:</strong> <em>stats</em>,
+<em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
+<em>datasets</em>, <em>methods</em> and <em>base</em></p>
+<p><strong>other attached packages:</strong> <em>pander(v.0.6.5)</em>,
+<em>htmltools(v.0.5.5)</em>, <em>reactable(v.0.4.4)</em>,
+<em>here(v.1.0.1)</em>, <em>DiagrammeR(v.1.0.9)</em>,
+<em>magrittr(v.2.0.3)</em>, <em>glue(v.1.6.2)</em>,
+<em>yaml(v.2.3.7)</em>, <em>lubridate(v.1.9.2)</em>,
+<em>forcats(v.1.0.0)</em>, <em>stringr(v.1.5.0)</em>,
+<em>dplyr(v.1.1.2)</em>, <em>purrr(v.1.0.1)</em>,
+<em>readr(v.2.1.4)</em>, <em>tidyr(v.1.3.0)</em>,
+<em>tibble(v.3.2.1)</em>, <em>ggplot2(v.3.4.2)</em> and
+<em>tidyverse(v.2.0.0)</em></p>
+<p><strong>loaded via a namespace (and not attached):</strong>
+<em>gtable(v.0.3.3)</em>, <em>xfun(v.0.39)</em>,
+<em>bslib(v.0.4.2)</em>, <em>htmlwidgets(v.1.6.2)</em>,
+<em>visNetwork(v.2.1.2)</em>, <em>tzdb(v.0.3.0)</em>,
+<em>vctrs(v.0.6.2)</em>, <em>tools(v.4.3.0)</em>,
+<em>crosstalk(v.1.2.0)</em>, <em>generics(v.0.1.3)</em>,
+<em>parallel(v.4.3.0)</em>, <em>fansi(v.1.0.4)</em>,
+<em>highr(v.0.10)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>RColorBrewer(v.1.1-3)</em>, <em>lifecycle(v.1.0.3)</em>,
+<em>git2r(v.0.32.0)</em>, <em>compiler(v.4.3.0)</em>,
+<em>munsell(v.0.5.0)</em>, <em>fontawesome(v.0.5.1)</em>,
+<em>httpuv(v.1.6.10)</em>, <em>sass(v.0.4.6)</em>,
+<em>pillar(v.1.9.0)</em>, <em>later(v.1.3.1)</em>,
+<em>crayon(v.1.5.2)</em>, <em>jquerylib(v.0.1.4)</em>,
+<em>ellipsis(v.0.3.2)</em>, <em>cachem(v.1.0.8)</em>,
+<em>tidyselect(v.1.2.0)</em>, <em>digest(v.0.6.31)</em>,
+<em>stringi(v.1.7.12)</em>, <em>rprojroot(v.2.0.3)</em>,
+<em>fastmap(v.1.1.1)</em>, <em>grid(v.4.3.0)</em>,
+<em>colorspace(v.2.1-0)</em>, <em>cli(v.3.6.1)</em>,
+<em>utf8(v.1.2.3)</em>, <em>withr(v.2.5.0)</em>,
+<em>reactR(v.0.4.4)</em>, <em>scales(v.1.2.1)</em>,
+<em>promises(v.1.2.0.1)</em>, <em>bit64(v.4.0.5)</em>,
+<em>timechange(v.0.2.0)</em>, <em>rmarkdown(v.2.21)</em>,
+<em>bit(v.4.0.5)</em>, <em>workflowr(v.1.7.0)</em>,
+<em>hms(v.1.1.3)</em>, <em>evaluate(v.0.21)</em>,
+<em>knitr(v.1.42)</em>, <em>rlang(v.1.1.1)</em>,
+<em>Rcpp(v.1.0.10)</em>, <em>rstudioapi(v.0.14)</em>,
+<em>vroom(v.1.6.3)</em>, <em>jsonlite(v.1.8.4)</em>,
+<em>R6(v.2.5.1)</em> and <em>fs(v.1.6.2)</em></p>
+</div>
+</div>
+
+<div class="footer">
+  <br>Workflow developed by Dr Stevie Pederson<sup>1,2,3</sup><br><br>
+  <sup>1.</sup>Black Ochre Data Laboratories, Telethon Kids Institute, Adelaide, SA, Australia<br>
+  <sup>2.</sup>John Curtin School of Medical Resarch, Australian National University, Canberra, ACT, Australia<br>
+  <sup>3.</sup>Dame Roma Mitchell Cancer Research Laboratories, Adelaide Medical School, University of Adelaide, SA, Australia<br>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
