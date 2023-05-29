@@ -1,0 +1,35 @@
+name: prepareChIPs
+output_dir: ../docs
+navbar:
+  title: prepareChIPs
+  left:
+  - text: Home
+    href: index.html
+  - text: QC
+    menu:
+    - text: Raw Data
+      href: raw_qc.html
+    - text: Trimmed Data
+      href: trim_qc.html
+    - text: Alignments
+      href: align_qc.html
+  - text: Results
+    menu:
+    - text: AR
+      href: ar_macs2_summary.html
+    - text: ERa
+      href: era_macs2_summary.html
+    - text: H3K27ac
+      href: h3k27ac_macs2_summary.html
+  right:
+  - icon: fa-github
+    href: https://github.com/smped/prepareChIPs
+output:
+  html_document:
+    code_folding: hide
+    toc: yes
+    toc_float: yes
+    theme: sandstone
+    highlight: textmate
+    includes:
+      after_body: footer.html
