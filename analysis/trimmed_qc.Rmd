@@ -1,0 +1,322 @@
+---
+title: "QC: Trimmed Data"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+bibliography: references.bib
+link-citations: true
+---
+
+```{r setup}
+knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10, fig.align = 'center'
+)
+```
+
+```{r packages}
+library(tidyverse)
+library(glue)
+library(yaml)
+library(here)
+library(reactable)
+library(pander)
+library(ngsReports)
+library(scales)
+library(htmltools)
+library(Polychrome)
+myTheme <- theme(
+    plot.title = element_text(hjust = 0.5),
+    text = element_text(size = 13)
+  )
+```
+
+```{r load-data}
+config <- read_yaml(here::here("config/config.yml"))
+samples <- read_tsv(here::here(config$samples)) %>% 
+  bind_rows(
+    tibble(
+      accession = unique(.$input), target = "Input"
+    )
+  )
+n <- length(samples$accession)
+pal <- createPalette(n, c("#2A95E8", "#E5629C"), range = c(10, 60), M = 100000)
+names(pal) <- samples$accession
+colours <- scale_colour_manual(values = pal)
+fl <- here::here("output", "qc", "trimmed", glue("{samples$accession}_fastqc.zip")) %>% 
+  setNames(samples$accession)
+trimFqc <- FastqcDataList(fl[file.exists(fl)])
+names(trimFqc) <- names(fl)[file.exists(fl)]
+```
+
+## Introduction
+
+This page provides summary statistics and diagnostics for the data after trimming with AdapterRemoval [@Schubert2016-br]
+Most data was obtained from [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and parsed using the Bioconductor package ngsReports [@Ward2020-fn].
+FastQC reports for `r length(trimFqc)` files were found.
+
+A conventional MultiQC report [@Ewels2016-ix] can also be found [here](../output/qc/trimmed/multiqc.html)
+
+## Data Summary {.tabset}
+
+```{r tbl-read-totals}
+div(
+  class = "table",
+  div(
+    class = "table-header",
+    htmltools::tags$caption(
+      htmltools::em(
+        "Library sizes with links to all FastQC reports generated after 
+        processing with AdapterRemoval"
+      )
+    )
+  ),
+  readTotals(trimFqc) %>% 
+    mutate(Filename = str_remove_all(Filename, ".(fast|f)q.gz")) %>% 
+    left_join(samples, by = c("Filename" = "accession")) %>% 
+    dplyr::select(-input) %>% 
+    setNames(str_replace_all(names(.), "_", " ")) %>% 
+    setNames(str_to_title(names(.))) %>% 
+    reactable(
+      sortable = TRUE, resizable = TRUE,
+      showPageSizeOptions = TRUE,
+      columns = list(
+        Filename = colDef(
+          cell = function(value) htmltools::tags$a(
+            href = file.path(
+              "..", "output", "qc", "trimmed", glue("{value}_fastqc.html")
+            ), 
+            target = "_blank", 
+            value
+          ),
+          html = TRUE
+        )
+      ),
+      defaultColDef = colDef(format = colFormat(separators = TRUE))
+    )
+)
+```
+
+### FastQC Status
+
+```{r plot-summary, fig.cap = "*Summary of Pass/Warn/Fail status from all samples after trimming*"}
+plotSummary(trimFqc) + myTheme
+```
+
+
+## Trimming Statistics
+
+```{r load-trimlogs}
+trim_logs <- here::here(
+  "output", "adapterremoval", glue("{samples$accession}.settings")
+) %>% 
+  setNames(samples$accession) %>% 
+  .[file.exists(.)] %>% 
+  importNgsLogs()
+maxAdapt <- maxAdapterContent(trimFqc, asPercent = FALSE) %>% 
+  ungroup() %>% 
+  dplyr::select(-Filename) %>% 
+  lapply(range) %>% 
+  .[vapply(., max, numeric(1)) > 0] %>% 
+  lapply(percent, accuracy = 0.01)
+```
+
+### Retained Reads
+
+```{r plot-retained, fig.cap = "*Summary of retained and discarded reads from each library. The percentage of reads retained or discarded in each library is shown using labels.*"}
+trim_logs %>% 
+  dplyr::select(
+    Filename, 
+    Retained = `Number of retained reads`, 
+    Discarded = `Number of discarded mate 1 reads`
+  ) %>% 
+  pivot_longer(cols = ends_with("ed"), names_to = "Status", values_to = "Reads") %>% 
+  mutate(
+    Filename = str_remove_all(Filename, ".settings") %>% as.factor(),
+    Status = as.factor(Status)
+  ) %>% 
+  arrange(Filename, desc(Status)) %>% 
+  mutate(
+    cumsum = cumsum(Reads), p = Reads / sum(Reads), .by = Filename
+  ) %>% 
+  mutate(y = cumsum - 0.5 * Reads) %>% 
+  ggplot(aes(Filename, Reads, fill = Status)) +
+  geom_col() +
+  geom_label(
+    aes(Filename, y, label = percent(p, 0.1)),
+    data = . %>% dplyr::filter(p > 0.01),
+    alpha = 0.7, fill = "white", show.legend = FALSE
+  ) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_brewer(palette = "Set1") +
+  labs(y = "Reads (millions)") +
+  theme_bw() +
+  myTheme
+```
+
+Of the entire set of files, the ranges of values for all possible remaining adapter sequences were
+
+`r pander(maxAdapt)`
+
+noting that some of these putative adapters may be completely artefactual and only sequences matching the provided adapter sequence were removed.
+
+## QC Diagnostics
+
+### Quality Scores
+
+```{r plot-base-quals, fig.cap = "*Mean Quality Scores are each position along the reads*"}
+plotBaseQuals(trimFqc, heat_w = 20, dendrogram = TRUE, usePlotly = TRUE, text = element_text(size = 13))
+```
+
+### Sequence Content Heatmap
+
+```{r plot-seq-content, fig.cap = "*Sequence content along each read*"}
+plotSeqContent(trimFqc, usePlotly = TRUE, dendrogram = TRUE, heat_w = 20, text = element_text(size = 13))
+```
+
+### Sequence Content Residuals {.tabset}
+
+#### All Libraries
+
+```{r plot-seq-residuals, fig.cap = "*Residuals obtained when subtracting mean values at each position*"}
+plotSeqContent(trimFqc, plotType = "residuals", scaleColour = colours) + myTheme
+```
+
+```{r plot-tgt-seq-residuals}
+d <- here::here("docs", "assets", "trimmed_fqc")
+if (!dir.exists(d)) dir.create(d, recursive = TRUE)
+h <- knitr::opts_chunk$get("fig.height")
+w <- knitr::opts_chunk$get("fig.width")
+htmltools::tagList(
+  samples %>% 
+    dplyr::filter(accession %in% names(trimFqc)) %>% 
+    split(.$target) %>% 
+    setNames(NULL) %>% 
+    lapply(
+      function(x) {
+        tgt <- unique(x$target)
+        fqc <- trimFqc[x$accession]
+        p <- plotSeqContent(fqc, plotType = "residuals", scaleColour = colours) +
+          ggtitle(glue("Sequence Content Residuals: {tgt} libraries only")) +
+          myTheme
+        png_out <- file.path(
+          d, glue("seq-content-residuals-{tgt}.png")
+        )
+        href <- str_extract(png_out, "assets.+")
+        png(filename = png_out, width = w, height = h, units = "in", res = 300)
+        print(p)
+        dev.off()
+        cp <- htmltools::em(
+          glue(
+            "
+            Residuals obtained when subtracting mean values at each position for 
+            {tgt} libraries only.
+            "
+          )
+        )
+        htmltools::div(
+          htmltools::div(
+            id = glue("plot-seq-residuals-{tgt}"),
+            class = "section level4",
+            htmltools::h4(tgt),
+            htmltools::div(
+              class = "figure", style = "text-align: center",
+              htmltools::img(src = href, width = "100%"),
+              htmltools::tags$caption(cp)
+            )
+          )
+        )
+      }
+    )
+)
+```
+
+### GC Content {.tabset}
+
+#### All Libraries
+
+```{r plot-gc-content, fig.cap = "*GC content distributions for all libraries*"}
+plotGcContent(
+  trimFqc, usePlotly = TRUE, plotType = "line", theoreticalGC = FALSE, 
+  scaleColour =  colours, plotlyLegend = TRUE, text = element_text(size = 13)
+)
+```
+
+```{r plot-tgt-gc-content}
+h <- knitr::opts_chunk$get("fig.height")
+w <- knitr::opts_chunk$get("fig.width")
+htmltools::tagList(
+  samples %>% 
+    dplyr::filter(accession %in% names(trimFqc)) %>% 
+    split(.$target) %>% 
+    setNames(NULL) %>% 
+    lapply(
+      function(x) {
+        tgt <- unique(x$target)
+        fqc <- trimFqc[x$accession]
+        p <- plotGcContent(
+          fqc, plotType = "line", theoreticalGC = FALSE, scaleColour = colours
+        ) +
+          ggtitle(glue("GC Content Distribuions: {tgt} libraries only")) +
+          myTheme
+        png_out <- file.path(
+          d, glue("gc-content-{tgt}.png")
+        )
+        href <- str_extract(png_out, "assets.+")
+        png(filename = png_out, width = w, height = h, units = "in", res = 300)
+        print(p)
+        dev.off()
+        cp <- htmltools::em(
+          glue("GC content distributions for {tgt} libraries only.")
+        )
+        htmltools::div(
+          htmltools::div(
+            id = glue("plot-gc_content-{tgt}"),
+            class = "section level4",
+            htmltools::h4(tgt),
+            htmltools::div(
+              class = "figure", style = "text-align: center",
+              htmltools::img(src = href, width = "100%"),
+              htmltools::tags$caption(cp)
+            )
+          )
+        )
+      }
+    )
+)
+```
+
+### Sequence Lengths
+
+```{r plot-seqlengths, fig.cap = "*Cumulative Sequence Length distributions*"}
+plotSeqLengthDistn(
+  trimFqc, usePlotly = TRUE, plotType = "cdf", scaleColour = colours, 
+  plotlyLegend = TRUE, text = element_text(size = 13)
+)
+```
+
+
+### Duplication Levels
+
+```{r plot-dup-levels, fig.cap = "*Duplication levels as estimated by FastQC*"}
+plotDupLevels(
+  trimFqc, usePlotly = TRUE, dendrogram = TRUE, heat_w = 20, 
+  text = element_text(size = 13)
+)
+```
+
+
+## References
+
+<div id="refs"></div>
+
+<br>
+<button type="button" class="btn btn-default btn-sessioninfo" data-toggle="collapse" data-target="#sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Session information
+</button>
+</p>
+<div id="sessioninfo" class="collapse">
+```{r session-info, echo=FALSE}
+pander::pander(sessionInfo())
+```
+</div>
