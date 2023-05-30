@@ -5,6 +5,9 @@
 #' @details
 #' Uses the information provided in the config file to update the navigation
 #' bar
+#'
+source(".Rprofile")
+#'
 library(tidyverse)
 library(yaml)
 library(glue)

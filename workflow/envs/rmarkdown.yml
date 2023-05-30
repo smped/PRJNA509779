@@ -15,6 +15,7 @@ dependencies:
   - r-pander=0.6
   - r-polychrome=1.5
   - r-reactable=0.4
+  - r-renv=0.17.3
   - r-rmarkdown=2.14
   - r-scales=1.2
   - r-tidyverse=2.0
