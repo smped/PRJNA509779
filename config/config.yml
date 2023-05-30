@@ -1,4 +1,4 @@
-samples: "config/PRJNA509779.tsv"
+samples: "config/samples.tsv"
 
 params:
   adapterremoval: 
@@ -12,7 +12,8 @@ params:
   markduplicates: "--REMOVE_DUPLICATES true"
   multiqc: ""
   samtools:
-    sort: "-m 4G"
+    sort: ""
+    view: "-q2"
     index: ""
 
 reference: 
