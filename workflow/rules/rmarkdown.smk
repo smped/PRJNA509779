@@ -1,3 +1,12 @@
+# def get_treats_from_target(wildcards):
+#     ind = df.target == wildcards.target
+#     samples = set(df[ind]['treatment'])
+#     bam = expand(
+#         os.path.join(dedup_path, "{f}.sorted.bam"),
+#         f = samples
+#     )
+#     return(bam)
+
 rule create_site_yaml:
 	input: 
 		config['samples']
@@ -75,4 +84,46 @@ rule compile_alignment_qc_html:
 		"""
 		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
 		"""		
-	
+
+rule create_macs2_summary:
+	input:
+		rmd = "analysis/_macs2_summary.Rmd"
+	output:
+		rmd = "analysis/{target}_macs2_summary.Rmd"
+	threads: 1
+	resources:
+		runtime = "1m"
+	shell:
+		"""
+		echo -e "---" >> {output.rmd}
+		echo -e "title: {wildcards.target}: MACS2 Summary" >> {output.rmd}
+		echo -e "date: \"`r format(SysDate(), '%d %B, %Y')`\"" >> {output.rmd}
+		echo -e "bibliography: references.bib"  >> {output.rmd}
+		echo -e "link-citations: true" >> {output.rmd}
+		echo -e "---\n\n" >> {output.rmd}
+		echo -e "```\{r set-target\}}"
+		echo -e "target <- {wildcards.target}"
+		echo -e "```\n"
+
+		cat {input.rmd} >> {output.rmd}
+		"""
+
+rule compile_macs2_summary:
+	input:
+		rmd = "analysis/{target}_macs2_summary.Rmd",
+		merged_peaks = lambda wildcards: expand(
+			os.path.join(macs2_path, "{{target}}", "{treat}_merged_{f}"),
+			f = ['callpeak.log', 'peaks.narrowPeak'],
+			treat = set(df[df.target == wildcards.target]['treatment'])
+		)
+	output:
+		html = "docs/{target}_macs2_summary.html"
+	threads: 1
+	conda: "../envs/rmarkdown.yml"
+	log: "workflow/logs/compile_{target}macs2_summary.log"
+	resources:
+		runtime = "20m"
+	shell:
+		"""
+		R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+		"""		
