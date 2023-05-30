@@ -14,3 +14,4 @@ logs
 .vscode
 .Rproj.user
 *Rproj
+.Rhistory
