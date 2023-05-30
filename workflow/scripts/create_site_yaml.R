@@ -63,7 +63,7 @@ if (!is.null(site_yaml$output_dir)) {
 site_yaml$navbar$left[[3]]$menu <- lapply(
   targets,
   function(x) {
-    list(text = x, href = glue("{str_to_lower(x)}_macs2_summary.html"))
+    list(text = x, href = glue("{x}_macs2_summary.html"))
   }
 )
 
