@@ -88,18 +88,18 @@ ALL_BIGWIG.extend(
 ## The HTML files
 ALL_HTML = expand(
 	os.path.join("docs", "{f}.html"),
-	f = ['index', 'raw_qc', 'trimmed_qc', 'align_qc']
+	f = ['index']#, 'raw_qc', 'trimmed_qc', 'align_qc']
 )
-ALL_HTML.extend(
-	expand(
-		os.path.join("docs", "{target}_macs2_summary.html"), target = targets
-	)
-)
+# ALL_HTML.extend(
+# 	expand(
+# 		os.path.join("docs", "{target}_macs2_summary.html"), target = targets
+# 	)
+# )
 
 ALL_OUTPUTS = []
 ALL_OUTPUTS.extend(ALL_QC)
 ALL_OUTPUTS.extend(ALL_BAM)
-ALL_OUTPUTS.extend(ALL_PEAKS)
+# ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
 ALL_OUTPUTS.extend(ALL_HTML)
 
