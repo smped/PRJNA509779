@@ -352,7 +352,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">prepareChIPs</a>
+      <a class="navbar-brand" href="index.html">PRJNA509779</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -370,7 +370,7 @@ div.tocify {
       <a href="raw_qc.html">Raw Data</a>
     </li>
     <li>
-      <a href="trim_qc.html">Trimmed Data</a>
+      <a href="trimmed_qc.html">Trimmed Data</a>
     </li>
     <li>
       <a href="align_qc.html">Alignments</a>
@@ -385,13 +385,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="ar_macs2_summary.html">AR</a>
-    </li>
-    <li>
-      <a href="era_macs2_summary.html">ERa</a>
-    </li>
-    <li>
-      <a href="h3k27ac_macs2_summary.html">H3K27ac</a>
+      <a href="ERa_macs2_summary.html">ERa</a>
     </li>
   </ul>
 </li>
@@ -421,7 +415,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Home</h1>
-<h4 class="date">29 May, 2023</h4>
+<h4 class="date">30 May, 2023</h4>
 
 </div>
 
@@ -481,8 +475,8 @@ rulegraph summarised below.</p>
   str_replace_all(&quot;snakemake\ndag&quot;, &quot;snakemakg_dag&quot;) %&gt;% 
   grViz()</code></pre>
 <div class="figure">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-795ccdc94505c9283af5" style="width:960px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-795ccdc94505c9283af5">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"0.33 0.6 0.85\", style=\"rounded\"];\n\t1[label = \"fastqc\", color = \"0.14 0.6 0.85\", style=\"rounded\"];\n\t2[label = \"get\nfastq\", color = \"0.19 0.6 0.85\", style=\"rounded\"];\n\t3[label = \"adapterremoval\", color = \"0.48 0.6 0.85\", style=\"rounded\"];\n\t4[label = \"multiqc\", color = \"0.05 0.6 0.85\", style=\"rounded\"];\n\t5[label = \"picard\nmarkduplicates\", color = \"0.38 0.6 0.85\", style=\"rounded\"];\n\t6[label = \"samtools\nsort\", color = \"0.10 0.6 0.85\", style=\"rounded\"];\n\t7[label = \"bowtie2\nalign\", color = \"0.24 0.6 0.85\", style=\"rounded\"];\n\t8[label = \"samtools\nindex\", color = \"0.43 0.6 0.85\", style=\"rounded\"];\n\t9[label = \"macs2\ncallpeak\", color = \"0.57 0.6 0.85\", style=\"rounded\"];\n\t10[label = \"macs2\ncall\npeak\nmerged\", color = \"0.00 0.6 0.85\", style=\"rounded\"];\n\t11[label = \"bedgraph\nto\nbigwig\", color = \"0.29 0.6 0.85\", style=\"rounded\", rankdir = LR];\n\t12[label = \"get\nchrom\nsizes\", color = \"0.62 0.6 0.85\", style=\"rounded\"];\n\t13[label = \"macs2\nbdgcmp\nmerged\", color = \"0.52 0.6 0.85\", style=\"rounded\"];\n\t4 -> 0\n\t1 -> 0\n\t11 -> 0\n\t5 -> 0\n\t8 -> 0\n\t9 -> 0\n\t10 -> 0\n\t2 -> 1\n\t3 -> 1\n\t2 -> 3\n\t1 -> 4\n\t6 -> 5\n\t7 -> 6\n\t3 -> 7\n\t5 -> 8\n\t8 -> 9\n\t5 -> 9\n\t8 -> 10\n\t5 -> 10\n\t10 -> 11\n\t13 -> 11\n\t9 -> 11\n\t12 -> 11\n\t10 -> 13\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ce33b3cd9eea88667c6e" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-ce33b3cd9eea88667c6e">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"0.30 0.6 0.85\", style=\"rounded\"];\n\t1[label = \"bedgraph\nto\nbigwig\", color = \"0.43 0.6 0.85\", style=\"rounded\", rankdir = LR];\n\t2[label = \"macs2\ncallpeak\", color = \"0.50 0.6 0.85\", style=\"rounded\"];\n\t3[label = \"picard\nmarkduplicates\", color = \"0.27 0.6 0.85\", style=\"rounded\"];\n\t4[label = \"samtools\nsort\", color = \"0.37 0.6 0.85\", style=\"rounded\"];\n\t5[label = \"bowtie2\nalign\", color = \"0.10 0.6 0.85\", style=\"rounded\"];\n\t6[label = \"adapterremoval\", color = \"0.23 0.6 0.85\", style=\"rounded\"];\n\t7[label = \"get\nfastq\", color = \"0.00 0.6 0.85\", style=\"rounded\"];\n\t8[label = \"samtools\nindex\", color = \"0.47 0.6 0.85\", style=\"rounded\"];\n\t9[label = \"get\nchrom\nsizes\", color = \"0.63 0.6 0.85\", style=\"rounded\"];\n\t10[label = \"macs2\ncallpeak\nmerged\", color = \"0.33 0.6 0.85\", style=\"rounded\"];\n\t11[label = \"macs2\nbdgcmp\nmerged\", color = \"0.13 0.6 0.85\", style=\"rounded\"];\n\t12[label = \"compile\nindex\nhtml\", color = \"0.17 0.6 0.85\", style=\"rounded\"];\n\t13[label = \"compile\nmacs2\nsummary\", color = \"0.53 0.6 0.85\", style=\"rounded\"];\n\t14[label = \"create\nmacs2\nsummary\", color = \"0.40 0.6 0.85\", style=\"rounded\"];\n\t15[label = \"create\nsite\nyaml\", color = \"0.20 0.6 0.85\", style=\"rounded\"];\n\t16[label = \"compile\nqc\nhtml\", color = \"0.60 0.6 0.85\", style=\"rounded\"];\n\t17[label = \"fastqc\", color = \"0.03 0.6 0.85\", style=\"rounded\"];\n\t18[label = \"multiqc\", color = \"0.07 0.6 0.85\", style=\"rounded\"];\n\t19[label = \"compile\nalignment\nqc\nhtml\", color = \"0.57 0.6 0.85\", style=\"rounded\"];\n\t12 -> 0\n\t1 -> 0\n\t10 -> 1\n\t11 -> 1\n\t2 -> 1\n\t9 -> 1\n\t3 -> 2\n\t8 -> 2\n\t4 -> 3\n\t5 -> 4\n\t6 -> 5\n\t7 -> 6\n\t3 -> 8\n\t3 -> 10\n\t8 -> 10\n\t10 -> 11\n\t19 -> 12\n\t16 -> 12\n\t15 -> 12\n\t13 -> 12\n\t2 -> 13\n\t14 -> 13\n\t10 -> 13\n\t15 -> 13\n\t9 -> 13\n\t17 -> 16\n\t15 -> 16\n\t18 -> 16\n\t7 -> 17\n\t6 -> 17\n\t17 -> 18\n\t5 -> 19\n\t3 -> 19\n\t15 -> 19\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 <em>Snakemake rulegraph for the prepareChIPs workflow</em>
 </p>
@@ -499,8 +493,8 @@ table</p>
     sortable = TRUE, filterable = TRUE, resizable = TRUE,
     showPageSizeOptions = TRUE
   )</code></pre>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-99e132740ddfe26ca3b3" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-99e132740ddfe26ca3b3">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315174","SRR8315175","SRR8315176","SRR8315177","SRR8315178","SRR8315179","SRR8315180","SRR8315181","SRR8315182","SRR8315183","SRR8315184","SRR8315185","SRR8315186","SRR8315187","SRR8315188","SRR8315189","SRR8315190","SRR8315191"],"Target":["AR","AR","AR","AR","AR","AR","ERa","ERa","ERa","ERa","ERa","ERa","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac"],"Treatment":["E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT"],"Input":["SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192"],"Cell Line":["ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1"],"Sample Name":["GSM3511082","GSM3511082","GSM3511082","GSM3511083","GSM3511083","GSM3511083","GSM3511084","GSM3511084","GSM3511084","GSM3511085","GSM3511085","GSM3511085","GSM3511086","GSM3511086","GSM3511086","GSM3511087","GSM3511087","GSM3511087"],"Experiment":["SRX5128130","SRX5128130","SRX5128130","SRX5128131","SRX5128131","SRX5128131","SRX5128132","SRX5128132","SRX5128132","SRX5128133","SRX5128133","SRX5128133","SRX5128134","SRX5128134","SRX5128134","SRX5128135","SRX5128135","SRX5128135"],"Source Name":["ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"},{"id":"Cell Line","name":"Cell Line","type":"character"},{"id":"Sample Name","name":"Sample Name","type":"character"},{"id":"Experiment","name":"Experiment","type":"character"},{"id":"Source Name","name":"Source Name","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"15a5dd100e375a221ed3f11cdf2da6ac"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-62e223765a48eaf525f9" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-62e223765a48eaf525f9">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315180","SRR8315181","SRR8315182"],"Target":["ERa","ERa","ERa"],"Treatment":["E2","E2","E2"],"Input":["SRR8315192","SRR8315192","SRR8315192"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"ce7bbde542fc636ebc9af672b8568ec4"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="workflow-parameters" class="section level2">
 <h2>Workflow Parameters</h2>
@@ -526,7 +520,8 @@ GRCh37</p>
 <li><p><strong>multiqc</strong>:</p></li>
 <li><p><strong>samtools</strong>:</p>
 <ul>
-<li><strong>sort</strong>: -m 4G</li>
+<li><strong>sort</strong>:</li>
+<li><strong>view</strong>: -q2</li>
 <li><strong>index</strong>:</li>
 </ul></li>
 </ul>
@@ -578,48 +573,101 @@ Session information </button>
 <em>LC_MESSAGES=en_AU.UTF-8</em>, <em>LC_PAPER=en_AU.UTF-8</em>,
 <em>LC_NAME=C</em>, <em>LC_ADDRESS=C</em>, <em>LC_TELEPHONE=C</em>,
 <em>LC_MEASUREMENT=en_AU.UTF-8</em> and <em>LC_IDENTIFICATION=C</em></p>
-<p><strong>attached base packages:</strong> <em>stats</em>,
-<em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
+<p><strong>attached base packages:</strong> <em>stats4</em>,
+<em>stats</em>, <em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
 <em>datasets</em>, <em>methods</em> and <em>base</em></p>
-<p><strong>other attached packages:</strong> <em>pander(v.0.6.5)</em>,
-<em>htmltools(v.0.5.5)</em>, <em>reactable(v.0.4.4)</em>,
-<em>here(v.1.0.1)</em>, <em>DiagrammeR(v.1.0.9)</em>,
-<em>magrittr(v.2.0.3)</em>, <em>glue(v.1.6.2)</em>,
-<em>yaml(v.2.3.7)</em>, <em>lubridate(v.1.9.2)</em>,
-<em>forcats(v.1.0.0)</em>, <em>stringr(v.1.5.0)</em>,
-<em>dplyr(v.1.1.2)</em>, <em>purrr(v.1.0.1)</em>,
-<em>readr(v.2.1.4)</em>, <em>tidyr(v.1.3.0)</em>,
-<em>tibble(v.3.2.1)</em>, <em>ggplot2(v.3.4.2)</em> and
-<em>tidyverse(v.2.0.0)</em></p>
+<p><strong>other attached packages:</strong>
+<em>reactable(v.0.4.4)</em>, <em>here(v.1.0.1)</em>,
+<em>DiagrammeR(v.1.0.9)</em>, <em>ggrepel(v.0.9.3)</em>,
+<em>extraChIPs(v.1.4.0)</em>, <em>SummarizedExperiment(v.1.30.1)</em>,
+<em>Biobase(v.2.60.0)</em>, <em>MatrixGenerics(v.1.12.0)</em>,
+<em>matrixStats(v.0.63.0)</em>, <em>ggside(v.0.2.2)</em>,
+<em>BiocParallel(v.1.34.1)</em>, <em>ComplexUpset(v.1.3.3)</em>,
+<em>ngsReports(v.2.2.2)</em>, <em>patchwork(v.1.1.2)</em>,
+<em>yaml(v.2.3.7)</em>, <em>plyranges(v.1.20.0)</em>,
+<em>scales(v.1.2.1)</em>, <em>pander(v.0.6.5)</em>,
+<em>glue(v.1.6.2)</em>, <em>rtracklayer(v.1.60.0)</em>,
+<em>GenomicRanges(v.1.52.0)</em>, <em>GenomeInfoDb(v.1.36.0)</em>,
+<em>IRanges(v.2.34.0)</em>, <em>S4Vectors(v.0.38.1)</em>,
+<em>BiocGenerics(v.0.46.0)</em>, <em>magrittr(v.2.0.3)</em>,
+<em>lubridate(v.1.9.2)</em>, <em>forcats(v.1.0.0)</em>,
+<em>stringr(v.1.5.0)</em>, <em>dplyr(v.1.1.2)</em>,
+<em>purrr(v.1.0.1)</em>, <em>readr(v.2.1.4)</em>,
+<em>tidyr(v.1.3.0)</em>, <em>tibble(v.3.2.1)</em>,
+<em>ggplot2(v.3.4.2)</em> and <em>tidyverse(v.2.0.0)</em></p>
 <p><strong>loaded via a namespace (and not attached):</strong>
-<em>gtable(v.0.3.3)</em>, <em>xfun(v.0.39)</em>,
-<em>bslib(v.0.4.2)</em>, <em>htmlwidgets(v.1.6.2)</em>,
-<em>visNetwork(v.2.1.2)</em>, <em>tzdb(v.0.3.0)</em>,
-<em>vctrs(v.0.6.2)</em>, <em>tools(v.4.3.0)</em>,
-<em>crosstalk(v.1.2.0)</em>, <em>generics(v.0.1.3)</em>,
-<em>parallel(v.4.3.0)</em>, <em>fansi(v.1.0.4)</em>,
-<em>highr(v.0.10)</em>, <em>pkgconfig(v.2.0.3)</em>,
-<em>RColorBrewer(v.1.1-3)</em>, <em>lifecycle(v.1.0.3)</em>,
-<em>git2r(v.0.32.0)</em>, <em>compiler(v.4.3.0)</em>,
-<em>munsell(v.0.5.0)</em>, <em>fontawesome(v.0.5.1)</em>,
-<em>httpuv(v.1.6.10)</em>, <em>sass(v.0.4.6)</em>,
-<em>pillar(v.1.9.0)</em>, <em>later(v.1.3.1)</em>,
-<em>crayon(v.1.5.2)</em>, <em>jquerylib(v.0.1.4)</em>,
-<em>ellipsis(v.0.3.2)</em>, <em>cachem(v.1.0.8)</em>,
-<em>tidyselect(v.1.2.0)</em>, <em>digest(v.0.6.31)</em>,
-<em>stringi(v.1.7.12)</em>, <em>rprojroot(v.2.0.3)</em>,
-<em>fastmap(v.1.1.1)</em>, <em>grid(v.4.3.0)</em>,
-<em>colorspace(v.2.1-0)</em>, <em>cli(v.3.6.1)</em>,
-<em>utf8(v.1.2.3)</em>, <em>withr(v.2.5.0)</em>,
-<em>reactR(v.0.4.4)</em>, <em>scales(v.1.2.1)</em>,
-<em>promises(v.1.2.0.1)</em>, <em>bit64(v.4.0.5)</em>,
-<em>timechange(v.0.2.0)</em>, <em>rmarkdown(v.2.21)</em>,
-<em>bit(v.4.0.5)</em>, <em>workflowr(v.1.7.0)</em>,
-<em>hms(v.1.1.3)</em>, <em>evaluate(v.0.21)</em>,
-<em>knitr(v.1.42)</em>, <em>rlang(v.1.1.1)</em>,
-<em>Rcpp(v.1.0.10)</em>, <em>rstudioapi(v.0.14)</em>,
-<em>vroom(v.1.6.3)</em>, <em>jsonlite(v.1.8.4)</em>,
-<em>R6(v.2.5.1)</em> and <em>fs(v.1.6.2)</em></p>
+<em>BiocIO(v.1.10.0)</em>, <em>bitops(v.1.0-7)</em>,
+<em>filelock(v.1.0.2)</em>, <em>polyclip(v.1.10-4)</em>,
+<em>XML(v.3.99-0.14)</em>, <em>rpart(v.4.1.19)</em>,
+<em>lifecycle(v.1.0.3)</em>, <em>edgeR(v.3.42.2)</em>,
+<em>doParallel(v.1.0.17)</em>, <em>rprojroot(v.2.0.3)</em>,
+<em>vroom(v.1.6.3)</em>, <em>lattice(v.0.21-8)</em>,
+<em>ensembldb(v.2.24.0)</em>, <em>MASS(v.7.3-60)</em>,
+<em>crosstalk(v.1.2.0)</em>, <em>backports(v.1.4.1)</em>,
+<em>sass(v.0.4.6)</em>, <em>limma(v.3.56.1)</em>,
+<em>Hmisc(v.5.1-0)</em>, <em>plotly(v.4.10.1)</em>,
+<em>rmarkdown(v.2.21)</em>, <em>jquerylib(v.0.1.4)</em>,
+<em>metapod(v.1.8.0)</em>, <em>Gviz(v.1.44.0)</em>,
+<em>DBI(v.1.1.3)</em>, <em>RColorBrewer(v.1.1-3)</em>,
+<em>zlibbioc(v.1.46.0)</em>, <em>AnnotationFilter(v.1.24.0)</em>,
+<em>biovizBase(v.1.48.0)</em>, <em>RCurl(v.1.98-1.12)</em>,
+<em>nnet(v.7.3-18)</em>, <em>tweenr(v.2.0.2)</em>,
+<em>VariantAnnotation(v.1.46.0)</em>, <em>rappdirs(v.0.3.3)</em>,
+<em>circlize(v.0.4.15)</em>, <em>GenomeInfoDbData(v.1.2.10)</em>,
+<em>codetools(v.0.2-19)</em>, <em>DelayedArray(v.0.26.2)</em>,
+<em>DT(v.0.27)</em>, <em>xml2(v.1.3.4)</em>, <em>ggforce(v.0.4.1)</em>,
+<em>tidyselect(v.1.2.0)</em>, <em>shape(v.1.4.6)</em>,
+<em>futile.logger(v.1.4.3)</em>, <em>farver(v.2.1.1)</em>,
+<em>BiocFileCache(v.2.8.0)</em>, <em>base64enc(v.0.1-3)</em>,
+<em>GenomicAlignments(v.1.36.0)</em>, <em>jsonlite(v.1.8.4)</em>,
+<em>GetoptLong(v.1.0.5)</em>, <em>ellipsis(v.0.3.2)</em>,
+<em>Formula(v.1.2-5)</em>, <em>iterators(v.1.0.14)</em>,
+<em>foreach(v.1.5.2)</em>, <em>tools(v.4.3.0)</em>,
+<em>progress(v.1.2.2)</em>, <em>Rcpp(v.1.0.10)</em>,
+<em>gridExtra(v.2.3)</em>, <em>xfun(v.0.39)</em>,
+<em>withr(v.2.5.0)</em>, <em>formatR(v.1.14)</em>,
+<em>fastmap(v.1.1.1)</em>, <em>latticeExtra(v.0.6-30)</em>,
+<em>fansi(v.1.0.4)</em>, <em>digest(v.0.6.31)</em>,
+<em>timechange(v.0.2.0)</em>, <em>R6(v.2.5.1)</em>,
+<em>colorspace(v.2.1-0)</em>, <em>jpeg(v.0.1-10)</em>,
+<em>dichromat(v.2.0-0.1)</em>, <em>biomaRt(v.2.56.0)</em>,
+<em>RSQLite(v.2.3.1)</em>, <em>utf8(v.1.2.3)</em>,
+<em>generics(v.0.1.3)</em>, <em>data.table(v.1.14.8)</em>,
+<em>prettyunits(v.1.1.1)</em>, <em>InteractionSet(v.1.28.0)</em>,
+<em>httr(v.1.4.6)</em>, <em>htmlwidgets(v.1.6.2)</em>,
+<em>S4Arrays(v.1.0.1)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>gtable(v.0.3.3)</em>, <em>blob(v.1.2.4)</em>,
+<em>ComplexHeatmap(v.2.16.0)</em>, <em>XVector(v.0.40.0)</em>,
+<em>htmltools(v.0.5.5)</em>, <em>ProtGenerics(v.1.32.0)</em>,
+<em>clue(v.0.3-64)</em>, <em>png(v.0.1-8)</em>,
+<em>ggdendro(v.0.1.23)</em>, <em>knitr(v.1.42)</em>,
+<em>lambda.r(v.1.2.4)</em>, <em>rstudioapi(v.0.14)</em>,
+<em>tzdb(v.0.3.0)</em>, <em>rjson(v.0.2.21)</em>,
+<em>visNetwork(v.2.1.2)</em>, <em>checkmate(v.2.2.0)</em>,
+<em>curl(v.5.0.0)</em>, <em>cachem(v.1.0.8)</em>,
+<em>zoo(v.1.8-12)</em>, <em>GlobalOptions(v.0.1.2)</em>,
+<em>parallel(v.4.3.0)</em>, <em>foreign(v.0.8-84)</em>,
+<em>AnnotationDbi(v.1.62.1)</em>, <em>restfulr(v.0.0.15)</em>,
+<em>pillar(v.1.9.0)</em>, <em>grid(v.4.3.0)</em>,
+<em>vctrs(v.0.6.2)</em>, <em>dbplyr(v.2.3.2)</em>,
+<em>cluster(v.2.1.4)</em>, <em>htmlTable(v.2.4.1)</em>,
+<em>evaluate(v.0.21)</em>, <em>VennDiagram(v.1.7.3)</em>,
+<em>EnrichedHeatmap(v.1.30.0)</em>, <em>GenomicFeatures(v.1.52.0)</em>,
+<em>cli(v.3.6.1)</em>, <em>locfit(v.1.5-9.7)</em>,
+<em>compiler(v.4.3.0)</em>, <em>futile.options(v.1.0.1)</em>,
+<em>Rsamtools(v.2.16.0)</em>, <em>rlang(v.1.1.1)</em>,
+<em>crayon(v.1.5.2)</em>, <em>labeling(v.0.4.2)</em>,
+<em>reactR(v.0.4.4)</em>, <em>interp(v.1.1-4)</em>,
+<em>stringi(v.1.7.12)</em>, <em>viridisLite(v.0.4.2)</em>,
+<em>deldir(v.1.0-6)</em>, <em>munsell(v.0.5.0)</em>,
+<em>Biostrings(v.2.68.0)</em>, <em>lazyeval(v.0.2.2)</em>,
+<em>csaw(v.1.34.0)</em>, <em>Matrix(v.1.5-4)</em>,
+<em>BSgenome(v.1.68.0)</em>, <em>hms(v.1.1.3)</em>,
+<em>bit64(v.4.0.5)</em>, <em>KEGGREST(v.1.40.0)</em>,
+<em>fontawesome(v.0.5.1)</em>, <em>igraph(v.1.4.2)</em>,
+<em>broom(v.1.0.4)</em>, <em>memoise(v.2.0.1)</em>,
+<em>bslib(v.0.4.2)</em>, <em>bit(v.4.0.5)</em> and
+<em>GenomicInteractions(v.1.34.0)</em></p>
 </div>
 </div>
 
