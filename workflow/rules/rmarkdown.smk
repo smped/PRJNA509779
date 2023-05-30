@@ -100,10 +100,10 @@ rule create_macs2_summary:
 		echo -e "date: \"`r format(SysDate(), '%d %B, %Y')`\"" >> {output.rmd}
 		echo -e "bibliography: references.bib"  >> {output.rmd}
 		echo -e "link-citations: true" >> {output.rmd}
-		echo -e "---\n\n" >> {output.rmd}
-		echo -e "```\{r set-target\}}"
+		echo -e "---\\n\\n" >> {output.rmd}
+		echo -e "```{{r set-target}}"
 		echo -e "target <- {wildcards.target}"
-		echo -e "```\n"
+		echo -e "```\\n"
 
 		cat {input.rmd} >> {output.rmd}
 		"""
@@ -111,16 +111,22 @@ rule create_macs2_summary:
 rule compile_macs2_summary:
 	input:
 		rmd = "analysis/{target}_macs2_summary.Rmd",
-		merged_peaks = lambda wildcards: expand(
+		merged = lambda wildcards: expand(
 			os.path.join(macs2_path, "{{target}}", "{treat}_merged_{f}"),
 			f = ['callpeak.log', 'peaks.narrowPeak'],
 			treat = set(df[df.target == wildcards.target]['treatment'])
-		)
+		),
+		individual = lambda wildcards: expand(
+			os.path.join(macs2_path, "{accession}", "{accession}_{f}"),
+			f = ['callpeak.log', 'peaks.narrowPeak'],
+			accession = set(df[df.target == wildcards.target]['accession'])
+		),
+		yml = "analysis/_site.yml"
 	output:
 		html = "docs/{target}_macs2_summary.html"
 	threads: 1
 	conda: "../envs/rmarkdown.yml"
-	log: "workflow/logs/compile_{target}macs2_summary.log"
+	log: "workflow/logs/compile_{target}_macs2_summary.log"
 	resources:
 		runtime = "20m"
 	shell:

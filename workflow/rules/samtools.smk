@@ -19,12 +19,17 @@ rule samtools_sort:
     shell:
         """
         TEMPDIR=$(mktemp -d -t samXXXXXXXXXX)
+        echo -e "Writing to $TEMPDIR" >>{log}
+
         samtools view {params.view} {input} |\
             samtools sort {params.sort} \
                 -@ {threads} -m 4G \
                 -T $TEMPDIR \
                 -O BAM \
-                -o {output} 2> {log}
+                -o {output} 2>> {log}
+
+        echo -e "Deleting $TEMPDIR" >> {log}
+        rm -rf $TEMPDIR
         """
 
 rule samtools_index:
