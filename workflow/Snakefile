@@ -52,11 +52,10 @@ ALL_BAM = expand(
 	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
-# ALL_QC = expand(
-# 	os.path.join(qc_path, "{step}", "{f}_fastqc{suffix}"),
-# 	step = ['raw', 'trimmed'], f = accessions, suffix = ['.html', '.zip']
-# )
-ALL_QC = []
+ALL_QC = expand(
+	os.path.join(qc_path, "{step}", "{f}_fastqc{suffix}"),
+	step = ['raw', 'trimmed'], f = accessions, suffix = ['.html', '.zip']
+)
 ALL_QC.extend(
 	expand(
 		os.path.join(qc_path, "{step}", "multiqc.html"), 
@@ -98,7 +97,7 @@ ALL_HTML = expand(
 # )
 
 ALL_OUTPUTS = []
-ALL_OUTPUTS.extend(ALL_QC)
+# ALL_OUTPUTS.extend(ALL_QC)
 # ALL_OUTPUTS.extend(ALL_BAM)
 # ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
