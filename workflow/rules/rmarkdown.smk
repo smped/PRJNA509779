@@ -1,12 +1,3 @@
-# def get_treats_from_target(wildcards):
-#     ind = df.target == wildcards.target
-#     samples = set(df[ind]['treatment'])
-#     bam = expand(
-#         os.path.join(dedup_path, "{f}.sorted.bam"),
-#         f = samples
-#     )
-#     return(bam)
-
 rule create_site_yaml:
 	input: 
 		config['samples']
@@ -22,6 +13,10 @@ rule create_site_yaml:
 
 rule compile_index_html:
 	input:
+		macs2_html = expand(
+			"docs/{target}_macs2_summary.html", target = targets
+		),
+		qc_html = expand("docs/{f}_qc.html", f = ['raw', 'trimmed', 'align']),
 		references = "analysis/references.bib",
 		rmd = "analysis/index.Rmd",
 		samples = config['samples'],
@@ -110,6 +105,7 @@ rule create_macs2_summary:
 
 rule compile_macs2_summary:
 	input:
+		chrom_sizes = chrom_sizes,
 		rmd = "analysis/{target}_macs2_summary.Rmd",
 		merged = lambda wildcards: expand(
 			os.path.join(macs2_path, "{{target}}", "{treat}_merged_{f}"),
