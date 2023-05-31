@@ -1,3 +1,11 @@
+---
+title: ERa: MACS2 Summary
+date: 
+bibliography: references.bib
+link-citations: true
+---
+
+
 ```{r example, echo = FALSE, eval = FALSE}
 ## This module requires the following to be set during preparation
 # target <- "ERa"

@@ -21,7 +21,7 @@ rule samtools_sort:
         TEMPDIR=$(mktemp -d -t samXXXXXXXXXX)
         echo -e "Writing to $TEMPDIR" >>{log}
 
-        samtools view {params.view} {input} |\
+        samtools view -h {params.view} {input} |\
             samtools sort {params.sort} \
                 -@ {threads} -m 4G \
                 -T $TEMPDIR \

@@ -6,7 +6,6 @@ link-citations: true
 ---
 
 ```{r setup}
-source(here::here("renv/activate.R"))
 knitr::opts_chunk$set(
   message = FALSE, warning = FALSE,
   fig.height = 8, fig.width = 10, fig.align = 'center'

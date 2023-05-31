@@ -4,7 +4,7 @@ rule create_site_yaml:
 	output: 
 		"analysis/_site.yml"
 	threads: 1
-	log: "workflow/logs/create_site_yaml.log"
+	log: "workflow/logs/rmd/create_site_yaml.log"
 	conda: "../envs/rmarkdown.yml"
 	resources:
 		runtime = "5m"
@@ -26,7 +26,7 @@ rule compile_index_html:
 		html = "docs/index.html"
 	threads: 1
 	conda: "../envs/rmarkdown.yml"
-	log: "workflow/logs/compile_index_html"
+	log: "workflow/logs/rmd/compile_index_html.log"
 	resources:
 		runtime = "10m"
 	shell:
@@ -49,7 +49,7 @@ rule compile_qc_html:
 		html = "docs/{step}_qc.html"
 	threads: 1
 	conda: "../envs/rmarkdown.yml"
-	log: "workflow/logs/compile_{step}_qc_ html"
+	log: "workflow/logs/rmd/compile_{step}_qc_html.log"
 	resources:
 		runtime = "10m"
 	shell:
@@ -73,7 +73,7 @@ rule compile_alignment_qc_html:
 	output:
 		html = "docs/align_qc.html"
 	conda: "../envs/rmarkdown.yml"
-	log: "workflow/logs/compile_align_qc_ html"
+	log: "workflow/logs/rmd/compile_align_qc_html.log"
 	resources:
 		runtime = "5m"
 	shell:
@@ -123,7 +123,7 @@ rule compile_macs2_summary:
 		html = "docs/{target}_macs2_summary.html"
 	threads: 1
 	conda: "../envs/rmarkdown.yml"
-	log: "workflow/logs/compile_{target}_macs2_summary.log"
+	log: "workflow/logs/rmd/compile_{target}_macs2_summary.log"
 	resources:
 		runtime = "20m"
 	shell:
