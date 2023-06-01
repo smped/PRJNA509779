@@ -34,6 +34,68 @@ myTheme <- theme(
     plot.title = element_text(hjust = 0.5),
     text = element_text(size = 13)
   )
+## This manages a bug which exists in Bioc 3.16 but is fixed in ngsReports 2.2.3
+.parseLogs <- function(data, which = 1){
+  {
+    if (is.character(which)) 
+        which <- match.arg(which, c("metrics", "histogram", "all"))
+    if (is.numeric(which)) 
+        stopifnot(which %in% c(1, 2))
+    metrics <- lapply(data, function(x) {
+        cmd <- stringr::str_subset(x, "(INPUT|input)")
+        ip <- stringr::str_replace_all(cmd, ".+(input|INPUT)([ =]*)([^ ]+.bam).+", 
+            "\\3")
+        ip <- str_replace_all(ip, "[\\[\\]]", "")
+        metHeader <- grep("METRICS CLASS\t.+.DuplicationMetrics", 
+            x)
+        df <- ngsReports:::.splitByTab(x[seq(metHeader + 1, by = 1, length.out = 2)])
+        df$LIBRARY <- ip
+        df
+    })
+    metrics <- dplyr::bind_rows(metrics)
+    metrics$PERCENT_DUPLICATION <- as.numeric(metrics$PERCENT_DUPLICATION)
+    intCols <- setdiff(colnames(metrics), c("LIBRARY", "PERCENT_DUPLICATION"))
+    metrics[intCols] <- lapply(metrics[intCols], as.integer)
+    metrics <- as_tibble(metrics)
+    histData <- lapply(data, function(x) {
+        cmd <- stringr::str_subset(x, "(INPUT|input)")
+        ip <- stringr::str_replace_all(cmd, ".+(input|INPUT)([ =]*)([^ ]+.bam).+", 
+            "\\3")
+        ip <- str_replace_all(ip, "[\\[\\]]", "")
+        histHeader <- grep("HISTOGRAM\tjava.lang.Double", x)
+        df <- NULL
+        if (length(histHeader)) {
+            x <- x[-seq_len(histHeader)]
+            x <- x[!grepl("^$", x)]
+            df <- ngsReports:::.splitByTab(x)
+            df$LIBRARY <- ip
+            df <- dplyr::select(df, "LIBRARY", everything())
+        }
+        df
+    })
+    histData <- dplyr::bind_rows(histData)
+    if (ncol(histData)) {
+        histData <- lapply(histData, function(x) {
+            any_na <- any(is.na(suppressWarnings(as.numeric(x))))
+            if (!any_na) 
+                x <- as.numeric(x)
+            x
+        })
+        histData$BIN <- as.integer(histData$BIN)
+        histData <- as_tibble(histData)
+    }
+    out <- list(metrics = metrics, histogram = histData)
+    out <- lapply(out, function(x) {
+        colnames(x) <- stringr::str_replace_all(colnames(x), 
+            "_", " ")
+        colnames(x) <- stringr::str_to_title(colnames(x))
+        x
+    })
+    if (which != "all") 
+        out <- out[[which]]
+    out
+  }
+}
 ```
 
 ```{r load-data}
@@ -48,8 +110,6 @@ bwt2_logs <- here::here("output", "bowtie2", glue("{samples$accession}.log")) %>
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
   importNgsLogs() 
-## This manages a bug which exists in Bioc 3.16 but is fixed in ngsReports 2.2.3
-.parseLogs <- ngsReports:::.parseDuplicationMetricsLogs
 duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metrics.txt")) %>%
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
