@@ -5,7 +5,7 @@ bibliography: references.bib
 link-citations: true
 ---
 
-```{r setup}
+```{r setup, echo = FALSE}
 conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
 if (conda_pre != "") {
   conda_lib_path <- file.path(conda_pre, "lib", "R", "library")

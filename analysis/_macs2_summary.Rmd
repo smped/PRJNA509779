@@ -1,7 +1,7 @@
 
-```{r setup}
+```{r setup, echo = FALSE}
 conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
-if (conda_pre != ""){
+if (conda_pre != "") {
   conda_lib_path <- file.path(conda_pre, "lib", "R", "library")
   if (!dir.exists(conda_lib_path)) conda_lib_path <- NULL
   prev_paths <- .libPaths()
