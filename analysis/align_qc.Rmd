@@ -46,14 +46,19 @@ samples <- read_tsv(here::here(config$samples)) %>%
   )
 bwt2_logs <- here::here("output", "bowtie2", glue("{samples$accession}.log")) %>% 
   setNames(samples$accession) %>% 
-  .[file.exists(.)] 
+  .[file.exists(.)] %>% 
+  importNgsLogs() 
 ## This manages a bug which exists in Bioc 3.16 but is fixed in ngsReports 2.2.3
 .parseLogs <- ngsReports:::.parseDuplicationMetricsLogs
 duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metrics.txt")) %>%
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
   sapply(readLines, simplify = FALSE) %>% 
-  .parseLogs()
+  .parseLogs() %>% 
+  mutate(
+    Filename = gsub(".sorted.+", "", basename(Library))
+  ) %>% 
+  dplyr::select(Filename, everything())
 ```
 
 ## Introduction
@@ -66,7 +71,6 @@ Single-end alignments were performed using `bowtie2` [@Langmead2012-qc] before b
 
 ```{r plot-aln-summary, eval = length(bwt2_logs) > 0}
 bwt2_logs %>% 
-  importNgsLogs() %>% 
   mutate(Filename = str_remove_all(Filename, ".log")) %>% 
   dplyr::select(Filename, Unique_Unpaired, Multiple_Unpaired, Not_Aligned) %>% 
   pivot_longer(cols = contains("_"), names_to = "Status", values_to = "Reads") %>% 
@@ -84,7 +88,7 @@ bwt2_logs %>%
   geom_col() +
   geom_label(
     aes(Filename, y, label = percent(p, 0.1)),
-    data = . %>% dplyr::filter(p > 0.01),
+    data = . %>% dplyr::filter(p > 0.05),
     fill = "white", alpha = 0.6, show.legend = FALSE
   ) +
   scale_y_continuous(
@@ -112,11 +116,8 @@ div(
   ),
   duplogs %>% 
     dplyr::select(
-      Filename = Library, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
+      Filename, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
       Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
-    ) %>% 
-    mutate(
-      Filename = str_remove_all(basename(Filename), ".sorted.bam")
     ) %>% 
     left_join(samples, by = c("Filename" = "accession")) %>% 
     dplyr::select(-input) %>% 
