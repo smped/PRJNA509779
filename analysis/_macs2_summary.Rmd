@@ -1,8 +1,3 @@
-```{r example, echo = FALSE, eval = FALSE}
-## This module requires the following to be set during preparation
-# target <- "ERa"
-# threads <- 6
-```
 
 ```{r setup}
 conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
@@ -54,6 +49,7 @@ annotation_path <- here::here("output", "annotations")
 ```
 
 ```{r read-samples}
+target <- params$target
 samples <- read_tsv(here::here(config$samples))
 samples <- samples[samples$target == target,]
 stopifnot(nrow(samples) > 0)

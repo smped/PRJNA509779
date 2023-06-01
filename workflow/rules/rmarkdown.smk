@@ -91,15 +91,7 @@ rule create_macs2_summary:
 		runtime = "1m"
 	shell:
 		"""
-		echo -e "---" >> {output.rmd}
-		echo -e "title: '{wildcards.target}: MACS2 Summary'" >> {output.rmd}
-		echo -e "date: \"`r format(SysDate(), '%d %B, %Y')`\"" >> {output.rmd}
-		echo -e "bibliography: references.bib"  >> {output.rmd}
-		echo -e "link-citations: true" >> {output.rmd}
-		echo -e "---\\n\\n" >> {output.rmd}
-		echo -e "```{{r set-target}}"
-		echo -e "target <- {wildcards.target}"
-		echo -e "```\\n"
+		echo -e "---\ntitle: '{wildcards.target}: MACS2 Summary'\ndate: \"\`r format(Sys.Date(), '%d %B, %Y')\`\"\nbibliography: references.bib\nlink-citations: true\nparams:\n  target: \"{wildcards.target}\"\n---\n\n" > {output.rmd}
 
 		cat {input.rmd} >> {output.rmd}
 		"""
