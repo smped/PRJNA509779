@@ -37,10 +37,10 @@ rule compile_index_html:
 rule compile_qc_html:
 	input:
 		fqc = expand(
-			os.path.join("output", "qc", "{{step}}", "{f}_fastqc.{suffix}"),
+			os.path.join(qc_path, "{{step}}", "{f}_fastqc.{suffix}"),
 			f = accessions, suffix = ['zip', 'html']
 		),
-		multiqc = os.path.join("output", "qc", "{step}", "multiqc.html"),
+		multiqc = os.path.join(qc_path, "{step}", "multiqc.html"),
 		references = "analysis/references.bib",
 		rmd = "analysis/{step}_qc.Rmd",
 		site = "analysis/_site.yml",

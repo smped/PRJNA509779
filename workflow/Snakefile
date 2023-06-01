@@ -35,16 +35,34 @@ wildcard_constraints:
 	treat =  "(" + '|'.join(treats) + ")",
 
 ## Define key paths
-fq_path = "data/fastq"
+def check_path(x):
+	if not os.path.exists(x):
+		os.makedirs(x)
+	assert (os.access(x, os.W_OK)), x + " is not writeable"
+
+	
+fq_path = config['paths']['fastq']
+check_path(fq_path)
+
+aln_path = config['paths']['aligned']
+check_path(aln_path)
+
+dedup_path = config['paths']['deduplicated']
+check_path(dedup_path)
+
+qc_path = config['paths']['qc']
+check_path(qc_path)
+
+macs2_path = config['paths']['macs2']
+check_path(macs2_path)
+
+ref_path = config['reference']['path']
+assert(os.path.exists(ref_path)), ref_path + " not found"
+
+# All subsequent paths
 raw_path = os.path.join(fq_path, "raw")
 trim_path = os.path.join(fq_path, "trimmed")
-aln_path = "data/aligned"
-dedup_path = "data/deduplicated"
-qc_path = "output/qc"
-macs2_path = "output/macs2"
-ref_pre = os.path.join(
-	config['reference']['path'], config['reference']['index']
-)
+ref_pre = os.path.join(ref_path, config['reference']['index'])
 
 # Define se fastq output only
 ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
