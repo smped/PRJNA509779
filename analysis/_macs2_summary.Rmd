@@ -46,6 +46,11 @@ theme_set(
 config <- read_yaml(here::here("config", "config.yml"))
 macs2_path <- here::here(config$paths$macs2)
 annotation_path <- here::here("output", "annotations")
+macs2_cutoff <- config$params$macs2$callpeak %>% 
+  str_extract("-[pq] [0-9\\.]+") %>% 
+  str_remove_all("-") %>% 
+  str_replace_all(" ", " < ")
+if (is.na(macs2_cutoff)) macs2_cutoff <- "q < 0.05"
 ```
 
 ```{r read-samples}
@@ -125,8 +130,8 @@ macs2_logs %>%
     justify = "lllrrrr",
     caption = glue(
       "*Summary of results for `macs2 callpeak` on individual {target} samples.",
-      "Total peaks indicates the number retained after applying the specified FDR ", 
-      "threshold during the peak calling process.",
+      "Total peaks indicates the number retained after applying the cutoff ", 
+      "{macs2_cutoff} during the peak calling process.",
       "The fragment length as estimated by `macs2 predictd` is given in the final column.*",
       .sep = " "
     )

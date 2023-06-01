@@ -119,6 +119,15 @@ duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metr
     Filename = gsub(".sorted.+", "", basename(Library))
   ) %>% 
   dplyr::select(Filename, everything())
+qc_path <- here::here(config$paths$qc, "raw")
+fl <- file.path(qc_path, glue("{samples$accession}_fastqc.zip")) %>% 
+  setNames(samples$accession)
+rawFqc <- FastqcDataList(fl[file.exists(fl)])
+names(rawFqc) <- names(fl)[file.exists(fl)]
+samples <- readTotals(rawFqc) %>% 
+  mutate(accession = str_remove_all(Filename, ".fastq.gz")) %>% 
+  dplyr::select(accession, Total_Sequences) %>% 
+  right_join(samples, by = "accession")
 ```
 
 ## Introduction
@@ -169,28 +178,45 @@ div(
     class = "table-header",
     htmltools::tags$caption(
       htmltools::em(
-        "Library sizes with links to all FastQC reports generated after
-        processing with AdapterRemoval"
+        "Alignment and de-duplication summary, with the number of reads in the 
+        initial fastq files compared to the total number of retained alignments 
+        after de-duplication."
       )
     )
   ),
   duplogs %>% 
     dplyr::select(
-      Filename, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
+      Filename, Alignments = `Unpaired Reads Examined` , 
       Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
     ) %>% 
     left_join(samples, by = c("Filename" = "accession")) %>% 
     dplyr::select(-input) %>% 
+    mutate(
+      Alignments = Alignments - Duplicates,
+      `% Retained` = Alignments / Total_Sequences,
+      Discarded = Total_Sequences - Alignments - Duplicates
+    ) %>% 
+    dplyr::select(
+      Filename, Total_Sequences, Alignments, Discarded, Duplicates, `% Retained`, 
+      everything()
+    ) %>% 
     setNames(str_replace_all(names(.), "_", " ")) %>% 
     setNames(str_to_title(names(.))) %>% 
     reactable(
       sortable = TRUE, filterable = TRUE, resizable = TRUE,
       showPageSizeOptions = TRUE,
       columns = list(
-        Reads = colDef(format = colFormat(separators = TRUE)),
-        `Unmapped Reads` = colDef(format = colFormat(separators = TRUE)),
+        `Total Sequences` = colDef(
+          name = "Raw Reads", format = colFormat(separators = TRUE)
+        ),
+        Discarded = colDef(format = colFormat(separators = TRUE)),
+        Alignments = colDef(format = colFormat(separators = TRUE)),
+        `% Retained` = colDef(format = colFormat(percent = TRUE, digits = 2)),
         Duplicates = colDef(format = colFormat(separators = TRUE)),
-        `Percent Duplication` = colDef(format = colFormat(percent = TRUE, digits = 2))
+        `Percent Duplication` = colDef(
+          name = "% Duplication",
+          format = colFormat(percent = TRUE, digits = 2)
+        )
       )
     )
 )

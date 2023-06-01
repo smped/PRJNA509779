@@ -13,7 +13,7 @@
 
 <title>QC: Aligned Data</title>
 
-<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -417,18 +417,6 @@ div.tocify {
 </div>
 
 
-<pre class="r"><code>conda_pre &lt;- system2(&quot;echo&quot;, &quot;$CONDA_PREFIX&quot;, stdout = TRUE)
-if (conda_pre != &quot;&quot;) {
-  conda_lib_path &lt;- file.path(conda_pre, &quot;lib&quot;, &quot;R&quot;, &quot;library&quot;)
-  if (!dir.exists(conda_lib_path)) conda_lib_path &lt;- NULL
-  prev_paths &lt;- .libPaths()
-  paths_to_set &lt;- unique(c(conda_lib_path, prev_paths))
-  .libPaths(paths_to_set)
-}
-knitr::opts_chunk$set(
-  message = FALSE, warning = FALSE,
-  fig.height = 8, fig.width = 10, fig.align = &#39;center&#39;
-)</code></pre>
 <pre class="r"><code>library(tidyverse)
 library(glue)
 library(yaml)
@@ -523,7 +511,16 @@ duplogs &lt;- here::here(&quot;output&quot;, &quot;markDuplicates&quot;, glue(&q
   mutate(
     Filename = gsub(&quot;.sorted.+&quot;, &quot;&quot;, basename(Library))
   ) %&gt;% 
-  dplyr::select(Filename, everything())</code></pre>
+  dplyr::select(Filename, everything())
+qc_path &lt;- here::here(config$paths$qc, &quot;raw&quot;)
+fl &lt;- file.path(qc_path, glue(&quot;{samples$accession}_fastqc.zip&quot;)) %&gt;% 
+  setNames(samples$accession)
+rawFqc &lt;- FastqcDataList(fl[file.exists(fl)])
+names(rawFqc) &lt;- names(fl)[file.exists(fl)]
+samples &lt;- readTotals(rawFqc) %&gt;% 
+  mutate(accession = str_remove_all(Filename, &quot;.fastq.gz&quot;)) %&gt;% 
+  dplyr::select(accession, Total_Sequences) %&gt;% 
+  right_join(samples, by = &quot;accession&quot;)</code></pre>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>This final QC worksheet summarises the alignments and de-duplication
@@ -574,40 +571,58 @@ class="uri">https://broadinstitute.github.io/picard</a>)</p>
     class = &quot;table-header&quot;,
     htmltools::tags$caption(
       htmltools::em(
-        &quot;Library sizes with links to all FastQC reports generated after
-        processing with AdapterRemoval&quot;
+        &quot;Alignment and de-duplication summary, with the number of reads in the 
+        initial fastq files compared to the total number of retained alignments 
+        after de-duplication.&quot;
       )
     )
   ),
   duplogs %&gt;% 
     dplyr::select(
-      Filename, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
+      Filename, Alignments = `Unpaired Reads Examined` , 
       Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
     ) %&gt;% 
     left_join(samples, by = c(&quot;Filename&quot; = &quot;accession&quot;)) %&gt;% 
     dplyr::select(-input) %&gt;% 
+    mutate(
+      Alignments = Alignments - Duplicates,
+      `% Retained` = Alignments / Total_Sequences,
+      Discarded = Total_Sequences - Alignments - Duplicates
+    ) %&gt;% 
+    dplyr::select(
+      Filename, Total_Sequences, Alignments, Discarded, Duplicates, `% Retained`, 
+      everything()
+    ) %&gt;% 
     setNames(str_replace_all(names(.), &quot;_&quot;, &quot; &quot;)) %&gt;% 
     setNames(str_to_title(names(.))) %&gt;% 
     reactable(
       sortable = TRUE, filterable = TRUE, resizable = TRUE,
       showPageSizeOptions = TRUE,
       columns = list(
-        Reads = colDef(format = colFormat(separators = TRUE)),
-        `Unmapped Reads` = colDef(format = colFormat(separators = TRUE)),
+        `Total Sequences` = colDef(
+          name = &quot;Raw Reads&quot;, format = colFormat(separators = TRUE)
+        ),
+        Discarded = colDef(format = colFormat(separators = TRUE)),
+        Alignments = colDef(format = colFormat(separators = TRUE)),
+        `% Retained` = colDef(format = colFormat(percent = TRUE, digits = 2)),
         Duplicates = colDef(format = colFormat(separators = TRUE)),
-        `Percent Duplication` = colDef(format = colFormat(percent = TRUE, digits = 2))
+        `Percent Duplication` = colDef(
+          name = &quot;% Duplication&quot;,
+          format = colFormat(percent = TRUE, digits = 2)
+        )
       )
     )
 )</code></pre>
 <div class="table">
 <div class="table-header">
 <caption>
-<em>Library sizes with links to all FastQC reports generated after
-        processing with AdapterRemoval</em>
+<em>Alignment and de-duplication summary, with the number of reads in the 
+        initial fastq files compared to the total number of retained alignments 
+        after de-duplication.</em>
 </caption>
 </div>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-95c6ee10d39a8652eea1" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-95c6ee10d39a8652eea1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Filename":["SRR8315180","SRR8315181","SRR8315182","SRR8315192"],"Reads":[17197436,18473357,18640928,20094729],"Unmapped Reads":[0,0,0,0],"Duplicates":[823928,891486,999891,784868],"Percent Duplication":[0.04791,0.048258,0.05364,0.039058],"Target":["ERa","ERa","ERa","Input"],"Treatment":["E2","E2","E2",null]},"columns":[{"id":"Filename","name":"Filename","type":"character"},{"id":"Reads","name":"Reads","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Unmapped Reads","name":"Unmapped Reads","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Duplicates","name":"Duplicates","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Percent Duplication","name":"Percent Duplication","type":"numeric","format":{"cell":{"digits":2,"percent":true},"aggregated":{"digits":2,"percent":true}}},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"9c61fde728519b98ad248279caf861ff"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3c1bc8911e43e66c5b53" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-3c1bc8911e43e66c5b53">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Filename":["SRR8315180","SRR8315181","SRR8315182","SRR8315192"],"Total Sequences":[19871195,21393665,21524645,23022741],"Alignments":[16373508,17581871,17641037,19309861],"Discarded":[2673759,2920308,2883717,2928012],"Duplicates":[823928,891486,999891,784868],"% Retained":[0.823982050400089,0.821826040559203,0.819573888442759,0.83872988885207],"Percent Duplication":[0.04791,0.048258,0.05364,0.039058],"Target":["ERa","ERa","ERa","Input"],"Treatment":["E2","E2","E2",null]},"columns":[{"id":"Filename","name":"Filename","type":"character"},{"id":"Total Sequences","name":"Raw Reads","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Alignments","name":"Alignments","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Discarded","name":"Discarded","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Duplicates","name":"Duplicates","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"% Retained","name":"% Retained","type":"numeric","format":{"cell":{"digits":2,"percent":true},"aggregated":{"digits":2,"percent":true}}},{"id":"Percent Duplication","name":"% Duplication","type":"numeric","format":{"cell":{"digits":2,"percent":true},"aggregated":{"digits":2,"percent":true}}},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"6c07a082ced3f5809951efc765a02415"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="references" class="section level2">
@@ -624,8 +639,8 @@ Alignment with Bowtie 2.”</span> <em>Nat. Methods</em> 9 (4): 357–59.
 Session information </button>
 </p>
 <div id="sessioninfo" class="collapse">
-<p><strong>R version 4.2.3 (2023-03-15)</strong></p>
-<p><strong>Platform:</strong> x86_64-conda-linux-gnu (64-bit)</p>
+<p><strong>R version 4.3.0 (2023-04-21)</strong></p>
+<p><strong>Platform:</strong> x86_64-pc-linux-gnu (64-bit)</p>
 <p><strong>locale:</strong> <em>LC_CTYPE=en_AU.UTF-8</em>,
 <em>LC_NUMERIC=C</em>, <em>LC_TIME=en_AU.UTF-8</em>,
 <em>LC_COLLATE=en_AU.UTF-8</em>, <em>LC_MONETARY=en_AU.UTF-8</em>,
@@ -637,8 +652,8 @@ Session information </button>
 <em>datasets</em>, <em>methods</em> and <em>base</em></p>
 <p><strong>other attached packages:</strong>
 <em>htmltools(v.0.5.5)</em>, <em>scales(v.1.2.1)</em>,
-<em>ngsReports(v.2.0.0)</em>, <em>patchwork(v.1.1.2)</em>,
-<em>BiocGenerics(v.0.44.0)</em>, <em>pander(v.0.6.5)</em>,
+<em>ngsReports(v.2.2.3)</em>, <em>patchwork(v.1.1.2)</em>,
+<em>BiocGenerics(v.0.46.0)</em>, <em>pander(v.0.6.5)</em>,
 <em>reactable(v.0.4.4)</em>, <em>here(v.1.0.1)</em>,
 <em>yaml(v.2.3.7)</em>, <em>glue(v.1.6.2)</em>,
 <em>lubridate(v.1.9.2)</em>, <em>forcats(v.1.0.0)</em>,
@@ -647,40 +662,40 @@ Session information </button>
 <em>tidyr(v.1.3.0)</em>, <em>tibble(v.3.2.1)</em>,
 <em>ggplot2(v.3.4.2)</em> and <em>tidyverse(v.2.0.0)</em></p>
 <p><strong>loaded via a namespace (and not attached):</strong>
-<em>ggdendro(v.0.1.23)</em>, <em>httr(v.1.4.6)</em>,
-<em>sass(v.0.4.6)</em>, <em>bit64(v.4.0.5)</em>,
-<em>vroom(v.1.6.3)</em>, <em>jsonlite(v.1.8.4)</em>,
-<em>viridisLite(v.0.4.1)</em>, <em>bslib(v.0.4.2)</em>,
-<em>highr(v.0.10)</em>, <em>stats4(v.4.2.3)</em>,
-<em>GenomeInfoDbData(v.1.2.9)</em>, <em>pillar(v.1.9.0)</em>,
-<em>lattice(v.0.21-8)</em>, <em>digest(v.0.6.31)</em>,
-<em>XVector(v.0.38.0)</em>, <em>colorspace(v.2.1-0)</em>,
-<em>reactR(v.0.4.4)</em>, <em>pkgconfig(v.2.0.3)</em>,
-<em>zlibbioc(v.1.44.0)</em>, <em>tzdb(v.0.4.0)</em>,
-<em>timechange(v.0.2.0)</em>, <em>farver(v.2.1.1)</em>,
-<em>generics(v.0.1.3)</em>, <em>IRanges(v.2.32.0)</em>,
-<em>ellipsis(v.0.3.2)</em>, <em>DT(v.0.28)</em>,
-<em>cachem(v.1.0.8)</em>, <em>withr(v.2.5.0)</em>,
-<em>lazyeval(v.0.2.2)</em>, <em>cli(v.3.6.1)</em>,
-<em>magrittr(v.2.0.3)</em>, <em>crayon(v.1.5.2)</em>,
-<em>evaluate(v.0.21)</em>, <em>fansi(v.1.0.4)</em>,
-<em>MASS(v.7.3-60)</em>, <em>tools(v.4.2.3)</em>,
-<em>data.table(v.1.14.8)</em>, <em>hms(v.1.1.3)</em>,
-<em>lifecycle(v.1.0.3)</em>, <em>plotly(v.4.10.1)</em>,
-<em>S4Vectors(v.0.36.0)</em>, <em>munsell(v.0.5.0)</em>,
-<em>Biostrings(v.2.66.0)</em>, <em>compiler(v.4.2.3)</em>,
-<em>jquerylib(v.0.1.4)</em>, <em>GenomeInfoDb(v.1.34.9)</em>,
-<em>rlang(v.1.1.1)</em>, <em>grid(v.4.2.3)</em>,
-<em>RCurl(v.1.98-1.12)</em>, <em>rstudioapi(v.0.14)</em>,
-<em>htmlwidgets(v.1.6.2)</em>, <em>crosstalk(v.1.2.0)</em>,
-<em>bitops(v.1.0-7)</em>, <em>labeling(v.0.4.2)</em>,
-<em>rmarkdown(v.2.21)</em>, <em>gtable(v.0.3.3)</em>,
-<em>R6(v.2.5.1)</em>, <em>zoo(v.1.8-12)</em>, <em>knitr(v.1.43)</em>,
-<em>fastmap(v.1.1.1)</em>, <em>bit(v.4.0.5)</em>,
-<em>utf8(v.1.2.3)</em>, <em>rprojroot(v.2.0.3)</em>,
-<em>stringi(v.1.7.12)</em>, <em>parallel(v.4.2.3)</em>,
-<em>Rcpp(v.1.0.10)</em>, <em>vctrs(v.0.6.2)</em>,
-<em>tidyselect(v.1.2.0)</em> and <em>xfun(v.0.39)</em></p>
+<em>gtable(v.0.3.3)</em>, <em>bslib(v.0.4.2)</em>,
+<em>xfun(v.0.39)</em>, <em>htmlwidgets(v.1.6.2)</em>,
+<em>lattice(v.0.21-8)</em>, <em>tzdb(v.0.4.0)</em>,
+<em>crosstalk(v.1.2.0)</em>, <em>vctrs(v.0.6.2)</em>,
+<em>tools(v.4.3.0)</em>, <em>bitops(v.1.0-7)</em>,
+<em>generics(v.0.1.3)</em>, <em>parallel(v.4.3.0)</em>,
+<em>stats4(v.4.3.0)</em>, <em>fansi(v.1.0.4)</em>,
+<em>highr(v.0.10)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>data.table(v.1.14.8)</em>, <em>S4Vectors(v.0.38.1)</em>,
+<em>lifecycle(v.1.0.3)</em>, <em>GenomeInfoDbData(v.1.2.10)</em>,
+<em>farver(v.2.1.1)</em>, <em>compiler(v.4.3.0)</em>,
+<em>Biostrings(v.2.68.1)</em>, <em>munsell(v.0.5.0)</em>,
+<em>GenomeInfoDb(v.1.36.0)</em>, <em>sass(v.0.4.6)</em>,
+<em>RCurl(v.1.98-1.12)</em>, <em>lazyeval(v.0.2.2)</em>,
+<em>plotly(v.4.10.1)</em>, <em>jquerylib(v.0.1.4)</em>,
+<em>pillar(v.1.9.0)</em>, <em>crayon(v.1.5.2)</em>,
+<em>ellipsis(v.0.3.2)</em>, <em>MASS(v.7.3-60)</em>,
+<em>DT(v.0.28)</em>, <em>cachem(v.1.0.8)</em>,
+<em>tidyselect(v.1.2.0)</em>, <em>digest(v.0.6.31)</em>,
+<em>stringi(v.1.7.12)</em>, <em>labeling(v.0.4.2)</em>,
+<em>rprojroot(v.2.0.3)</em>, <em>fastmap(v.1.1.1)</em>,
+<em>grid(v.4.3.0)</em>, <em>colorspace(v.2.1-0)</em>,
+<em>cli(v.3.6.1)</em>, <em>magrittr(v.2.0.3)</em>,
+<em>utf8(v.1.2.3)</em>, <em>reactR(v.0.4.4)</em>,
+<em>withr(v.2.5.0)</em>, <em>bit64(v.4.0.5)</em>,
+<em>timechange(v.0.2.0)</em>, <em>rmarkdown(v.2.22)</em>,
+<em>XVector(v.0.40.0)</em>, <em>httr(v.1.4.6)</em>,
+<em>bit(v.4.0.5)</em>, <em>hms(v.1.1.3)</em>, <em>zoo(v.1.8-12)</em>,
+<em>evaluate(v.0.21)</em>, <em>knitr(v.1.43)</em>,
+<em>IRanges(v.2.34.0)</em>, <em>viridisLite(v.0.4.2)</em>,
+<em>rlang(v.1.1.1)</em>, <em>ggdendro(v.0.1.23)</em>,
+<em>Rcpp(v.1.0.10)</em>, <em>vroom(v.1.6.3)</em>,
+<em>rstudioapi(v.0.14)</em>, <em>jsonlite(v.1.8.4)</em>,
+<em>R6(v.2.5.1)</em> and <em>zlibbioc(v.1.46.0)</em></p>
 </div>
 </div>
 
