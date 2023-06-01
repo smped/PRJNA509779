@@ -92,7 +92,7 @@ rule create_macs2_summary:
 	shell:
 		"""
 		echo -e "---" >> {output.rmd}
-		echo -e "title: {wildcards.target}: MACS2 Summary" >> {output.rmd}
+		echo -e "title: '{wildcards.target}: MACS2 Summary'" >> {output.rmd}
 		echo -e "date: \"`r format(SysDate(), '%d %B, %Y')`\"" >> {output.rmd}
 		echo -e "bibliography: references.bib"  >> {output.rmd}
 		echo -e "link-citations: true" >> {output.rmd}

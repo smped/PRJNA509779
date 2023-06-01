@@ -54,7 +54,7 @@ annotation_path <- here::here("output", "annotations")
 ```
 
 ```{r read-samples}
-samples <- read_tsv(config$samples) 
+samples <- read_tsv(here::here(config$samples))
 samples <- samples[samples$target == target,]
 stopifnot(nrow(samples) > 0)
 samples$treatment <- as.factor(samples$treatment)

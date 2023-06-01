@@ -1,5 +1,5 @@
 ---
-title: ERa: MACS2 Summary
+title: 'ERa: MACS2 Summary'
 date: 
 bibliography: references.bib
 link-citations: true
@@ -57,7 +57,7 @@ theme_set(
 
 ```{r config-paths}
 config <- read_yaml(here::here("config", "config.yml"))
-macs2_path <- here::here("output", "macs2")
+macs2_path <- here::here(config$paths$macs2)
 annotation_path <- here::here("output", "annotations")
 ```
 
