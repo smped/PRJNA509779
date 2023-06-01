@@ -83,16 +83,24 @@ rule compile_alignment_qc_html:
 
 rule create_macs2_summary:
 	input:
+		r = "workflow/scripts/create_macs2_summary.R",
 		rmd = "analysis/_macs2_summary.Rmd"
 	output:
 		rmd = "analysis/{target}_macs2_summary.Rmd"
 	threads: 1
 	resources:
 		runtime = "1m"
+	conda: "../envs/rmarkdown.yml"
+	log: "workflow/logs/rmd/create_{target}_macs2_summary.log"
 	shell:
 		"""
-		echo -e "---\ntitle: '{wildcards.target}: MACS2 Summary'\ndate: \"\`r format(Sys.Date(), '%d %B, %Y')\`\"\nbibliography: references.bib\nlink-citations: true\nparams:\n  target: \"{wildcards.target}\"\n---\n\n" > {output.rmd}
+		## Create the generic markdown
+		Rscript --vanilla \
+			{input.r} \
+			{wildcards.target} \
+			{output.rmd} &>> {log}
 
+		## Add the module directly as literal code
 		cat {input.rmd} >> {output.rmd}
 		"""
 

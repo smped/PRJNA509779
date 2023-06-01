@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>ERa: MACS2 Summary</title>
+
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">PRJNA509779</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    QC
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="raw_qc.html">Raw Data</a>
+    </li>
+    <li>
+      <a href="trimmed_qc.html">Trimmed Data</a>
+    </li>
+    <li>
+      <a href="align_qc.html">Alignments</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Results
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="ERa_macs2_summary.html">ERa</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/smped/prepareChIPs">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">ERa: MACS2 Summary</h1>
+<h4 class="date">02 June, 2023</h4>
+
+</div>
+
+
+<pre class="r"><code>conda_pre &lt;- system2(&quot;echo&quot;, &quot;$CONDA_PREFIX&quot;, stdout = TRUE)
+if (conda_pre != &quot;&quot;){
+  conda_lib_path &lt;- file.path(conda_pre, &quot;lib&quot;, &quot;R&quot;, &quot;library&quot;)
+  if (!dir.exists(conda_lib_path)) conda_lib_path &lt;- NULL
+  prev_paths &lt;- .libPaths()
+  paths_to_set &lt;- unique(c(conda_lib_path, prev_paths))
+  .libPaths(paths_to_set)
+}
+knitr::opts_chunk$set(
+  message = FALSE, warning = FALSE,
+  fig.height = 8, fig.width = 10, fig.align = &#39;center&#39;
+)</code></pre>
+<pre class="r"><code>library(tidyverse)
+library(magrittr)
+library(rtracklayer)
+library(glue)
+library(pander)
+library(scales)
+library(plyranges)
+library(yaml)
+library(ngsReports)
+library(ComplexUpset)
+library(extraChIPs)</code></pre>
+<pre class="r"><code>panderOptions(&quot;big.mark&quot;, &quot;,&quot;)
+panderOptions(&quot;missing&quot;, &quot;&quot;)
+panderOptions(&quot;table.split.table&quot;, Inf)
+theme_set(
+  theme_bw() +
+    theme(
+      text = element_text(size = 13),
+      plot.title = element_text(hjust = 0.5)
+    )
+)</code></pre>
+<pre class="r"><code>config &lt;- read_yaml(here::here(&quot;config&quot;, &quot;config.yml&quot;))
+macs2_path &lt;- here::here(config$paths$macs2)
+annotation_path &lt;- here::here(&quot;output&quot;, &quot;annotations&quot;)</code></pre>
+<pre class="r"><code>target &lt;- params$target
+samples &lt;- read_tsv(here::here(config$samples))
+samples &lt;- samples[samples$target == target,]
+stopifnot(nrow(samples) &gt; 0)
+samples$treatment &lt;- as.factor(samples$treatment)
+treat_levels &lt;- levels(samples$treatment)
+treat_colours &lt;- hcl.colors(max(3, length(treat_levels)), &quot;Zissou 1&quot;)[seq_along(treat_levels)]
+names(treat_colours) &lt;- treat_levels
+accessions &lt;- samples$accession</code></pre>
+<pre class="r"><code>sq &lt;- file.path(annotation_path, &quot;chrom.sizes&quot;) %&gt;% 
+  read_tsv(col_names = c(&quot;seqnames&quot;, &quot;seqlengths&quot;)) %&gt;% 
+  mutate(isCircular = FALSE, genome = config$reference$name) %&gt;% 
+  as.data.frame() %&gt;% 
+  as(&quot;Seqinfo&quot;) %&gt;% 
+  sortSeqlevels()</code></pre>
+<pre class="r"><code>individual_peaks &lt;- file.path(
+  macs2_path, accessions, glue(&quot;{accessions}_peaks.narrowPeak&quot;)
+) %&gt;%
+  importPeaks(seqinfo = sq) %&gt;%
+  endoapply(sort) %&gt;% 
+  endoapply(names_to_column, var = &quot;accession&quot;) %&gt;% 
+  endoapply(mutate, accession = str_remove(accession, &quot;_peak_[0-9]+$&quot;)) %&gt;% 
+  endoapply(
+    mutate, 
+    treatment = left_join(tibble(accession = accession), samples, by = &quot;accession&quot;)$treatment
+  ) %&gt;% 
+  setNames(accessions)
+macs2_logs &lt;- file.path(macs2_path, accessions, glue(&quot;{accessions}_callpeak.log&quot;)) %&gt;%
+  importNgsLogs() %&gt;%
+  dplyr::select(
+    -contains(&quot;file&quot;), -outputs, -n_reads, -alt_fragment_length
+  ) %&gt;%
+  left_join(samples, by = c(&quot;name&quot; = &quot;accession&quot;)) %&gt;%
+  mutate(
+    total_peaks = map_int(
+      name,
+      function(x) {
+        length(individual_peaks[[x]])
+      }
+    )
+  ) </code></pre>
+<div id="qc-visualisations" class="section level2 tabset">
+<h2 class="tabset">QC Visualisations</h2>
+<p>This section provides a simple series of visualisations to aid in the
+detection of any problematic samples.</p>
+<ul>
+<li><strong>Library Sizes</strong>: These are the total number of
+alignments contained in each <code>bam</code> file, as passed to
+<code>macs2 callpeak</code> <span class="citation">(<a
+href="#ref-Zhang2008-ms" role="doc-biblioref">Zhang et al.
+2008</a>)</span></li>
+<li><strong>Peaks Detected</strong>: The number of peaks detected within
+each individual replicate are shown here, and provide clear guidance
+towards any samples where the IP may have been less successful, or there
+may be possible sample mis-labelling.</li>
+<li><strong>Peaks Per Million Reads</strong>: Whilst no clear benchmark
+is defined, given the variability of peak distributions across different
+ChIP targets and treatment, this provides a useful visualisation able to
+show poorly performing samples next to other samples with the same ChIP
+target.</li>
+</ul>
+<pre class="r"><code>macs2_logs %&gt;%
+  mutate(target = target) %&gt;% 
+  dplyr::select(
+    sample = name, target, treatment,
+    total_peaks, 
+    reads = n_tags_treatment, read_length = tag_length,
+    fragment_length
+  ) %&gt;%
+  setNames(
+    names(.) %&gt;% str_replace_all(&quot;_&quot;, &quot; &quot;) %&gt;% str_to_title()
+  ) %&gt;%
+  pander(
+    justify = &quot;lllrrrr&quot;,
+    caption = glue(
+      &quot;*Summary of results for `macs2 callpeak` on individual {target} samples.&quot;,
+      &quot;Total peaks indicates the number retained after applying the specified FDR &quot;, 
+      &quot;threshold during the peak calling process.&quot;,
+      &quot;The fragment length as estimated by `macs2 predictd` is given in the final column.*&quot;,
+      .sep = &quot; &quot;
+    )
+  )</code></pre>
+<table>
+<caption><em>Summary of results for <code>macs2 callpeak</code> on
+individual ERa samples. Total peaks indicates the number retained after
+applying the specified FDR threshold during the peak calling process.
+The fragment length as estimated by <code>macs2 predictd</code> is given
+in the final column.</em></caption>
+<colgroup>
+<col width="13%" />
+<col width="9%" />
+<col width="12%" />
+<col width="15%" />
+<col width="13%" />
+<col width="15%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Sample</th>
+<th align="left">Target</th>
+<th align="left">Treatment</th>
+<th align="right">Total Peaks</th>
+<th align="right">Reads</th>
+<th align="right">Read Length</th>
+<th align="right">Fragment Length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">SRR8315180</td>
+<td align="left">ERa</td>
+<td align="left">E2</td>
+<td align="right">5,720</td>
+<td align="right">16,373,508</td>
+<td align="right">68</td>
+<td align="right">155</td>
+</tr>
+<tr class="even">
+<td align="left">SRR8315181</td>
+<td align="left">ERa</td>
+<td align="left">E2</td>
+<td align="right">7,789</td>
+<td align="right">17,581,871</td>
+<td align="right">65</td>
+<td align="right">175</td>
+</tr>
+<tr class="odd">
+<td align="left">SRR8315182</td>
+<td align="left">ERa</td>
+<td align="left">E2</td>
+<td align="right">12,174</td>
+<td align="right">17,641,037</td>
+<td align="right">73</td>
+<td align="right">176</td>
+</tr>
+</tbody>
+</table>
+<div id="library-sizes" class="section level3">
+<h3>Library Sizes</h3>
+<pre class="r"><code>macs2_logs %&gt;%
+  ggplot(
+    aes(name, n_tags_treatment)
+  ) +
+  geom_col(position = &quot;dodge&quot;, fill = &quot;royalblue&quot;) +
+  geom_hline(
+    aes(yintercept = mn),
+    data = . %&gt;%
+      group_by(treatment) %&gt;%
+      summarise(mn = mean(n_tags_treatment)),
+    linetype = 2,
+    col = &quot;grey&quot;
+  ) +
+  facet_grid(~treatment, scales = &quot;free_x&quot;, space = &quot;free_x&quot;) +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  labs(
+    x = &quot;Sample&quot;, y = &quot;Library Size&quot;
+  ) +
+  ggtitle(
+    glue(&quot;{target}: Library Sizes&quot;)
+  )</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/plot-macs2-libsize-individual-1.png" alt="*Library sizes for each ERa sample. The horizontal line indicates the mean library size for each treatment group. Any samples marked for exclusion as described above will be indicated with an (F)*" width="960" />
+<p class="caption">
+<em>Library sizes for each ERa sample. The horizontal line indicates the
+mean library size for each treatment group. Any samples marked for
+exclusion as described above will be indicated with an (F)</em>
+</p>
+</div>
+</div>
+<div id="peaks-detected" class="section level3">
+<h3>Peaks Detected</h3>
+<pre class="r"><code>suppressWarnings(
+  macs2_logs %&gt;%
+    ggplot(
+      aes(name, total_peaks)
+    ) +
+    geom_col(fill = &quot;royalblue&quot;) +
+    geom_label(
+      aes(x = name, y = total_peaks, label = lab),
+      data = . %&gt;%
+        dplyr::filter(total_peaks &gt; 0) %&gt;% 
+        mutate(
+          lab = comma(total_peaks, accuracy = 1),
+          total = total_peaks
+        ),
+      inherit.aes = FALSE,
+      show.legend = FALSE
+    ) +
+    facet_grid(~treatment, scales = &quot;free_x&quot;, space = &quot;free_x&quot;) +
+    scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+    labs(
+      x = &quot;Sample&quot;,
+      y = &quot;Total Peaks&quot;,
+      fill = &quot;QC&quot;
+    ) +
+    ggtitle(
+      glue(&quot;{target}: Number of Peaks&quot;)
+    )
+)</code></pre>
+<p><img src="ERa_macs2_summary_files/figure-html/plot-macs2-peaks-individual-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+<div id="peaks-per-million-reads" class="section level3">
+<h3>Peaks Per Million Reads</h3>
+<pre class="r"><code>macs2_logs %&gt;% 
+  mutate(ppm = 1e6 * total_peaks / n_tags_treatment) %&gt;% 
+  ggplot(aes(name, ppm)) +
+  geom_col(fill = &quot;royalblue&quot;) +
+  facet_wrap(~treatment) +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  labs(x = &quot;Sample&quot;, y = &quot;Peaks per Million Reads&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/peaks-per-million-1.png" alt="*Peaks per million reads. *" width="960" />
+<p class="caption">
+<em>Peaks per million reads. </em>
+</p>
+</div>
+</div>
+</div>
+<div id="individual-replicates" class="section level2">
+<h2>Individual Replicates</h2>
+<p>A brief summary of all detected peaks for the given target within
+each replicate is shown using an UpSet plot below.</p>
+<pre class="r"><code>df &lt;- individual_peaks %&gt;%
+  makeConsensus(var = &quot;qValue&quot;) %&gt;% 
+  as_tibble() %&gt;% 
+  mutate(qValue = vapply(qValue, min, numeric(1))) 
+ql &lt;- samples$accession %&gt;% 
+  lapply(
+    function(x) upset_query(
+      set = x, 
+      fill = treat_colours[as.character(dplyr::filter(samples, accession == x)$treatment)]
+    )
+  )
+size &lt;- get_size_mode(&#39;exclusive_intersection&#39;)
+df %&gt;% 
+  upset(
+    intersect = accessions,
+    base_annotations = list(
+      `Peaks in Intersection` = intersection_size(
+        text_mapping = aes(label = comma(!!size)),
+        bar_number_threshold = 1, text_colors = &quot;black&quot;, 
+        text = list(size = 3, angle = 90, vjust = 0.5, hjust = -0.1)
+      ) +
+        scale_y_continuous(expand = expansion(c(0, 0.2)), label = comma) +
+        theme(
+          panel.grid = element_blank(), 
+          axis.line = element_line(colour = &quot;grey20&quot;),
+          panel.border = element_rect(colour = &quot;grey20&quot;, fill =  NA)
+        )
+    ),
+    annotations = list(
+      qValue = ggplot(mapping = aes(y = qValue)) +
+        geom_boxplot(na.rm = TRUE, outlier.colour = rgb(0, 0, 0, 0.2)) +
+        coord_cartesian(ylim = c(0, quantile(df$qValue, 0.95))) +
+        scale_y_continuous(expand = expansion(c(0, 0.05))) +
+        ylab(expr(paste(&quot;Macs2 &quot;, q[min]))) +
+        theme(
+          panel.grid = element_blank(), 
+          axis.line = element_line(colour = &quot;grey20&quot;),
+          panel.border = element_rect(colour = &quot;grey20&quot;, fill =  NA)
+        )
+    ),
+    set_sizes = (
+      upset_set_size() +
+        geom_text(
+          aes(label = comma(after_stat(count))), 
+          hjust = 1.1, stat = &#39;count&#39;, size = 3
+        ) +
+        scale_y_reverse(expand = expansion(c(0.2, 0)), label = comma) +
+        ylab(glue(&quot;Macs2 Peaks&quot;)) +
+        theme(
+          panel.grid = element_blank(), 
+          axis.line = element_line(colour = &quot;grey20&quot;),
+          panel.border = element_rect(colour = &quot;grey20&quot;, fill =  NA)
+        )
+    ),
+    queries = ql,
+    min_size = 10,
+    n_intersections = 50,
+    sort_sets = FALSE
+  ) +
+  theme(
+    panel.grid = element_blank(), 
+    panel.border = element_rect(colour = &quot;grey20&quot;, fill =  NA),
+    axis.line = element_line(colour = &quot;grey20&quot;)
+  ) +
+  labs(x = &quot;Intersection&quot;) +
+  patchwork::plot_layout(heights = c(2, 3, 2))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/all-reps-upset-1.png" alt="*UpSet plot showing all samples. Any potential sample/treatment mislabelling will show up clearly here as samples from each group may show a preference to overlap other samples within the same treatment group. Intersections are only included if 10 or more sites are present. The top panel shows a boxplot of the min $q$-values produced by `macs2 callpeak` for each peak in the intersection as representative of the sample with the weakest signal for each peak. The y-axis for this panel is truncated at the 95^th^ percentile of values.*" width="960" />
+<p class="caption">
+<em>UpSet plot showing all samples. Any potential sample/treatment
+mislabelling will show up clearly here as samples from each group may
+show a preference to overlap other samples within the same treatment
+group. Intersections are only included if 10 or more sites are present.
+The top panel shows a boxplot of the min <span
+class="math inline">\(q\)</span>-values produced by
+<code>macs2 callpeak</code> for each peak in the intersection as
+representative of the sample with the weakest signal for each peak. The
+y-axis for this panel is truncated at the 95<sup>th</sup> percentile of
+values.</em>
+</p>
+</div>
+</div>
+<div id="merged-replicates" class="section level2 tabset">
+<h2 class="tabset">Merged Replicates</h2>
+<p>In addition to the above sets of peaks, sets of peaks were called
+using merged samples within each treatment group.</p>
+<pre class="r"><code>merged_peaks &lt;- file.path(
+  macs2_path, target, glue(&quot;{treat_levels}_merged_peaks.narrowPeak&quot;)
+) %&gt;% 
+  importPeaks(seqinfo = sq) %&gt;% 
+  setNames(treat_levels) %&gt;% 
+  endoapply(plyranges::remove_names) %&gt;% 
+  endoapply(sort)
+merged_logs &lt;- file.path(
+  macs2_path, target, glue(&quot;{treat_levels}_merged_callpeak.log&quot;)
+) %&gt;%
+  importNgsLogs() %&gt;%
+  dplyr::select(
+    -contains(&quot;file&quot;), -outputs, -n_reads, -alt_fragment_length
+  ) %&gt;% 
+  mutate(
+    name = str_remove_all(name, &quot;_merged&quot;),
+    total_peaks = map_int(
+      name,
+      function(x) {
+        length(merged_peaks[[x]])
+      }
+    )
+  ) </code></pre>
+<pre class="r"><code>merged_logs %&gt;%
+  mutate(target = target) %&gt;% 
+  dplyr::select(
+    target, treatment = name, 
+    total_peaks, 
+    reads = n_tags_treatment, read_length = tag_length,
+    fragment_length
+  ) %&gt;%
+  setNames(
+    names(.) %&gt;% str_replace_all(&quot;_&quot;, &quot; &quot;) %&gt;% str_to_title()
+  ) %&gt;%
+  pander(
+    justify = &quot;llrrrr&quot;,
+    caption = glue(
+      &quot;*Summary of results for `macs2 callpeak` on merged {target} samples within treatment groups.&quot;,
+      &quot;Total peaks indicates the number retained after applying the specified FDR&quot;, 
+      &quot;threshold during the peak calling process.&quot;,
+      &quot;The fragment length as estimated by `macs2 predictd` is given in the final column.*&quot;,
+      .sep = &quot; &quot;
+    )
+  )</code></pre>
+<table style="width:100%;">
+<caption><em>Summary of results for <code>macs2 callpeak</code> on
+merged ERa samples within treatment groups. Total peaks indicates the
+number retained after applying the specified FDR threshold during the
+peak calling process. The fragment length as estimated by
+<code>macs2 predictd</code> is given in the final column.</em></caption>
+<colgroup>
+<col width="11%" />
+<col width="15%" />
+<col width="17%" />
+<col width="16%" />
+<col width="17%" />
+<col width="22%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Target</th>
+<th align="left">Treatment</th>
+<th align="right">Total Peaks</th>
+<th align="right">Reads</th>
+<th align="right">Read Length</th>
+<th align="right">Fragment Length</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ERa</td>
+<td align="left">E2</td>
+<td align="right">7,775</td>
+<td align="right">51,596,416</td>
+<td align="right">65</td>
+<td align="right">168</td>
+</tr>
+</tbody>
+</table>
+<div id="merged-peaks-by-individal-replicate" class="section level3">
+<h3>Merged Peaks By Individal Replicate</h3>
+<pre class="r"><code>samples %&gt;% 
+  split(.$treatment) %&gt;% 
+  lapply(
+    function(x) {
+      trt &lt;- unique(x$treatment)
+      smp &lt;- unique(x$accession)
+      ol &lt;- lapply(individual_peaks[smp], overlapsAny, subject = merged_peaks[[trt]])
+      tbl &lt;- lapply(ol, function(i) tibble(n = length(i), ol = sum(i), p = mean(i)))
+      bind_rows(tbl, .id = &quot;accession&quot;)
+    }
+  ) %&gt;% 
+  bind_rows(.id = &quot;treatment&quot;) %&gt;% 
+  mutate(target = target) %&gt;% 
+  ggplot() +
+  geom_col(aes(accession, n), fill = &quot;grey70&quot;, alpha = 0.7) +
+  geom_col(aes(accession, ol), fill = &quot;royalblue&quot;) +
+  geom_label(
+    aes(accession, 0.5 * ol, label = percent(p, 0.1)),
+    fill = &quot;white&quot;, alpha = 0.7
+  ) +
+  facet_wrap(~treatment, nrow = 1) +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  labs(x = &quot;Sample&quot;, y = &quot;Individual Peaks&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/merged-by-replicate-1.png" alt="*Peaks indentified using merged samples and the overlap with individual samples. Bar heights indicate the total number o peaks identified in each replicate, with the blue segments indicating those also identified when merging replicates.*" width="960" />
+<p class="caption">
+<em>Peaks indentified using merged samples and the overlap with
+individual samples. Bar heights indicate the total number o peaks
+identified in each replicate, with the blue segments indicating those
+also identified when merging replicates.</em>
+</p>
+</div>
+</div>
+<div id="merged-peaks-by-number-of-overlaps" class="section level3">
+<h3>Merged Peaks By Number Of Overlaps</h3>
+<pre class="r"><code>samples %&gt;% 
+  split(.$treatment) %&gt;% 
+  lapply(
+    function(x) {
+      trt &lt;- unique(x$treatment)
+      acc &lt;- unique(x$accession)
+      ol &lt;- lapply(acc, function(i) overlapsAny(merged_peaks[[trt]], individual_peaks[i]))
+      names(ol) &lt;- acc
+      tbl &lt;- as.matrix(as.data.frame(ol))
+      counts &lt;- table(rowSums(tbl))
+      tibble(reps = names(counts), total = as.integer(counts))
+    }
+  ) %&gt;% 
+  bind_rows(.id = &quot;treatment&quot;) %&gt;% 
+  mutate(reps = as.factor(reps)) %&gt;% 
+  arrange(desc(reps)) %&gt;% 
+  mutate(cumsum = cumsum(total), p = total / sum(total), .by = treatment) %&gt;% 
+  mutate(y = cumsum - 0.5 * total) %&gt;% 
+  ggplot(aes(treatment, total, fill = reps)) +
+  geom_col() +
+  geom_label(
+    aes(treatment, y, label = percent(p, 0.1)),
+    data = . %&gt;% dplyr::filter(p &gt; 0.05),
+    fill = &quot;white&quot;, alpha = 0.7
+  ) +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  scale_fill_viridis_d(direction = -1) +
+  labs(x = &quot;Treatment&quot;, y = &quot;Merged Peaks&quot;, fill = &quot;Overlapping\nReplicates&quot;)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/merged-by-overlap-1.png" alt="*Treatment-specific peaks called by merging individual replcates are shown by the number of individual replicates they overlap. The percentages peaks with each overlapping number are shown within each bar.*" width="960" />
+<p class="caption">
+<em>Treatment-specific peaks called by merging individual replcates are
+shown by the number of individual replicates they overlap. The
+percentages peaks with each overlapping number are shown within each
+bar.</em>
+</p>
+</div>
+</div>
+<div id="merged-peak-overlaps" class="section level3">
+<h3>Merged Peak Overlaps</h3>
+<pre class="r"><code>plotOverlaps(merged_peaks, set_col = treat_colours)</code></pre>
+<div class="figure" style="text-align: center">
+<img src="ERa_macs2_summary_files/figure-html/merged-peak-overlaps-1.png" alt="*Overlap between peaks in each treatment-specific set of peaks called by merging replicates.*" width="960" />
+<p class="caption">
+<em>Overlap between peaks in each treatment-specific set of peaks called
+by merging replicates.</em>
+</p>
+</div>
+</div>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Zhang2008-ms" class="csl-entry">
+Zhang, Yong, Tao Liu, Clifford A Meyer, Jérôme Eeckhoute, David S
+Johnson, Bradley E Bernstein, Chad Nusbaum, et al. 2008.
+<span>“Model-Based Analysis of <span>ChIP-Seq</span>
+(<span>MACS</span>).”</span> <em>Genome Biol.</em> 9 (9): R137.
+</div>
+</div>
+<br>
+<button type="button" class="btn btn-default btn-sessioninfo" data-toggle="collapse" data-target="#sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+Session information </button>
+</p>
+<div id="sessioninfo" class="collapse">
+<p><strong>R version 4.2.3 (2023-03-15)</strong></p>
+<p><strong>Platform:</strong> x86_64-conda-linux-gnu (64-bit)</p>
+<p><strong>locale:</strong> <em>LC_CTYPE=en_AU.UTF-8</em>,
+<em>LC_NUMERIC=C</em>, <em>LC_TIME=en_AU.UTF-8</em>,
+<em>LC_COLLATE=en_AU.UTF-8</em>, <em>LC_MONETARY=en_AU.UTF-8</em>,
+<em>LC_MESSAGES=en_AU.UTF-8</em>, <em>LC_PAPER=en_AU.UTF-8</em>,
+<em>LC_NAME=C</em>, <em>LC_ADDRESS=C</em>, <em>LC_TELEPHONE=C</em>,
+<em>LC_MEASUREMENT=en_AU.UTF-8</em> and <em>LC_IDENTIFICATION=C</em></p>
+<p><strong>attached base packages:</strong> <em>stats4</em>,
+<em>stats</em>, <em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
+<em>datasets</em>, <em>methods</em> and <em>base</em></p>
+<p><strong>other attached packages:</strong>
+<em>extraChIPs(v.1.2.0)</em>, <em>SummarizedExperiment(v.1.28.0)</em>,
+<em>Biobase(v.2.58.0)</em>, <em>MatrixGenerics(v.1.10.0)</em>,
+<em>matrixStats(v.0.63.0)</em>, <em>BiocParallel(v.1.32.5)</em>,
+<em>ComplexUpset(v.1.3.3)</em>, <em>ngsReports(v.2.0.0)</em>,
+<em>patchwork(v.1.1.2)</em>, <em>yaml(v.2.3.7)</em>,
+<em>plyranges(v.1.18.0)</em>, <em>scales(v.1.2.1)</em>,
+<em>pander(v.0.6.5)</em>, <em>glue(v.1.6.2)</em>,
+<em>rtracklayer(v.1.58.0)</em>, <em>GenomicRanges(v.1.50.0)</em>,
+<em>GenomeInfoDb(v.1.34.9)</em>, <em>IRanges(v.2.32.0)</em>,
+<em>S4Vectors(v.0.36.0)</em>, <em>BiocGenerics(v.0.44.0)</em>,
+<em>magrittr(v.2.0.3)</em>, <em>lubridate(v.1.9.2)</em>,
+<em>forcats(v.1.0.0)</em>, <em>stringr(v.1.5.0)</em>,
+<em>dplyr(v.1.1.2)</em>, <em>purrr(v.1.0.1)</em>,
+<em>readr(v.2.1.4)</em>, <em>tidyr(v.1.3.0)</em>,
+<em>tibble(v.3.2.1)</em>, <em>ggplot2(v.3.4.2)</em> and
+<em>tidyverse(v.2.0.0)</em></p>
+<p><strong>loaded via a namespace (and not attached):</strong>
+<em>utf8(v.1.2.3)</em>, <em>tidyselect(v.1.2.0)</em>,
+<em>RSQLite(v.2.3.1)</em>, <em>AnnotationDbi(v.1.60.0)</em>,
+<em>htmlwidgets(v.1.6.2)</em>, <em>grid(v.4.2.3)</em>,
+<em>munsell(v.0.5.0)</em>, <em>codetools(v.0.2-19)</em>,
+<em>interp(v.1.1-4)</em>, <em>DT(v.0.28)</em>, <em>withr(v.2.5.0)</em>,
+<em>colorspace(v.2.1-0)</em>, <em>filelock(v.1.0.2)</em>,
+<em>highr(v.0.10)</em>, <em>knitr(v.1.43)</em>,
+<em>rstudioapi(v.0.14)</em>, <em>ggside(v.0.2.2)</em>,
+<em>labeling(v.0.4.2)</em>, <em>GenomeInfoDbData(v.1.2.9)</em>,
+<em>polyclip(v.1.10-4)</em>, <em>bit64(v.4.0.5)</em>,
+<em>farver(v.2.1.1)</em>, <em>rprojroot(v.2.0.3)</em>,
+<em>vctrs(v.0.6.2)</em>, <em>generics(v.0.1.3)</em>,
+<em>lambda.r(v.1.2.4)</em>, <em>xfun(v.0.39)</em>,
+<em>biovizBase(v.1.46.0)</em>, <em>timechange(v.0.2.0)</em>,
+<em>csaw(v.1.32.0)</em>, <em>BiocFileCache(v.2.6.0)</em>,
+<em>R6(v.2.5.1)</em>, <em>doParallel(v.1.0.17)</em>,
+<em>clue(v.0.3-64)</em>, <em>locfit(v.1.5-9.7)</em>,
+<em>AnnotationFilter(v.1.22.0)</em>, <em>bitops(v.1.0-7)</em>,
+<em>cachem(v.1.0.8)</em>, <em>DelayedArray(v.0.24.0)</em>,
+<em>vroom(v.1.6.3)</em>, <em>BiocIO(v.1.8.0)</em>,
+<em>nnet(v.7.3-19)</em>, <em>gtable(v.0.3.3)</em>,
+<em>ensembldb(v.2.22.0)</em>, <em>rlang(v.1.1.1)</em>,
+<em>GlobalOptions(v.0.1.2)</em>, <em>lazyeval(v.0.2.2)</em>,
+<em>dichromat(v.2.0-0.1)</em>, <em>broom(v.1.0.4)</em>,
+<em>checkmate(v.2.2.0)</em>, <em>GenomicFeatures(v.1.50.2)</em>,
+<em>backports(v.1.4.1)</em>, <em>Hmisc(v.5.1-0)</em>,
+<em>EnrichedHeatmap(v.1.27.2)</em>, <em>tools(v.4.2.3)</em>,
+<em>jquerylib(v.0.1.4)</em>, <em>RColorBrewer(v.1.1-3)</em>,
+<em>ggdendro(v.0.1.23)</em>, <em>Rcpp(v.1.0.10)</em>,
+<em>base64enc(v.0.1-3)</em>, <em>progress(v.1.2.2)</em>,
+<em>zlibbioc(v.1.44.0)</em>, <em>RCurl(v.1.98-1.12)</em>,
+<em>prettyunits(v.1.1.1)</em>, <em>rpart(v.4.1.19)</em>,
+<em>deldir(v.1.0-9)</em>, <em>GetoptLong(v.1.0.5)</em>,
+<em>zoo(v.1.8-12)</em>, <em>ggrepel(v.0.9.3)</em>,
+<em>cluster(v.2.1.4)</em>, <em>here(v.1.0.1)</em>,
+<em>data.table(v.1.14.8)</em>, <em>futile.options(v.1.0.1)</em>,
+<em>circlize(v.0.4.15)</em>, <em>ProtGenerics(v.1.30.0)</em>,
+<em>hms(v.1.1.3)</em>, <em>evaluate(v.0.21)</em>,
+<em>XML(v.3.99-0.14)</em>, <em>VennDiagram(v.1.7.3)</em>,
+<em>jpeg(v.0.1-10)</em>, <em>gridExtra(v.2.3)</em>,
+<em>shape(v.1.4.6)</em>, <em>compiler(v.4.2.3)</em>,
+<em>biomaRt(v.2.54.0)</em>, <em>crayon(v.1.5.2)</em>,
+<em>htmltools(v.0.5.5)</em>, <em>tzdb(v.0.4.0)</em>,
+<em>Formula(v.1.2-5)</em>, <em>DBI(v.1.1.3)</em>,
+<em>tweenr(v.2.0.2)</em>, <em>formatR(v.1.14)</em>,
+<em>dbplyr(v.2.3.2)</em>, <em>ComplexHeatmap(v.2.14.0)</em>,
+<em>MASS(v.7.3-60)</em>, <em>GenomicInteractions(v.1.32.0)</em>,
+<em>rappdirs(v.0.3.3)</em>, <em>Matrix(v.1.5-4.1)</em>,
+<em>cli(v.3.6.1)</em>, <em>parallel(v.4.2.3)</em>,
+<em>Gviz(v.1.42.0)</em>, <em>metapod(v.1.6.0)</em>,
+<em>igraph(v.1.4.3)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>GenomicAlignments(v.1.34.0)</em>, <em>foreign(v.0.8-84)</em>,
+<em>plotly(v.4.10.1)</em>, <em>xml2(v.1.3.4)</em>,
+<em>InteractionSet(v.1.26.0)</em>, <em>foreach(v.1.5.2)</em>,
+<em>bslib(v.0.4.2)</em>, <em>XVector(v.0.38.0)</em>,
+<em>VariantAnnotation(v.1.44.0)</em>, <em>digest(v.0.6.31)</em>,
+<em>Biostrings(v.2.66.0)</em>, <em>rmarkdown(v.2.21)</em>,
+<em>htmlTable(v.2.4.1)</em>, <em>edgeR(v.3.40.0)</em>,
+<em>restfulr(v.0.0.15)</em>, <em>curl(v.4.3.3)</em>,
+<em>Rsamtools(v.2.14.0)</em>, <em>rjson(v.0.2.21)</em>,
+<em>lifecycle(v.1.0.3)</em>, <em>jsonlite(v.1.8.4)</em>,
+<em>futile.logger(v.1.4.3)</em>, <em>viridisLite(v.0.4.1)</em>,
+<em>limma(v.3.54.0)</em>, <em>BSgenome(v.1.66.3)</em>,
+<em>fansi(v.1.0.4)</em>, <em>pillar(v.1.9.0)</em>,
+<em>lattice(v.0.21-8)</em>, <em>KEGGREST(v.1.38.0)</em>,
+<em>fastmap(v.1.1.1)</em>, <em>httr(v.1.4.6)</em>,
+<em>png(v.0.1-8)</em>, <em>iterators(v.1.0.14)</em>,
+<em>bit(v.4.0.5)</em>, <em>ggforce(v.0.4.1)</em>,
+<em>stringi(v.1.7.12)</em>, <em>sass(v.0.4.6)</em>,
+<em>blob(v.1.2.4)</em>, <em>latticeExtra(v.0.6-30)</em> and
+<em>memoise(v.2.0.1)</em></p>
+</div>
+</div>
+
+<div class="footer">
+  <br>Workflow developed by Dr Stevie Pederson<sup>1,2,3</sup><br><br>
+  <sup>1.</sup>Black Ochre Data Laboratories, Telethon Kids Institute, Adelaide, SA, Australia<br>
+  <sup>2.</sup>John Curtin School of Medical Resarch, Australian National University, Canberra, ACT, Australia<br>
+  <sup>3.</sup>Dame Roma Mitchell Cancer Research Laboratories, Adelaide Medical School, University of Adelaide, SA, Australia<br>
+</div>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

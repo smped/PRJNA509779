@@ -11,7 +11,7 @@
 
 
 
-<title>Home</title>
+<title>QC: Aligned Data</title>
 
 <script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -36,14 +36,11 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-<script src="site_libs/viz-1.8.2/viz.js"></script>
-<link href="site_libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="site_libs/grViz-binding-1.0.10/grViz.js"></script>
 <script src="site_libs/core-js-2.5.3/shim.min.js"></script>
 <script src="site_libs/react-17.0.0/react.min.js"></script>
 <script src="site_libs/react-17.0.0/react-dom.min.js"></script>
 <script src="site_libs/reactwidget-1.0.0/react-tools.js"></script>
+<script src="site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
 <link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet" />
 <script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
 <link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
@@ -414,14 +411,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">QC: Aligned Data</h1>
 <h4 class="date">02 June, 2023</h4>
 
 </div>
 
 
 <pre class="r"><code>conda_pre &lt;- system2(&quot;echo&quot;, &quot;$CONDA_PREFIX&quot;, stdout = TRUE)
-if (conda_pre != &quot;&quot;){
+if (conda_pre != &quot;&quot;) {
   conda_lib_path &lt;- file.path(conda_pre, &quot;lib&quot;, &quot;R&quot;, &quot;library&quot;)
   if (!dir.exists(conda_lib_path)) conda_lib_path &lt;- NULL
   prev_paths &lt;- .libPaths()
@@ -430,141 +427,195 @@ if (conda_pre != &quot;&quot;){
 }
 knitr::opts_chunk$set(
   message = FALSE, warning = FALSE,
-  fig.height = 8, fig.width = 10
+  fig.height = 8, fig.width = 10, fig.align = &#39;center&#39;
 )</code></pre>
-<pre class="r"><code>library(DiagrammeR)
-library(tidyverse)
+<pre class="r"><code>library(tidyverse)
 library(glue)
 library(yaml)
 library(here)
 library(reactable)
-library(pander)</code></pre>
+library(pander)
+library(ngsReports)
+library(scales)
+library(htmltools)
+myTheme &lt;- theme(
+    plot.title = element_text(hjust = 0.5),
+    text = element_text(size = 13)
+  )
+## This manages a bug which exists in Bioc 3.16 but is fixed in ngsReports 2.2.3
+.parseLogs &lt;- function(data, which = 1){
+  {
+    if (is.character(which)) 
+        which &lt;- match.arg(which, c(&quot;metrics&quot;, &quot;histogram&quot;, &quot;all&quot;))
+    if (is.numeric(which)) 
+        stopifnot(which %in% c(1, 2))
+    metrics &lt;- lapply(data, function(x) {
+        cmd &lt;- stringr::str_subset(x, &quot;(INPUT|input)&quot;)
+        ip &lt;- stringr::str_replace_all(cmd, &quot;.+(input|INPUT)([ =]*)([^ ]+.bam).+&quot;, 
+            &quot;\\3&quot;)
+        ip &lt;- str_replace_all(ip, &quot;[\\[\\]]&quot;, &quot;&quot;)
+        metHeader &lt;- grep(&quot;METRICS CLASS\t.+.DuplicationMetrics&quot;, 
+            x)
+        df &lt;- ngsReports:::.splitByTab(x[seq(metHeader + 1, by = 1, length.out = 2)])
+        df$LIBRARY &lt;- ip
+        df
+    })
+    metrics &lt;- dplyr::bind_rows(metrics)
+    metrics$PERCENT_DUPLICATION &lt;- as.numeric(metrics$PERCENT_DUPLICATION)
+    intCols &lt;- setdiff(colnames(metrics), c(&quot;LIBRARY&quot;, &quot;PERCENT_DUPLICATION&quot;))
+    metrics[intCols] &lt;- lapply(metrics[intCols], as.integer)
+    metrics &lt;- as_tibble(metrics)
+    histData &lt;- lapply(data, function(x) {
+        cmd &lt;- stringr::str_subset(x, &quot;(INPUT|input)&quot;)
+        ip &lt;- stringr::str_replace_all(cmd, &quot;.+(input|INPUT)([ =]*)([^ ]+.bam).+&quot;, 
+            &quot;\\3&quot;)
+        ip &lt;- str_replace_all(ip, &quot;[\\[\\]]&quot;, &quot;&quot;)
+        histHeader &lt;- grep(&quot;HISTOGRAM\tjava.lang.Double&quot;, x)
+        df &lt;- NULL
+        if (length(histHeader)) {
+            x &lt;- x[-seq_len(histHeader)]
+            x &lt;- x[!grepl(&quot;^$&quot;, x)]
+            df &lt;- ngsReports:::.splitByTab(x)
+            df$LIBRARY &lt;- ip
+            df &lt;- dplyr::select(df, &quot;LIBRARY&quot;, everything())
+        }
+        df
+    })
+    histData &lt;- dplyr::bind_rows(histData)
+    if (ncol(histData)) {
+        histData &lt;- lapply(histData, function(x) {
+            any_na &lt;- any(is.na(suppressWarnings(as.numeric(x))))
+            if (!any_na) 
+                x &lt;- as.numeric(x)
+            x
+        })
+        histData$BIN &lt;- as.integer(histData$BIN)
+        histData &lt;- as_tibble(histData)
+    }
+    out &lt;- list(metrics = metrics, histogram = histData)
+    out &lt;- lapply(out, function(x) {
+        colnames(x) &lt;- stringr::str_replace_all(colnames(x), 
+            &quot;_&quot;, &quot; &quot;)
+        colnames(x) &lt;- stringr::str_to_title(colnames(x))
+        x
+    })
+    if (which != &quot;all&quot;) 
+        out &lt;- out[[which]]
+    out
+  }
+}</code></pre>
 <pre class="r"><code>config &lt;- read_yaml(here::here(&quot;config/config.yml&quot;))
-samples &lt;- read_tsv(here::here(config$samples))</code></pre>
+samples &lt;- read_tsv(here::here(config$samples)) %&gt;% 
+  bind_rows(
+    tibble(
+      accession = unique(.$input), target = &quot;Input&quot;
+    )
+  )
+bwt2_logs &lt;- here::here(&quot;output&quot;, &quot;bowtie2&quot;, glue(&quot;{samples$accession}.log&quot;)) %&gt;% 
+  setNames(samples$accession) %&gt;% 
+  .[file.exists(.)] %&gt;% 
+  importNgsLogs() 
+duplogs &lt;- here::here(&quot;output&quot;, &quot;markDuplicates&quot;, glue(&quot;{samples$accession}.metrics.txt&quot;)) %&gt;%
+  setNames(samples$accession) %&gt;% 
+  .[file.exists(.)] %&gt;% 
+  sapply(readLines, simplify = FALSE) %&gt;% 
+  .parseLogs() %&gt;% 
+  mutate(
+    Filename = gsub(&quot;.sorted.+&quot;, &quot;&quot;, basename(Library))
+  ) %&gt;% 
+  dplyr::select(Filename, everything())</code></pre>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This is a simple <code>snakemake</code> workflow for preparing
-<em>single-end</em> ChIP-Seq libraries. The key steps involved are:</p>
-<ol style="list-style-type: decimal">
-<li>Download files from the <a
-href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive</a></li>
-<li>Remove adapter sequences and low quality reads using AdapterRemoval
-<span class="citation">(<a href="#ref-Schubert2016-br"
-role="doc-biblioref">Schubert, Lindgreen, and Orlando
-2016</a>)</span></li>
-<li>Use <code>bowtie2</code> to align to the genome <span
-class="citation">(<a href="#ref-Langmead2012-qc"
-role="doc-biblioref">Langmead and Salzberg 2012</a>)</span></li>
-<li>De-duplicate reads is <a
-href="https://broadinstitute.github.io/picard"><code>markDuplicates</code></a></li>
-<li>Run <code>macs2 callpeak</code> <span class="citation">(<a
-href="#ref-Zhang2008-ms" role="doc-biblioref">Zhang et al.
-2008</a>)</span> on
-<ol style="list-style-type: lower-alpha">
-<li>All individual samples</li>
-<li>All samples within a common target and treatment group</li>
-</ol></li>
-</ol>
-<p>Multiple QC reports are created throughout the workflow using <a
-href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>,
-MultiQC <span class="citation">(<a href="#ref-Ewels2016-ix"
-role="doc-biblioref">Ewels et al. 2016</a>)</span> and ngsReports <span
-class="citation">(<a href="#ref-Ward2020-fn" role="doc-biblioref">Ward,
-To, and Pederson 2020</a>)</span></p>
-<p>A full description of the workflow is available at <a
-href="https://github.com/smped/prepareChIPs"
-class="uri">https://github.com/smped/prepareChIPs</a>, with the
-rulegraph summarised below.</p>
-<pre class="r"><code>here::here(&quot;workflow&quot;, &quot;rules&quot;, &quot;rulegraph.dot&quot;) %&gt;%
-  readLines() %&gt;%
-  str_replace_all(&quot;(.+graph.+)(\\];)&quot;, &quot;\\1, rankdir = LR\\2&quot;) %&gt;% 
-  str_replace_all(&quot;fontsize=10&quot;, &quot;fontsize=12&quot;) %&gt;% 
-  str_replace_all(&quot;_&quot;, &quot;\n&quot;) %&gt;% 
-  str_replace_all(&quot;snakemake\ndag&quot;, &quot;snakemakg_dag&quot;) %&gt;% 
-  grViz()</code></pre>
-<div class="figure">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-42e60648028954e539a2" style="width:960px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-42e60648028954e539a2">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"0.30 0.6 0.85\", style=\"rounded\"];\n\t1[label = \"bedgraph\nto\nbigwig\", color = \"0.43 0.6 0.85\", style=\"rounded\", rankdir = LR];\n\t2[label = \"macs2\ncallpeak\", color = \"0.50 0.6 0.85\", style=\"rounded\"];\n\t3[label = \"picard\nmarkduplicates\", color = \"0.27 0.6 0.85\", style=\"rounded\"];\n\t4[label = \"samtools\nsort\", color = \"0.37 0.6 0.85\", style=\"rounded\"];\n\t5[label = \"bowtie2\nalign\", color = \"0.10 0.6 0.85\", style=\"rounded\"];\n\t6[label = \"adapterremoval\", color = \"0.23 0.6 0.85\", style=\"rounded\"];\n\t7[label = \"get\nfastq\", color = \"0.00 0.6 0.85\", style=\"rounded\"];\n\t8[label = \"samtools\nindex\", color = \"0.47 0.6 0.85\", style=\"rounded\"];\n\t9[label = \"get\nchrom\nsizes\", color = \"0.63 0.6 0.85\", style=\"rounded\"];\n\t10[label = \"macs2\ncallpeak\nmerged\", color = \"0.33 0.6 0.85\", style=\"rounded\"];\n\t11[label = \"macs2\nbdgcmp\nmerged\", color = \"0.13 0.6 0.85\", style=\"rounded\"];\n\t12[label = \"compile\nindex\nhtml\", color = \"0.17 0.6 0.85\", style=\"rounded\"];\n\t13[label = \"compile\nmacs2\nsummary\", color = \"0.53 0.6 0.85\", style=\"rounded\"];\n\t14[label = \"create\nmacs2\nsummary\", color = \"0.40 0.6 0.85\", style=\"rounded\"];\n\t15[label = \"create\nsite\nyaml\", color = \"0.20 0.6 0.85\", style=\"rounded\"];\n\t16[label = \"compile\nqc\nhtml\", color = \"0.60 0.6 0.85\", style=\"rounded\"];\n\t17[label = \"fastqc\", color = \"0.03 0.6 0.85\", style=\"rounded\"];\n\t18[label = \"multiqc\", color = \"0.07 0.6 0.85\", style=\"rounded\"];\n\t19[label = \"compile\nalignment\nqc\nhtml\", color = \"0.57 0.6 0.85\", style=\"rounded\"];\n\t12 -> 0\n\t1 -> 0\n\t10 -> 1\n\t11 -> 1\n\t2 -> 1\n\t9 -> 1\n\t3 -> 2\n\t8 -> 2\n\t4 -> 3\n\t5 -> 4\n\t6 -> 5\n\t7 -> 6\n\t3 -> 8\n\t3 -> 10\n\t8 -> 10\n\t10 -> 11\n\t19 -> 12\n\t16 -> 12\n\t15 -> 12\n\t13 -> 12\n\t2 -> 13\n\t14 -> 13\n\t10 -> 13\n\t15 -> 13\n\t9 -> 13\n\t17 -> 16\n\t15 -> 16\n\t18 -> 16\n\t7 -> 17\n\t6 -> 17\n\t17 -> 18\n\t5 -> 19\n\t3 -> 19\n\t15 -> 19\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p class="caption">
-<em>Snakemake rulegraph for the prepareChIPs workflow</em>
-</p>
+<p>This final QC worksheet summarises the alignments and de-duplication
+metrics. Single-end alignments were performed using <code>bowtie2</code>
+<span class="citation">(<a href="#ref-Langmead2012-qc"
+role="doc-biblioref">Langmead and Salzberg 2012</a>)</span> before being
+de-duplicated using <code>markDuplicates</code> from the Picard suite of
+tools (<a href="https://broadinstitute.github.io/picard"
+class="uri">https://broadinstitute.github.io/picard</a>)</p>
+<div id="alignment-rates" class="section level3">
+<h3>Alignment Rates</h3>
+<pre class="r"><code>bwt2_logs %&gt;% 
+  mutate(Filename = str_remove_all(Filename, &quot;.log&quot;)) %&gt;% 
+  dplyr::select(Filename, Unique_Unpaired, Multiple_Unpaired, Not_Aligned) %&gt;% 
+  pivot_longer(cols = contains(&quot;_&quot;), names_to = &quot;Status&quot;, values_to = &quot;Reads&quot;) %&gt;% 
+  mutate(
+    Status = Status %&gt;% 
+      str_remove_all(&quot;_Unpaired&quot;) %&gt;% 
+      str_replace_all(&quot;_&quot;, &quot; &quot;) %&gt;% 
+      factor() %&gt;%
+      relevel(ref = &quot;Unique&quot;)
+  ) %&gt;% 
+  arrange(Status) %&gt;% 
+  mutate(cumsum = cumsum(Reads), p = Reads / sum(Reads), .by = &quot;Filename&quot;) %&gt;% 
+  mutate(y = cumsum - 0.5 * Reads) %&gt;% 
+  ggplot(aes(Filename, Reads, fill = fct_rev(Status))) +
+  geom_col() +
+  geom_label(
+    aes(Filename, y, label = percent(p, 0.1)),
+    data = . %&gt;% dplyr::filter(p &gt; 0.05),
+    fill = &quot;white&quot;, alpha = 0.6, show.legend = FALSE
+  ) +
+  scale_y_continuous(
+    labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_viridis_d(direction = -1) +
+  labs(y = &quot;Reads (millions)&quot;, fill = &quot;Alignment\nStatus&quot;) +
+  theme_bw() +
+  myTheme</code></pre>
+<p><img src="align_qc_files/figure-html/plot-aln-summary-1.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 </div>
-<div id="provided-samples" class="section level2">
-<h2>Provided Samples</h2>
-<p>The complete set of samples provided is shown in the following
-table</p>
-<pre class="r"><code>samples %&gt;% 
-  rename_with(function(x) str_replace_all(x, &quot;_&quot;, &quot; &quot;), everything()) %&gt;% 
-  rename_with(str_to_title, everything()) %&gt;% 
-  reactable(
-    sortable = TRUE, filterable = TRUE, resizable = TRUE,
-    showPageSizeOptions = TRUE
-  )</code></pre>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-246dc82b01aefd24ce55" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-246dc82b01aefd24ce55">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315180","SRR8315181","SRR8315182"],"Target":["ERa","ERa","ERa"],"Treatment":["E2","E2","E2"],"Input":["SRR8315192","SRR8315192","SRR8315192"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"ce7bbde542fc636ebc9af672b8568ec4"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="deduplication-summary" class="section level2">
+<h2>DeDuplication Summary</h2>
+<pre class="r"><code>div(
+  class = &quot;table&quot;,
+  div(
+    class = &quot;table-header&quot;,
+    htmltools::tags$caption(
+      htmltools::em(
+        &quot;Library sizes with links to all FastQC reports generated after
+        processing with AdapterRemoval&quot;
+      )
+    )
+  ),
+  duplogs %&gt;% 
+    dplyr::select(
+      Filename, Reads = `Unpaired Reads Examined` , `Unmapped Reads`,
+      Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
+    ) %&gt;% 
+    left_join(samples, by = c(&quot;Filename&quot; = &quot;accession&quot;)) %&gt;% 
+    dplyr::select(-input) %&gt;% 
+    setNames(str_replace_all(names(.), &quot;_&quot;, &quot; &quot;)) %&gt;% 
+    setNames(str_to_title(names(.))) %&gt;% 
+    reactable(
+      sortable = TRUE, filterable = TRUE, resizable = TRUE,
+      showPageSizeOptions = TRUE,
+      columns = list(
+        Reads = colDef(format = colFormat(separators = TRUE)),
+        `Unmapped Reads` = colDef(format = colFormat(separators = TRUE)),
+        Duplicates = colDef(format = colFormat(separators = TRUE)),
+        `Percent Duplication` = colDef(format = colFormat(percent = TRUE, digits = 2))
+      )
+    )
+)</code></pre>
+<div class="table">
+<div class="table-header">
+<caption>
+<em>Library sizes with links to all FastQC reports generated after
+        processing with AdapterRemoval</em>
+</caption>
 </div>
-<div id="workflow-parameters" class="section level2">
-<h2>Workflow Parameters</h2>
-<p>Downloaded files are to be aligned to a genome located in
-/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/ with the prefix
-GRCh37</p>
-<p>All other parameters were specified to be</p>
-<ul>
-<li><p><strong>adapterremoval</strong>:</p>
-<ul>
-<li><strong>extra</strong>: –maxns 1 –minlength 50 –minquality 30 –gzip
-–trimqualities</li>
-<li><strong>adapter1</strong>: –adapter1 AGATCGGAAGAGC</li>
-</ul></li>
-<li><p><strong>bowtie2</strong>:</p></li>
-<li><p><strong>fastqc</strong>: –nogroup –noextract</p></li>
-<li><p><strong>macs2</strong>:</p>
-<ul>
-<li><strong>callpeak</strong>: -g hs –keep-dup all -q 0.05</li>
-<li><strong>bdgcmp</strong>: -m FE</li>
-</ul></li>
-<li><p><strong>markduplicates</strong>: –REMOVE_DUPLICATES true</p></li>
-<li><p><strong>multiqc</strong>:</p></li>
-<li><p><strong>samtools</strong>:</p>
-<ul>
-<li><strong>sort</strong>:</li>
-<li><strong>view</strong>: -q2</li>
-<li><strong>index</strong>:</li>
-</ul></li>
-</ul>
-<!-- end of list -->
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-95c6ee10d39a8652eea1" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-95c6ee10d39a8652eea1">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Filename":["SRR8315180","SRR8315181","SRR8315182","SRR8315192"],"Reads":[17197436,18473357,18640928,20094729],"Unmapped Reads":[0,0,0,0],"Duplicates":[823928,891486,999891,784868],"Percent Duplication":[0.04791,0.048258,0.05364,0.039058],"Target":["ERa","ERa","ERa","Input"],"Treatment":["E2","E2","E2",null]},"columns":[{"id":"Filename","name":"Filename","type":"character"},{"id":"Reads","name":"Reads","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Unmapped Reads","name":"Unmapped Reads","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Duplicates","name":"Duplicates","type":"numeric","format":{"cell":{"separators":true},"aggregated":{"separators":true}}},{"id":"Percent Duplication","name":"Percent Duplication","type":"numeric","format":{"cell":{"digits":2,"percent":true},"aggregated":{"digits":2,"percent":true}}},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"9c61fde728519b98ad248279caf861ff"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+</div>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-Ewels2016-ix" class="csl-entry">
-Ewels, Philip, Måns Magnusson, Sverker Lundin, and Max Käller. 2016.
-<span>“<span>MultiQC</span>: Summarize Analysis Results for Multiple
-Tools and Samples in a Single Report.”</span> <em>Bioinformatics</em> 32
-(19): 3047–48.
-</div>
 <div id="ref-Langmead2012-qc" class="csl-entry">
 Langmead, Ben, and Steven L Salzberg. 2012. <span>“Fast Gapped-Read
 Alignment with Bowtie 2.”</span> <em>Nat. Methods</em> 9 (4): 357–59.
-</div>
-<div id="ref-Schubert2016-br" class="csl-entry">
-Schubert, Mikkel, Stinus Lindgreen, and Ludovic Orlando. 2016.
-<span>“<span>AdapterRemoval</span> V2: Rapid Adapter Trimming,
-Identification, and Read Merging.”</span> <em>BMC Res. Notes</em> 9
-(February): 88.
-</div>
-<div id="ref-Ward2020-fn" class="csl-entry">
-Ward, Christopher M, Thu-Hien To, and Stephen M Pederson. 2020.
-<span>“ngsReports: A Bioconductor Package for Managing
-<span>FastQC</span> Reports and Other <span>NGS</span> Related Log
-Files.”</span> <em>Bioinformatics</em> 36 (8): 2587–88.
-</div>
-<div id="ref-Zhang2008-ms" class="csl-entry">
-Zhang, Yong, Tao Liu, Clifford A Meyer, Jérôme Eeckhoute, David S
-Johnson, Bradley E Bernstein, Chad Nusbaum, et al. 2008.
-<span>“Model-Based Analysis of <span>ChIP-Seq</span>
-(<span>MACS</span>).”</span> <em>Genome Biol.</em> 9 (9): R137.
 </div>
 </div>
 <br>
@@ -584,41 +635,52 @@ Session information </button>
 <p><strong>attached base packages:</strong> <em>stats</em>,
 <em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
 <em>datasets</em>, <em>methods</em> and <em>base</em></p>
-<p><strong>other attached packages:</strong> <em>pander(v.0.6.5)</em>,
+<p><strong>other attached packages:</strong>
+<em>htmltools(v.0.5.5)</em>, <em>scales(v.1.2.1)</em>,
+<em>ngsReports(v.2.0.0)</em>, <em>patchwork(v.1.1.2)</em>,
+<em>BiocGenerics(v.0.44.0)</em>, <em>pander(v.0.6.5)</em>,
 <em>reactable(v.0.4.4)</em>, <em>here(v.1.0.1)</em>,
 <em>yaml(v.2.3.7)</em>, <em>glue(v.1.6.2)</em>,
 <em>lubridate(v.1.9.2)</em>, <em>forcats(v.1.0.0)</em>,
 <em>stringr(v.1.5.0)</em>, <em>dplyr(v.1.1.2)</em>,
 <em>purrr(v.1.0.1)</em>, <em>readr(v.2.1.4)</em>,
 <em>tidyr(v.1.3.0)</em>, <em>tibble(v.3.2.1)</em>,
-<em>ggplot2(v.3.4.2)</em>, <em>tidyverse(v.2.0.0)</em> and
-<em>DiagrammeR(v.1.0.10)</em></p>
+<em>ggplot2(v.3.4.2)</em> and <em>tidyverse(v.2.0.0)</em></p>
 <p><strong>loaded via a namespace (and not attached):</strong>
-<em>tidyselect(v.1.2.0)</em>, <em>xfun(v.0.39)</em>,
-<em>bslib(v.0.4.2)</em>, <em>colorspace(v.2.1-0)</em>,
-<em>vctrs(v.0.6.2)</em>, <em>generics(v.0.1.3)</em>,
-<em>htmltools(v.0.5.5)</em>, <em>utf8(v.1.2.3)</em>,
-<em>rlang(v.1.1.1)</em>, <em>jquerylib(v.0.1.4)</em>,
-<em>pillar(v.1.9.0)</em>, <em>reactR(v.0.4.4)</em>,
-<em>withr(v.2.5.0)</em>, <em>bit64(v.4.0.5)</em>,
-<em>RColorBrewer(v.1.1-3)</em>, <em>lifecycle(v.1.0.3)</em>,
-<em>munsell(v.0.5.0)</em>, <em>gtable(v.0.3.3)</em>,
-<em>visNetwork(v.2.1.2)</em>, <em>htmlwidgets(v.1.6.2)</em>,
-<em>evaluate(v.0.21)</em>, <em>knitr(v.1.43)</em>,
-<em>tzdb(v.0.4.0)</em>, <em>fastmap(v.1.1.1)</em>,
-<em>crosstalk(v.1.2.0)</em>, <em>parallel(v.4.2.3)</em>,
-<em>fansi(v.1.0.4)</em>, <em>Rcpp(v.1.0.10)</em>,
-<em>scales(v.1.2.1)</em>, <em>cachem(v.1.0.8)</em>,
+<em>ggdendro(v.0.1.23)</em>, <em>httr(v.1.4.6)</em>,
+<em>sass(v.0.4.6)</em>, <em>bit64(v.4.0.5)</em>,
 <em>vroom(v.1.6.3)</em>, <em>jsonlite(v.1.8.4)</em>,
-<em>bit(v.4.0.5)</em>, <em>hms(v.1.1.3)</em>, <em>digest(v.0.6.31)</em>,
-<em>stringi(v.1.7.12)</em>, <em>grid(v.4.2.3)</em>,
-<em>rprojroot(v.2.0.3)</em>, <em>cli(v.3.6.1)</em>,
-<em>tools(v.4.2.3)</em>, <em>magrittr(v.2.0.3)</em>,
-<em>sass(v.0.4.6)</em>, <em>crayon(v.1.5.2)</em>,
-<em>pkgconfig(v.2.0.3)</em>, <em>ellipsis(v.0.3.2)</em>,
-<em>timechange(v.0.2.0)</em>, <em>rmarkdown(v.2.21)</em>,
-<em>rstudioapi(v.0.14)</em>, <em>R6(v.2.5.1)</em> and
-<em>compiler(v.4.2.3)</em></p>
+<em>viridisLite(v.0.4.1)</em>, <em>bslib(v.0.4.2)</em>,
+<em>highr(v.0.10)</em>, <em>stats4(v.4.2.3)</em>,
+<em>GenomeInfoDbData(v.1.2.9)</em>, <em>pillar(v.1.9.0)</em>,
+<em>lattice(v.0.21-8)</em>, <em>digest(v.0.6.31)</em>,
+<em>XVector(v.0.38.0)</em>, <em>colorspace(v.2.1-0)</em>,
+<em>reactR(v.0.4.4)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>zlibbioc(v.1.44.0)</em>, <em>tzdb(v.0.4.0)</em>,
+<em>timechange(v.0.2.0)</em>, <em>farver(v.2.1.1)</em>,
+<em>generics(v.0.1.3)</em>, <em>IRanges(v.2.32.0)</em>,
+<em>ellipsis(v.0.3.2)</em>, <em>DT(v.0.28)</em>,
+<em>cachem(v.1.0.8)</em>, <em>withr(v.2.5.0)</em>,
+<em>lazyeval(v.0.2.2)</em>, <em>cli(v.3.6.1)</em>,
+<em>magrittr(v.2.0.3)</em>, <em>crayon(v.1.5.2)</em>,
+<em>evaluate(v.0.21)</em>, <em>fansi(v.1.0.4)</em>,
+<em>MASS(v.7.3-60)</em>, <em>tools(v.4.2.3)</em>,
+<em>data.table(v.1.14.8)</em>, <em>hms(v.1.1.3)</em>,
+<em>lifecycle(v.1.0.3)</em>, <em>plotly(v.4.10.1)</em>,
+<em>S4Vectors(v.0.36.0)</em>, <em>munsell(v.0.5.0)</em>,
+<em>Biostrings(v.2.66.0)</em>, <em>compiler(v.4.2.3)</em>,
+<em>jquerylib(v.0.1.4)</em>, <em>GenomeInfoDb(v.1.34.9)</em>,
+<em>rlang(v.1.1.1)</em>, <em>grid(v.4.2.3)</em>,
+<em>RCurl(v.1.98-1.12)</em>, <em>rstudioapi(v.0.14)</em>,
+<em>htmlwidgets(v.1.6.2)</em>, <em>crosstalk(v.1.2.0)</em>,
+<em>bitops(v.1.0-7)</em>, <em>labeling(v.0.4.2)</em>,
+<em>rmarkdown(v.2.21)</em>, <em>gtable(v.0.3.3)</em>,
+<em>R6(v.2.5.1)</em>, <em>zoo(v.1.8-12)</em>, <em>knitr(v.1.43)</em>,
+<em>fastmap(v.1.1.1)</em>, <em>bit(v.4.0.5)</em>,
+<em>utf8(v.1.2.3)</em>, <em>rprojroot(v.2.0.3)</em>,
+<em>stringi(v.1.7.12)</em>, <em>parallel(v.4.2.3)</em>,
+<em>Rcpp(v.1.0.10)</em>, <em>vctrs(v.0.6.2)</em>,
+<em>tidyselect(v.1.2.0)</em> and <em>xfun(v.0.39)</em></p>
 </div>
 </div>
 
