@@ -118,7 +118,7 @@ trim_logs <- here::here(
 ) %>% 
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
-  importNgsLogs()
+  importNgsLogs(which = "statistics")
 maxAdapt <- maxAdapterContent(trimFqc, asPercent = FALSE) %>% 
   ungroup() %>% 
   dplyr::select(-Filename) %>% 
