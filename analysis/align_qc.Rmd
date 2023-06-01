@@ -7,7 +7,7 @@ link-citations: true
 
 ```{r setup}
 conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
-if (conda_pre != ""){
+if (conda_pre != "") {
   conda_lib_path <- file.path(conda_pre, "lib", "R", "library")
   if (!dir.exists(conda_lib_path)) conda_lib_path <- NULL
   prev_paths <- .libPaths()
@@ -47,10 +47,13 @@ samples <- read_tsv(here::here(config$samples)) %>%
 bwt2_logs <- here::here("output", "bowtie2", glue("{samples$accession}.log")) %>% 
   setNames(samples$accession) %>% 
   .[file.exists(.)] 
+## This manages a bug which exists in Bioc 3.16 but is fixed in ngsReports 2.2.3
+.parseLogs <- ngsReports:::.parseDuplicationMetricsLogs
 duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metrics.txt")) %>%
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
-  importNgsLogs()
+  sapply(readLines, simplify = FALSE) %>% 
+  .parseLogs()
 ```
 
 ## Introduction
