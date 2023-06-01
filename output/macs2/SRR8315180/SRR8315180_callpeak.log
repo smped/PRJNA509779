@@ -1,4 +1,4 @@
-INFO  @ Sat, 27 May 2023 00:42:41: 
+INFO  @ Thu, 01 Jun 2023 15:04:32: 
 # Command line: callpeak -t data/deduplicated/SRR8315180.sorted.bam -c data/deduplicated/SRR8315192.sorted.bam -f BAM --bdg --SPMR -g hs --keep-dup all -q 0.05 -n SRR8315180 --outdir output/macs2/SRR8315180
 # ARGUMENTS LIST:
 # name = SRR8315180
@@ -17,71 +17,33 @@ INFO  @ Sat, 27 May 2023 00:42:41:
 # Paired-End mode is off
 # MACS will save fragment pileup signal per million reads
  
-INFO  @ Sat, 27 May 2023 00:42:41: #1 read tag files... 
-INFO  @ Sat, 27 May 2023 00:42:41: #1 read treatment tags... 
-INFO  @ Sat, 27 May 2023 00:42:57:  1000000 
-INFO  @ Sat, 27 May 2023 00:43:13:  2000000 
-INFO  @ Sat, 27 May 2023 00:43:29:  3000000 
-INFO  @ Sat, 27 May 2023 00:43:44:  4000000 
-INFO  @ Sat, 27 May 2023 00:44:02:  5000000 
-INFO  @ Sat, 27 May 2023 00:44:18:  6000000 
-INFO  @ Sat, 27 May 2023 00:44:33:  7000000 
-INFO  @ Sat, 27 May 2023 00:44:50:  8000000 
-INFO  @ Sat, 27 May 2023 00:45:04:  9000000 
-INFO  @ Sat, 27 May 2023 00:45:22:  10000000 
-INFO  @ Sat, 27 May 2023 00:45:39:  11000000 
-INFO  @ Sat, 27 May 2023 00:45:56:  12000000 
-INFO  @ Sat, 27 May 2023 00:46:13:  13000000 
-INFO  @ Sat, 27 May 2023 00:46:29:  14000000 
-INFO  @ Sat, 27 May 2023 00:46:45:  15000000 
-INFO  @ Sat, 27 May 2023 00:47:03:  16000000 
-INFO  @ Sat, 27 May 2023 00:47:18:  17000000 
-INFO  @ Sat, 27 May 2023 00:47:29: 17491800 reads have been read. 
-INFO  @ Sat, 27 May 2023 00:47:30: #1.2 read input tags... 
-INFO  @ Sat, 27 May 2023 00:47:45:  1000000 
-INFO  @ Sat, 27 May 2023 00:48:01:  2000000 
-INFO  @ Sat, 27 May 2023 00:48:18:  3000000 
-INFO  @ Sat, 27 May 2023 00:48:34:  4000000 
-INFO  @ Sat, 27 May 2023 00:48:51:  5000000 
-INFO  @ Sat, 27 May 2023 00:49:06:  6000000 
-INFO  @ Sat, 27 May 2023 00:49:21:  7000000 
-INFO  @ Sat, 27 May 2023 00:49:35:  8000000 
-INFO  @ Sat, 27 May 2023 00:49:49:  9000000 
-INFO  @ Sat, 27 May 2023 00:50:03:  10000000 
-INFO  @ Sat, 27 May 2023 00:50:16:  11000000 
-INFO  @ Sat, 27 May 2023 00:50:30:  12000000 
-INFO  @ Sat, 27 May 2023 00:50:44:  13000000 
-INFO  @ Sat, 27 May 2023 00:50:57:  14000000 
-INFO  @ Sat, 27 May 2023 00:51:11:  15000000 
-INFO  @ Sat, 27 May 2023 00:51:25:  16000000 
-INFO  @ Sat, 27 May 2023 00:51:38:  17000000 
-INFO  @ Sat, 27 May 2023 00:51:52:  18000000 
-INFO  @ Sat, 27 May 2023 00:52:06:  19000000 
-INFO  @ Sat, 27 May 2023 00:52:19:  20000000 
-INFO  @ Sat, 27 May 2023 00:52:30: 20544270 reads have been read. 
-INFO  @ Sat, 27 May 2023 00:52:30: #1 tag size is determined as 63 bps 
-INFO  @ Sat, 27 May 2023 00:52:30: #1 tag size = 63.0 
-INFO  @ Sat, 27 May 2023 00:52:30: #1  total tags in treatment: 17491800 
-INFO  @ Sat, 27 May 2023 00:52:30: #1  total tags in control: 20544270 
-INFO  @ Sat, 27 May 2023 00:52:30: #1 finished! 
-INFO  @ Sat, 27 May 2023 00:52:30: #2 Build Peak Model... 
-INFO  @ Sat, 27 May 2023 00:52:30: #2 looking for paired plus/minus strand peaks... 
-INFO  @ Sat, 27 May 2023 00:52:44: #2 number of paired peaks: 7492 
-INFO  @ Sat, 27 May 2023 00:52:44: start model_add_line... 
-INFO  @ Sat, 27 May 2023 00:52:47: start X-correlation... 
-INFO  @ Sat, 27 May 2023 00:52:47: end of X-cor 
-INFO  @ Sat, 27 May 2023 00:52:47: #2 finished! 
-INFO  @ Sat, 27 May 2023 00:52:47: #2 predicted fragment length is 137 bps 
-INFO  @ Sat, 27 May 2023 00:52:47: #2 alternative fragment length(s) may be 137 bps 
-INFO  @ Sat, 27 May 2023 00:52:47: #2.2 Generate R script for model : output/macs2/SRR8315180/SRR8315180_model.r 
-INFO  @ Sat, 27 May 2023 00:52:48: #3 Call peaks... 
-INFO  @ Sat, 27 May 2023 00:52:48: #3 Pre-compute pvalue-qvalue table... 
-INFO  @ Sat, 27 May 2023 01:03:22: #3 In the peak calling step, the following will be performed simultaneously: 
-INFO  @ Sat, 27 May 2023 01:03:22: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... SRR8315180_treat_pileup.bdg 
-INFO  @ Sat, 27 May 2023 01:03:22: #3   Write bedGraph files for control lambda (after scaling if necessary)... SRR8315180_control_lambda.bdg 
-INFO  @ Sat, 27 May 2023 01:03:22: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
-INFO  @ Sat, 27 May 2023 01:03:22: #3 Call peaks for each chromosome... 
-INFO  @ Sat, 27 May 2023 01:13:58: #4 Write output xls file... output/macs2/SRR8315180/SRR8315180_peaks.xls 
-INFO  @ Sat, 27 May 2023 01:13:59: #4 Write peak in narrowPeak format file... output/macs2/SRR8315180/SRR8315180_peaks.narrowPeak 
-INFO  @ Sat, 27 May 2023 01:13:59: #4 Write summits bed file... output/macs2/SRR8315180/SRR8315180_summits.bed 
-INFO  @ Sat, 27 May 2023 01:13:59: Done! 
+INFO  @ Thu, 01 Jun 2023 15:04:32: #1 read tag files... 
+INFO  @ Thu, 01 Jun 2023 15:04:32: #1 read treatment tags... 
+INFO  @ Thu, 01 Jun 2023 15:04:46:  1000000 
+INFO  @ Thu, 01 Jun 2023 15:04:59:  2000000 
+INFO  @ Thu, 01 Jun 2023 15:05:12:  3000000 
+INFO  @ Thu, 01 Jun 2023 15:05:25:  4000000 
+INFO  @ Thu, 01 Jun 2023 15:05:39:  5000000 
+INFO  @ Thu, 01 Jun 2023 15:05:52:  6000000 
+INFO  @ Thu, 01 Jun 2023 15:06:05:  7000000 
+INFO  @ Thu, 01 Jun 2023 15:06:18:  8000000 
+INFO  @ Thu, 01 Jun 2023 15:06:32:  9000000 
+INFO  @ Thu, 01 Jun 2023 15:06:45:  10000000 
+INFO  @ Thu, 01 Jun 2023 15:06:58:  11000000 
+INFO  @ Thu, 01 Jun 2023 15:07:11:  12000000 
+INFO  @ Thu, 01 Jun 2023 15:07:25:  13000000 
+INFO  @ Thu, 01 Jun 2023 15:07:38:  14000000 
+INFO  @ Thu, 01 Jun 2023 15:07:51:  15000000 
+INFO  @ Thu, 01 Jun 2023 15:08:05:  16000000 
+INFO  @ Thu, 01 Jun 2023 15:08:10: 16373508 reads have been read. 
+INFO  @ Thu, 01 Jun 2023 15:08:10: #1.2 read input tags... 
+INFO  @ Thu, 01 Jun 2023 15:08:23:  1000000 
+INFO  @ Thu, 01 Jun 2023 15:08:37:  2000000 
+INFO  @ Thu, 01 Jun 2023 15:08:50:  3000000 
+INFO  @ Thu, 01 Jun 2023 15:09:03:  4000000 
+INFO  @ Thu, 01 Jun 2023 15:09:16:  5000000 
+INFO  @ Thu, 01 Jun 2023 15:09:29:  6000000 
+INFO  @ Thu, 01 Jun 2023 15:09:42:  7000000 
+INFO  @ Thu, 01 Jun 2023 15:09:55:  8000000 
+INFO  @ Thu, 01 Jun 2023 15:10:09:  9000000 
+INFO  @ Thu, 01 Jun 2023 15:10:23:  10000000 
