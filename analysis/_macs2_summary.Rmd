@@ -112,6 +112,7 @@ This section provides a simple series of visualisations to aid in the detection 
 - **Library Sizes**: These are the total number of alignments contained in each `bam` file, as passed to `macs2 callpeak` [@Zhang2008-ms]
 - **Peaks Detected**: The number of peaks detected within each individual replicate are shown here, and provide clear guidance towards any samples where the IP may have been less successful, or there may be possible sample mis-labelling. 
 - **Peaks Per Million Reads**: Whilst no clear benchmark is defined, given the variability of peak distributions across different ChIP targets and treatment, this provides a useful visualisation able to show poorly performing samples next to other samples with the same ChIP target.
+- **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step
 
 
 ```{r macs2-logs-individual}
@@ -209,6 +210,30 @@ macs2_logs %>%
   labs(x = "Sample", y = "Peaks per Million Reads")
 ```
 
+### Cross Correlations
+
+```{r plot-cross-correlations, fig.cap = "Cross correlations between reads. The distance corresponding to the maximum height provides a good estimate of the most common fragment length. Relative heights between replicate samples also indicate the success of the immuno-precipitation."}
+here::here(
+  macs2_path, accessions, glue("{accessions}_cross_correlations.tsv")
+  ) %>%
+  lapply(read_tsv) %>%
+  setNames(accessions) %>%
+  bind_rows(.id = "accession") %>%
+  left_join(samples, by = "accession") %>%
+  ggplot(aes(fl, correlation, colour = treatment)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(se = FALSE, method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  facet_wrap(~accession) +
+  scale_colour_manual(values = treat_colours) +
+  labs(
+    x = "Distance (bp)",
+    y = "Cross Correlation",
+    colour = "Treatment"
+  ) +
+  ggtitle(
+    glue("{target}: Cross Correlations")
+  )
+```
 
 ## Individual Replicates
 
