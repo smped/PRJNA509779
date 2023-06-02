@@ -1,3 +1,6 @@
+def get_mem_mb(wildcards, threads):
+    return threads * 4096
+
 rule samtools_sort:
     input:
          os.path.join(aln_path, "{accession}.bam"),
@@ -7,11 +10,27 @@ rule samtools_sort:
     log:
         "workflow/logs/samtools_sort/{accession}.log",
     params:
-        extra = config['params']['samtools']['sort'],
+        sort = config['params']['samtools']['sort'],
+        view = config['params']['samtools']['view']
     threads: 8
     resources:
+        mem_mb = get_mem_mb,
         runtime = "2h"
-    script: "../scripts/samtools_sort.py"
+    shell:
+        """
+        TEMPDIR=$(mktemp -d -t samXXXXXXXXXX)
+        echo -e "Writing to $TEMPDIR" >>{log}
+
+        samtools view -h {params.view} {input} |\
+            samtools sort {params.sort} \
+                -@ {threads} -m 4G \
+                -T $TEMPDIR \
+                -O BAM \
+                -o {output} 2>> {log}
+
+        echo -e "Deleting $TEMPDIR" >> {log}
+        rm -rf $TEMPDIR
+        """
 
 rule samtools_index:
     input:

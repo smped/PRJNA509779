@@ -5,6 +5,18 @@
 #' @details
 #' Uses the information provided in the config file to update the navigation
 #' bar
+#'
+
+#' Set the .libPaths() first in case there are conflicts in a conda environment
+conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
+if (conda_pre != ""){
+  conda_lib_path <- file.path(conda_pre, "lib", "R", "library")
+  if (!dir.exists(conda_lib_path)) conda_lib_path <- NULL
+  prev_paths <- .libPaths()
+  paths_to_set <- unique(c(conda_lib_path, prev_paths))
+  .libPaths(paths_to_set)
+}
+
 library(tidyverse)
 library(yaml)
 library(glue)
@@ -63,7 +75,7 @@ if (!is.null(site_yaml$output_dir)) {
 site_yaml$navbar$left[[3]]$menu <- lapply(
   targets,
   function(x) {
-    list(text = x, href = glue("{str_to_lower(x)}_macs2_summary.html"))
+    list(text = x, href = glue("{x}_macs2_summary.html"))
   }
 )
 

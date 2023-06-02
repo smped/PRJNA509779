@@ -5,7 +5,15 @@ bibliography: references.bib
 link-citations: true
 ---
 
-```{r setup}
+```{r setup, echo = FALSE}
+conda_pre <- system2("echo", "$CONDA_PREFIX", stdout = TRUE)
+if (conda_pre != "") {
+  conda_lib_path <- file.path(conda_pre, "lib", "R", "library")
+  if (!dir.exists(conda_lib_path)) conda_lib_path <- NULL
+  prev_paths <- .libPaths()
+  paths_to_set <- unique(c(conda_lib_path, prev_paths))
+  .libPaths(paths_to_set)
+}
 knitr::opts_chunk$set(
   message = FALSE, warning = FALSE,
   fig.height = 8, fig.width = 10, fig.align = 'center'
@@ -41,7 +49,12 @@ n <- length(samples$accession)
 pal <- createPalette(n, c("#2A95E8", "#E5629C"), range = c(10, 60), M = 100000)
 names(pal) <- samples$accession
 colours <- scale_colour_manual(values = pal)
-fl <- here::here("output", "qc", "trimmed", glue("{samples$accession}_fastqc.zip")) %>% 
+qc_path <- here::here(config$paths$qc, "trimmed")
+rel_qc_path <- ifelse(
+  grepl("docs", qc_path), gsub(".+docs", ".", qc_path),
+  gsub(here::here(), "..", qc_path)
+)
+fl <- file.path(qc_path, glue("{samples$accession}_fastqc.zip")) %>% 
   setNames(samples$accession)
 trimFqc <- FastqcDataList(fl[file.exists(fl)])
 names(trimFqc) <- names(fl)[file.exists(fl)]
@@ -53,7 +66,7 @@ This page provides summary statistics and diagnostics for the data after trimmin
 Most data was obtained from [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) and parsed using the Bioconductor package ngsReports [@Ward2020-fn].
 FastQC reports for `r length(trimFqc)` files were found.
 
-A conventional MultiQC report [@Ewels2016-ix] can also be found [here](../output/qc/trimmed/multiqc.html)
+A conventional MultiQC report [@Ewels2016-ix] can also be found [here](`r rel_qc_path`/multiqc.html)
 
 ## Data Summary {.tabset}
 
@@ -81,9 +94,7 @@ div(
       columns = list(
         Filename = colDef(
           cell = function(value) htmltools::tags$a(
-            href = file.path(
-              "..", "output", "qc", "trimmed", glue("{value}_fastqc.html")
-            ), 
+            href = file.path(rel_qc_path, glue("{value}_fastqc.html")), 
             target = "_blank", 
             value
           ),
@@ -110,7 +121,7 @@ trim_logs <- here::here(
 ) %>% 
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
-  importNgsLogs()
+  importNgsLogs(which = "statistics")
 maxAdapt <- maxAdapterContent(trimFqc, asPercent = FALSE) %>% 
   ungroup() %>% 
   dplyr::select(-Filename) %>% 

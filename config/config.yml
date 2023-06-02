@@ -1,7 +1,14 @@
 samples: "config/samples.tsv"
 
+paths:
+  fastq: "data/fastq"
+  aligned: "data/aligned"
+  deduplicated: "data/deduplicated"
+  macs2: "output/macs2"
+  qc: "docs/qc"
+
 params:
-  adapterremoval: 
+  adapterremoval:
     extra: "--maxns 1 --minlength 50 --minquality 30 --gzip --trimqualities"
     adapter1: "--adapter1 AGATCGGAAGAGC"
   bowtie2: ""
@@ -12,9 +19,11 @@ params:
   markduplicates: "--REMOVE_DUPLICATES true"
   multiqc: ""
   samtools:
-    sort: "-m 4G"
+    sort: ""
+    view: "-q2"
     index: ""
 
-reference: 
+reference:
   path: "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/"
   index: "GRCh37"
+  name: "GRCh37"
