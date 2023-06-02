@@ -1,3 +1,12 @@
+# def get_treats_from_target(wildcards):
+#     ind = df.target == wildcards.target
+#     samples = set(df[ind]['treatment'])
+#     bam = expand(
+#         os.path.join(dedup_path, "{f}.sorted.bam"),
+#         f = samples
+#     )
+#     return(bam)
+
 rule create_site_yaml:
     input: 
         config['samples']
