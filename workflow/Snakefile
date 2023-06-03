@@ -40,7 +40,7 @@ def check_path(x):
 		os.makedirs(x)
 	assert (os.access(x, os.W_OK)), x + " is not writeable"
 
-	
+
 fq_path = config['paths']['fastq']
 check_path(fq_path)
 
@@ -67,7 +67,7 @@ ref_pre = os.path.join(ref_path, config['reference']['index'])
 # Define se fastq output only
 ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
 ALL_BAM = expand(
-	os.path.join(dedup_path, "{f}.sorted.{suffix}"), 
+	os.path.join(dedup_path, "{f}.sorted.{suffix}"),
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
 ALL_QC = expand(
@@ -76,7 +76,7 @@ ALL_QC = expand(
 )
 ALL_QC.extend(
 	expand(
-		os.path.join(qc_path, "{step}", "multiqc.html"), 
+		os.path.join(qc_path, "{step}", "multiqc.html"),
 		step = ['raw', 'trimmed']
 	)
 )
@@ -117,7 +117,7 @@ ALL_HTML = expand(
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_QC)
 # ALL_OUTPUTS.extend(ALL_BAM)
-# ALL_OUTPUTS.extend(ALL_PEAKS)
+ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
 ALL_OUTPUTS.extend(ALL_HTML)
 
