@@ -31,7 +31,7 @@ rule compile_index_html:
         runtime = "10m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """
 
 rule compile_qc_html:
@@ -54,7 +54,7 @@ rule compile_qc_html:
         runtime = "10m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """
 
 rule compile_alignment_qc_html:
@@ -78,7 +78,7 @@ rule compile_alignment_qc_html:
         runtime = "5m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """		
 
 rule create_macs2_summary:
@@ -98,7 +98,7 @@ rule create_macs2_summary:
         Rscript --vanilla \
             {input.r} \
             {wildcards.target} \
-            {output.rmd} &>> {log}
+            {output.rmd} >> {log} 2>&1
 
         ## Add the module directly as literal code
         cat {input.rmd} >> {output.rmd}
@@ -131,5 +131,5 @@ rule compile_macs2_summary:
         runtime = "20m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """

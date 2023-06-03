@@ -18,7 +18,7 @@ rule get_cross_correlations:
         Rscript --vanilla \
             {input.script} \
             {input.bam} \
-            {output} &>> {log}
+            {output} >> {log} 2>&1
         """
 
 rule get_frip:
@@ -43,5 +43,5 @@ rule get_frip:
             {input.script} \
             {input.peaks} \
             {input.bam} \
-            {output} &>> {log}
+            {output} >> {log} 2>&1
         """ 
