@@ -36,6 +36,7 @@ library(yaml)
 library(ngsReports)
 library(ComplexUpset)
 library(extraChIPs)
+library(ggrepel)
 ```
 
 ```{r options}
@@ -176,52 +177,72 @@ macs2_logs %>%
 
 ### Peaks Detected
 
-```{r plot-macs2-peaks-individual, fig.height=6, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria for `macs2 callpeak` (FDR < {config$peaks$macs2$fdr}) are provided. Any samples marked for exclusion are coloured as indicated in the figure legend.*")}
-suppressWarnings(
-  macs2_logs %>%
-    ggplot(
-      aes(name, total_peaks)
-    ) +
-    geom_col(fill = "royalblue") +
-    geom_label(
-      aes(x = name, y = total_peaks, label = lab),
-      data = . %>%
-        dplyr::filter(total_peaks > 0) %>% 
-        mutate(
-          lab = comma(total_peaks, accuracy = 1),
-          total = total_peaks
-        ),
-      inherit.aes = FALSE,
-      show.legend = FALSE
-    ) +
-    facet_grid(~treatment, scales = "free_x", space = "free_x") +
-    scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
-    labs(
-      x = "Sample",
-      y = "Total Peaks",
-      fill = "QC"
-    ) +
-    ggtitle(
-      glue("{target}: Number of Peaks")
-    )
-)
+```{r plot-macs2-peaks-individual, fig.height=6, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria are shown as labels.*")}
+macs2_logs %>%
+  ggplot(
+    aes(name, total_peaks)
+  ) +
+  geom_col(fill = "royalblue") +
+  geom_label(
+    aes(x = name, y = total_peaks, label = lab),
+    data = . %>%
+      dplyr::filter(total_peaks > 0) %>% 
+      mutate(
+        lab = comma(total_peaks, accuracy = 1),
+        total = total_peaks
+      ),
+    inherit.aes = FALSE, nudge_y = max(macs2_logs$total_peaks)/30,
+    show.legend = FALSE
+  ) +
+  facet_grid(~treatment, scales = "free_x", space = "free_x") +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  labs(
+    x = "Sample",
+    y = "Total Peaks",
+    fill = "QC"
+  ) +
+  ggtitle(
+    glue("{target}: Number of Peaks")
+  )
 ```
 
 ### Peaks Per Million Reads
 
-```{r peaks-per-million, fig.cap = "*Peaks per million reads. *"}
+```{r peaks-per-million, fig.cap = "*Peaks per million reads.*"}
 macs2_logs %>% 
   mutate(ppm = 1e6 * total_peaks / n_tags_treatment) %>% 
   ggplot(aes(name, ppm)) +
   geom_col(fill = "royalblue") +
   facet_wrap(~treatment) +
   scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
-  labs(x = "Sample", y = "Peaks per Million Reads")
+  labs(x = "Sample", y = "Peaks per Million Reads") +
+  ggtitle(
+    glue("{target}: Peaks Per Million Reads")
+  )
+```
+
+### FRIP
+
+```{r plot-frip, fig.cap = "*Fraction of Reads in Peaks. The common-use threshold of 1% is shown as the dashed line.*"}
+here::here(macs2_path, accessions, paste0(accessions, "_frip.tsv")) %>%
+  setNames(accessions) %>%
+  lapply(read_tsv) %>%
+  bind_rows(.id = "accession") %>%
+  left_join(samples, by = "accession") %>%
+  ggplot(aes(accession, frip)) +
+  geom_col(fill = "royalblue") +
+  geom_hline(yintercept = 0.01, colour = "grey", linetype = 2) +
+  facet_wrap(~treatment) +
+  labs(x = "Sample", y = "FRIP") +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = percent) +
+  ggtitle(
+    glue("{target}: Fraction of Reads In Peaks")
+  )
 ```
 
 ### Cross Correlations
 
-```{r plot-cross-correlations, fig.cap = "Cross correlations between reads. The distance corresponding to the maximum height provides a good estimate of the most common fragment length. Relative heights between replicate samples also indicate the success of the immuno-precipitation."}
+```{r plot-cross-correlations, fig.cap = "*Cross correlations between reads. The distance corresponding to the maximum height provides a good estimate of the most common fragment length, with labels indicating these lengths. Relative heights between replicate samples also indicate the success of the immuno-precipitation.*"}
 here::here(
   macs2_path, accessions, glue("{accessions}_cross_correlations.tsv")
   ) %>%
@@ -232,6 +253,11 @@ here::here(
   ggplot(aes(fl, correlation, colour = treatment)) +
   geom_point(alpha = 0.1) +
   geom_smooth(se = FALSE, method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  geom_label_repel(
+    aes(label = fl),
+    data = . %>% dplyr::filter(correlation == max(correlation), .by = accession),
+    show.legend = FALSE
+  ) +
   facet_wrap(~accession) +
   scale_colour_manual(values = treat_colours) +
   labs(

@@ -115,7 +115,10 @@ rule compile_macs2_summary:
         ),
         individual = lambda wildcards: expand(
             os.path.join(macs2_path, "{accession}", "{accession}_{f}"),
-            f = ['callpeak.log', 'peaks.narrowPeak', 'cross_correlations.tsv'],
+            f = [
+                'callpeak.log', 'peaks.narrowPeak', 'cross_correlations.tsv',
+                'frip.tsv'
+            ],
             accession = set(df[df.target == wildcards.target]['accession'])
         ),
         yml = "analysis/_site.yml"
