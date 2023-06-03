@@ -1,5 +1,8 @@
 Module	Section	Sample Name	Source
-FastQC	all_sections	SRR8315181	/data/tki_bodl/pederson/prepareChIPs/output/qc/raw/SRR8315181_fastqc.zip
-FastQC	all_sections	SRR8315182	/data/tki_bodl/pederson/prepareChIPs/output/qc/raw/SRR8315182_fastqc.zip
-FastQC	all_sections	SRR8315180	/data/tki_bodl/pederson/prepareChIPs/output/qc/raw/SRR8315180_fastqc.zip
-FastQC	all_sections	SRR8315192	/data/tki_bodl/pederson/prepareChIPs/output/qc/raw/SRR8315192_fastqc.zip
+FastQC	all_sections	SRR8315180	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315180_fastqc.zip
+FastQC	all_sections	SRR8315183	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315183_fastqc.zip
+FastQC	all_sections	SRR8315184	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315184_fastqc.zip
+FastQC	all_sections	SRR8315181	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315181_fastqc.zip
+FastQC	all_sections	SRR8315185	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315185_fastqc.zip
+FastQC	all_sections	SRR8315182	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315182_fastqc.zip
+FastQC	all_sections	SRR8315192	/data/tki_bodl/pederson/PRJNA509779/docs/qc/raw/SRR8315192_fastqc.zip
