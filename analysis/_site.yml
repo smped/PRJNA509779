@@ -15,12 +15,8 @@ navbar:
       href: align_qc.html
   - text: Results
     menu:
-    - text: AR
-      href: AR_macs2_summary.html
     - text: ERa
       href: ERa_macs2_summary.html
-    - text: H3K27ac
-      href: H3K27ac_macs2_summary.html
   right:
   - icon: fa-github
     href: https://github.com/smped/prepareChIPs

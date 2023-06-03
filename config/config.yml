@@ -1,4 +1,4 @@
-samples: "config/PRJNA509779.tsv"
+samples: "config/samples.tsv"
 
 paths:
   fastq: "data/fastq"
@@ -24,6 +24,6 @@ params:
     index: ""
 
 reference:
-  path: "/Volumes/Accelsior-4M2/shared/reference_genomes/Homo_sapiens/GENCODE_v41/GRCh37/bwt2/"
+  path: "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/"
   index: "GRCh37"
   name: "GRCh37"

@@ -2,4 +2,7 @@ Sample	Filename	File type	Encoding	Total Sequences	Sequences flagged as poor qua
 SRR8315180	SRR8315180.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	19871195.0	0.0	35-76	41.0	94.29715158413367	75.05368972525307	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
 SRR8315181	SRR8315181.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	21393665.0	0.0	35-76	41.0	94.05933441293793	74.95532182073525	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
 SRR8315182	SRR8315182.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	21524645.0	0.0	35-76	41.0	93.69918539614243	74.92543816634374	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
+SRR8315183	SRR8315183.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	19702604.0	0.0	35-76	41.0	94.11773078183866	74.82671549405347	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
+SRR8315184	SRR8315184.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	22258868.0	0.0	35-76	41.0	93.79528874116171	74.97752383454541	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
+SRR8315185	SRR8315185.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	21989625.0	0.0	35-76	41.0	93.98880524874538	74.9854252175742	76	pass	pass	pass	fail	warn	pass	warn	pass	warn	pass
 SRR8315192	SRR8315192.fastq.gz	Conventional base calls	Sanger / Illumina 1.9	23022741.0	0.0	35-76	40.0	95.21040509723755	75.14611023074967	76	pass	pass	pass	fail	warn	pass	warn	pass	pass	pass
