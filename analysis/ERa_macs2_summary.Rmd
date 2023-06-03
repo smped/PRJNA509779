@@ -36,7 +36,6 @@ library(yaml)
 library(ngsReports)
 library(ComplexUpset)
 library(extraChIPs)
-library(ggrepel)
 ```
 
 ```{r options}
@@ -151,7 +150,7 @@ macs2_logs %>%
 
 ### Library Sizes
 
-```{r plot-macs2-libsize-individual, fig.height=6, fig.cap = glue("*Library sizes for each {target} sample. The horizontal line indicates the mean library size for each treatment group. Any samples marked for exclusion as described above will be indicated with an (F)*")}
+```{r plot-macs2-libsize-individual, fig.cap = glue("*Library sizes for each {target} sample. The horizontal line indicates the mean library size for each treatment group. Any samples marked for exclusion as described above will be indicated with an (F)*")}
 macs2_logs %>%
   ggplot(
     aes(name, n_tags_treatment)
@@ -177,7 +176,7 @@ macs2_logs %>%
 
 ### Peaks Detected
 
-```{r plot-macs2-peaks-individual, fig.height=6, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria are shown as labels.*")}
+```{r plot-macs2-peaks-individual, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria are shown as labels.*")}
 macs2_logs %>%
   ggplot(
     aes(name, total_peaks)
@@ -253,10 +252,12 @@ here::here(
   ggplot(aes(fl, correlation, colour = treatment)) +
   geom_point(alpha = 0.1) +
   geom_smooth(se = FALSE, method = 'gam', formula = y ~ s(x, bs = "cs")) +
-  geom_label_repel(
+  geom_label(
     aes(label = fl),
-    data = . %>% dplyr::filter(correlation == max(correlation), .by = accession),
-    show.legend = FALSE
+    data = . %>% 
+      mutate(correlation = correlation + 0.02 * max(correlation)) %>% 
+      dplyr::filter(correlation == max(correlation), .by = accession),
+    show.legend = FALSE, alpha = 0.7
   ) +
   facet_wrap(~accession) +
   scale_colour_manual(values = treat_colours) +
