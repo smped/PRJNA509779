@@ -120,9 +120,11 @@ All resultant bam files will be sorted and indexed.
 
 This is performed using [`macs2 callpeak`](https://pypi.org/project/MACS2/).
 
-- Peak calling will be performed on a) each sample individually, and b) on merged samples for those sharing a common ChIP target and treatment group.
+- Peak calling will be performed on:
+    a. each sample individually, and 
+    b. merged samples for those sharing a common ChIP target and treatment group.
 - Coverage bigWig files for each individual sample are produced using CPM values (i.e. Signal Per Million Reads, SPMR)
-- For all combinations of target and treatment coverage bigWig files are also produced, along with fold-enrichment
+- For all combinations of target and treatment coverage bigWig files are also produced, along with fold-enrichment bigWig files
 
 ### Outputs
 
@@ -132,4 +134,4 @@ This is performed using [`macs2 callpeak`](https://pypi.org/project/MACS2/).
 	+ callpeak log files are also added to this directory
 - Merged outputs are written to `output/macs2/{target}/`
 	+ bedGraph Files are also converted to bigWig and marked with `temp()`
-	+ Fold-Enrichment bigWig files are also created wit the original bedGraph files marked with `temp()`
+	+ Fold-Enrichment bigWig files are also created with the original bedGraph files marked with `temp()`
