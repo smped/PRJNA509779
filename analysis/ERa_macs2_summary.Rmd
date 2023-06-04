@@ -122,7 +122,7 @@ This section provides a simple series of visualisations to aid in the detection 
 - **Peaks Detected**: The number of peaks detected within each individual replicate are shown here, and provide clear guidance towards any samples where the IP may have been less successful, or there may be possible sample mis-labelling. 
 - **Peak Widths**: The peak widths for each sample are shown as a percentile to capture the overall distribution of widths
 - **FRIP**: The Fraction of Reads in Peaks is a well-known ChIP-Seq metric for determining the success of the immuno-precipitation step [@Landt2012-tn]
-- **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step [@LunSmythCsaw2014]
+- **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step [@Landt2012-tn]
 
 
 ```{r macs2-logs-individual}
@@ -441,7 +441,7 @@ merged_logs %>%
 
 ### Merged Peak Overlaps
 
-```{r merged-peak-overlaps, fig.cap = "*Overlap between peaks in each treatment-specific set of peaks called by merging replicates.*"}
+```{r merged-peak-overlaps, fig.width=ifelse(length(treat_colours) > 2, 10, 8), fig.cap = "*Overlap between peaks in each treatment-specific set of peaks called by merging replicates.*"}
 plotOverlaps(merged_peaks, set_col = treat_colours)
 ```
 
