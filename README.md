@@ -23,3 +23,14 @@ here::here("config/SraRunTable.txt") %>%
 		here::here("config/PRJNA509779.tsv")
 	)
 ```
+
+It should be noted that this workflow is currently incompatible with OSX-based systems.
+There are two incompatibilities.
+
+1. `fasterq-dump` has a bug which is specific to conda environments. This has been updated in v3.0.3 bu this patch has not yet been made available to `conda` environments for OSX.
+2. An intermittent glitch appears in OSX-based R sessions, namely
+```
+Error in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y,  : 
+  polygon edge not found
+```
+The fix for this is currently undefined

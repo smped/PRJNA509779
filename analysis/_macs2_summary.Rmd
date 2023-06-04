@@ -112,7 +112,7 @@ This section provides a simple series of visualisations to aid in the detection 
 - **Library Sizes**: These are the total number of alignments contained in each `bam` file, as passed to `macs2 callpeak` [@Zhang2008-ms]
 - **Peaks Detected**: The number of peaks detected within each individual replicate are shown here, and provide clear guidance towards any samples where the IP may have been less successful, or there may be possible sample mis-labelling. 
 - **Peak Widths**: The peak widths for each sample are shown as a percentile to capture the overall distribution of widths
-- **FRIP**: The Fraction of Reads in Peaks is a well-known ChIP-Seq metric for determining the success of the immuno-precipitation step
+- **FRIP**: The Fraction of Reads in Peaks is a well-known ChIP-Seq metric for determining the success of the immuno-precipitation step [@Landt2012-tn]
 - **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step [@LunSmythCsaw2014]
 
 

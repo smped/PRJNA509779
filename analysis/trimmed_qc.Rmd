@@ -121,7 +121,9 @@ trim_logs <- here::here(
 ) %>% 
   setNames(samples$accession) %>% 
   .[file.exists(.)] %>% 
-  importNgsLogs(which = "statistics")
+  importNgsLogs(which = "statistics") %>% 
+  mutate(Filename = str_remove_all(Filename, ".settings")) %>% 
+  left_join(samples, by = c("Filename" = "accession"))
 maxAdapt <- maxAdapterContent(trimFqc, asPercent = FALSE) %>% 
   ungroup() %>% 
   dplyr::select(-Filename) %>% 
@@ -133,36 +135,36 @@ maxAdapt <- maxAdapterContent(trimFqc, asPercent = FALSE) %>%
 ### Retained Reads
 
 ```{r plot-retained, fig.cap = "*Summary of retained and discarded reads from each library. The percentage of reads retained or discarded in each library is shown using labels.*"}
+max_reads <- max(trim_logs$`Total number of reads`)
 trim_logs %>% 
   dplyr::select(
-    Filename, 
+    Filename, target, treatment,
     Retained = `Number of retained reads`, 
     Discarded = `Number of discarded mate 1 reads`
   ) %>% 
   pivot_longer(cols = ends_with("ed"), names_to = "Status", values_to = "Reads") %>% 
-  mutate(
-    Filename = str_remove_all(Filename, ".settings") %>% as.factor(),
-    Status = as.factor(Status)
-  ) %>% 
+  mutate(Status = as.factor(Status)) %>% 
   arrange(Filename, desc(Status)) %>% 
   mutate(
-    cumsum = cumsum(Reads), p = Reads / sum(Reads), .by = Filename
+    y = cumsum(Reads), p = Reads / sum(Reads), .by = Filename,
+    treatment = str_replace_na(treatment, "")
   ) %>% 
-  mutate(y = cumsum - 0.5 * Reads) %>% 
+  mutate(y = ifelse(Status == "Retained", 0.925 * y, y - 0.5*Reads)) %>% 
   ggplot(aes(Filename, Reads, fill = Status)) +
   geom_col() +
   geom_label(
     aes(Filename, y, label = percent(p, 0.1)),
-    data = . %>% dplyr::filter(p > 0.01),
-    alpha = 0.7, fill = "white", show.legend = FALSE
+    size = 3.5, alpha = 0.7, fill = "white", show.legend = FALSE
   ) +
+  facet_grid(target +treatment ~ ., scales = "free", space = "free") +
   scale_y_continuous(
     labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
   ) +
   scale_fill_brewer(palette = "Set1") +
   labs(y = "Reads (millions)") +
   theme_bw() +
-  myTheme
+  myTheme +
+  coord_flip()
 ```
 
 Of the entire set of files, the ranges of values for all possible remaining adapter sequences were
