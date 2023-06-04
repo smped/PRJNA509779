@@ -64,7 +64,7 @@ snakemake --use-conda --until get_fastq --cores 2
 - Downloaded files will be gzipped and written to `data/fastq/raw`.
 - `FastQC` and `MultiQC` will also be run, with output in `docs/qc/raw`
 
-Both of these directories are able to bet specified as relative paths in `config.yml`
+Both of these directories are able to be specified as relative paths in `config.yml`
 
 ## Read Filtering
 
@@ -130,6 +130,6 @@ This is performed using [`macs2 callpeak`](https://pypi.org/project/MACS2/).
 	+ Peaks are written in `narrowPeak` format along with `summits.bed`
 	+ bedGraph files are automatically converted to bigWig files, and the originals are marked with `temp()` for subsequent deletion
 	+ callpeak log files are also added to this directory
-- Merged outputs are written to `output/macs2/{target}/{treatment}/`
+- Merged outputs are written to `output/macs2/{target}/`
 	+ bedGraph Files are also converted to bigWig and marked with `temp()`
-	+ Fold-Enrichment bigWig files are also created withe original bedGraph files marked with `temp()`
+	+ Fold-Enrichment bigWig files are also created wit the original bedGraph files marked with `temp()`
