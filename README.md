@@ -9,8 +9,10 @@ The steps implemented are:
 4. Deduplicate Alignments using `Picard MarkDuplicates`
 5. Call Macs2 Peaks using `macs2`
 
+A pdf of the rulegraph is available [here](workflow/rules/rulegraph.pdf)
+
 Full details for each step are given below.
-Any additional parameters for tools can be specified using `config/config.yml`.
+Any additional parameters for tools can be specified using `config/config.yml`, along with many of the requisite paths
 
 To run the workflow with default settings, simply run as follows (after editing `config/samples.tsv`)
 
