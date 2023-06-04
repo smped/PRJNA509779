@@ -117,7 +117,9 @@ plotSummary(rawFqc) + myTheme
 
 
 ```{r plot-read-totals, fig.cap = "*Raw library sizes showing estimated duplication levels*"}
-plotReadTotals(rawFqc, vertBars = FALSE, divBy = 1e6) + myTheme
+p <- plotReadTotals(rawFqc, divBy = 1e6) + myTheme
+p$data <- left_join(p$data, samples, by = c("Filename" = "accession"))
+p + facet_grid(target + treatment ~ ., scales = "free", space = "free")
 ```
 
 
@@ -268,7 +270,7 @@ plotDupLevels(
 
 ### Adapter Content 
 
-```{r plot-adapter-content, fig.cap = "*Total Adapter Content across all samples. If the total is below 0.1% an empty plot will be shown*"}
+```{r plot-adapter-content, fig.cap = "*Total Adapter Content across all samples. If the total is below 0.1% an empty plot will be shown.*"}
 plotAdapterContent(
   rawFqc, usePlotly = TRUE, plotType = "line", scaleColour = colours, 
   text = element_text(size = 13), plotlyLegend = TRUE

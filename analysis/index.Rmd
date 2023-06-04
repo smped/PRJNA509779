@@ -54,13 +54,17 @@ Multiple QC reports are created throughout the workflow using [FastQC](https://w
   
 A full description of the workflow is available at https://github.com/smped/prepareChIPs, with the rulegraph summarised below.
 
-```{r plot-rulegraph, fig.cap = "*Snakemake rulegraph for the prepareChIPs workflow*"}
+```{r plot-rulegraph, fig.cap = "*Snakemake rulegraph for the prepareChIPs workflow. The primary data processing workflow is showin in red, with QC and reporting steps shown in green. Any steps which produce additional, custom statistics are shown in blue.*"}
 here::here("workflow", "rules", "rulegraph.dot") %>%
   readLines() %>%
   str_replace_all("(.+graph.+)(\\];)", "\\1, rankdir = LR\\2") %>% 
   str_replace_all("fontsize=10", "fontsize=12") %>% 
   str_replace_all("_", "\n") %>% 
-  str_replace_all("snakemake\ndag", "snakemakg_dag") %>% 
+  str_replace_all("snakemake\ndag", "snakemakg_dag") %>%
+  (function(x) gsub("(color.+)(style)", "color = \\\"red\\\",\\2", x)) %>%
+  (function(x) gsub("(compile|create|qc)(.+)(color.+)(style)", "\\1\\2color = \\\"forestgreen\\\",\\4", x)) %>% 
+  (function(x) gsub("(get.+)(color.+)(style)", "\\1color = \\\"royalblue\\\",\\3", x)) %>%
+  (function(x) gsub("(\\nfastq.+)(color.+)(style)", "\\1color = \\\"red\\\",\\3", x)) %>%
   grViz()
 ```
 

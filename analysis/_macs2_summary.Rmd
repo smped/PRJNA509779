@@ -111,8 +111,9 @@ This section provides a simple series of visualisations to aid in the detection 
 
 - **Library Sizes**: These are the total number of alignments contained in each `bam` file, as passed to `macs2 callpeak` [@Zhang2008-ms]
 - **Peaks Detected**: The number of peaks detected within each individual replicate are shown here, and provide clear guidance towards any samples where the IP may have been less successful, or there may be possible sample mis-labelling. 
-- **Peaks Per Million Reads**: Whilst no clear benchmark is defined, given the variability of peak distributions across different ChIP targets and treatment, this provides a useful visualisation able to show poorly performing samples next to other samples with the same ChIP target.
-- **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step
+- **Peak Widths**: The peak widths for each sample are shown as a percentile to capture the overall distribution of widths
+- **FRIP**: The Fraction of Reads in Peaks is a well-known ChIP-Seq metric for determining the success of the immuno-precipitation step [@Landt2012-tn]
+- **Cross Correlations**: This provides an estimate of average fragment length and an additional guide as to the relative success of the IP step [@Landt2012-tn]
 
 
 ```{r macs2-logs-individual}
@@ -141,7 +142,7 @@ macs2_logs %>%
 
 ### Library Sizes
 
-```{r plot-macs2-libsize-individual, fig.height=6, fig.cap = glue("*Library sizes for each {target} sample. The horizontal line indicates the mean library size for each treatment group. Any samples marked for exclusion as described above will be indicated with an (F)*")}
+```{r plot-macs2-libsize-individual, fig.cap = glue("*Library sizes for each {target} sample. The horizontal line indicates the mean library size for each treatment group.*")}
 macs2_logs %>%
   ggplot(
     aes(name, n_tags_treatment)
@@ -167,52 +168,80 @@ macs2_logs %>%
 
 ### Peaks Detected
 
-```{r plot-macs2-peaks-individual, fig.height=6, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria for `macs2 callpeak` (FDR < {config$peaks$macs2$fdr}) are provided. Any samples marked for exclusion are coloured as indicated in the figure legend.*")}
-suppressWarnings(
-  macs2_logs %>%
-    ggplot(
-      aes(name, total_peaks)
-    ) +
-    geom_col(fill = "royalblue") +
-    geom_label(
-      aes(x = name, y = total_peaks, label = lab),
-      data = . %>%
-        dplyr::filter(total_peaks > 0) %>% 
-        mutate(
-          lab = comma(total_peaks, accuracy = 1),
-          total = total_peaks
-        ),
-      inherit.aes = FALSE,
-      show.legend = FALSE
-    ) +
-    facet_grid(~treatment, scales = "free_x", space = "free_x") +
-    scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
-    labs(
-      x = "Sample",
-      y = "Total Peaks",
-      fill = "QC"
-    ) +
-    ggtitle(
-      glue("{target}: Number of Peaks")
-    )
-)
+```{r plot-macs2-peaks-individual, fig.cap = glue("*Peaks identified for each {target} sample. The number of peaks passing the inclusion criteria ({macs2_cutoff}) are shown as labels.*")}
+macs2_logs %>%
+  ggplot(
+    aes(name, total_peaks)
+  ) +
+  geom_col(fill = "royalblue") +
+  geom_label(
+    aes(x = name, y = total_peaks, label = lab),
+    data = . %>%
+      dplyr::filter(total_peaks > 0) %>% 
+      mutate(
+        lab = comma(total_peaks, accuracy = 1),
+        total = total_peaks
+      ),
+    inherit.aes = FALSE, nudge_y = max(macs2_logs$total_peaks)/30,
+    show.legend = FALSE
+  ) +
+  facet_grid(~treatment, scales = "free_x", space = "free_x") +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
+  labs(
+    x = "Sample",
+    y = "Total Peaks",
+    fill = "QC"
+  ) +
+  ggtitle(
+    glue("{target}: Number of Peaks")
+  )
 ```
 
-### Peaks Per Million Reads
+### Peak Widths
 
-```{r peaks-per-million, fig.cap = "*Peaks per million reads. *"}
-macs2_logs %>% 
-  mutate(ppm = 1e6 * total_peaks / n_tags_treatment) %>% 
-  ggplot(aes(name, ppm)) +
+```{r plot-widths, fig.cap = "*Peak widths for each sample shown as a cumulative percentile. The x-axis is restricted to the middle 99% of observed widths.*"}
+individual_peaks %>% 
+  lapply(as_tibble, rangeAsChar = FALSE) %>% 
+  bind_rows() %>% 
+  arrange(accession, width) %>% 
+  summarise(
+    n = dplyr::n(), .by = c(accession, treatment, width)
+  ) %>% 
+  mutate(
+    p = cumsum(n) / sum(n), .by = c(accession, treatment)
+  ) %>% 
+  ggplot(aes(width, p, colour = accession, group = accession)) +
+  geom_line() +
+  coord_cartesian(
+    xlim = quantile(width(unlist(individual_peaks)), c(0.005, 0.995))
+  ) +
+  scale_y_continuous(labels = percent, expand = expansion(c(0, 0.05)))  +
+  labs(x = "Peak Width (bp)", y = "Percentile", colour = "Sample")
+```
+
+
+### FRIP
+
+```{r plot-frip, fig.cap = "*Fraction of Reads in Peaks. The common-use threshold of 1% is shown as the dashed line.*"}
+here::here(macs2_path, accessions, paste0(accessions, "_frip.tsv")) %>%
+  setNames(accessions) %>%
+  lapply(read_tsv) %>%
+  bind_rows(.id = "accession") %>%
+  left_join(samples, by = "accession") %>%
+  ggplot(aes(accession, frip)) +
   geom_col(fill = "royalblue") +
-  facet_wrap(~treatment) +
-  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
-  labs(x = "Sample", y = "Peaks per Million Reads")
+  geom_hline(yintercept = 0.01, colour = "grey", linetype = 2) +
+  facet_wrap(~treatment, scales = "free_x") +
+  labs(x = "Sample", y = "FRIP") +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = percent) +
+  ggtitle(
+    glue("{target}: Fraction of Reads In Peaks")
+  )
 ```
 
 ### Cross Correlations
 
-```{r plot-cross-correlations, fig.cap = "Cross correlations between reads. The distance corresponding to the maximum height provides a good estimate of the most common fragment length. Relative heights between replicate samples also indicate the success of the immuno-precipitation."}
+```{r plot-cross-correlations, fig.cap = "*Cross correlations between reads. The distance corresponding to the maximum height provides a good estimate of the most common fragment length, with labels indicating these lengths. Relative heights between replicate samples also indicate the success of the immuno-precipitation. It is important to note that no black or grey lists were applied during data preparation, and a more rigorous analysis using the outputs generated here should do so.*"}
 here::here(
   macs2_path, accessions, glue("{accessions}_cross_correlations.tsv")
   ) %>%
@@ -223,6 +252,13 @@ here::here(
   ggplot(aes(fl, correlation, colour = treatment)) +
   geom_point(alpha = 0.1) +
   geom_smooth(se = FALSE, method = 'gam', formula = y ~ s(x, bs = "cs")) +
+  geom_label(
+    aes(label = fl),
+    data = . %>% 
+      mutate(correlation = correlation + 0.025 * max(correlation)) %>% 
+      dplyr::filter(correlation == max(correlation), .by = accession),
+    show.legend = FALSE, alpha = 0.7
+  ) +
   facet_wrap(~accession) +
   scale_colour_manual(values = treat_colours) +
   labs(
@@ -239,7 +275,7 @@ here::here(
 
 A brief summary of all detected peaks for the given target within each replicate is shown using an UpSet plot below.
 
-```{r all-reps-upset, fig.cap = "*UpSet plot showing all samples. Any potential sample/treatment mislabelling will show up clearly here as samples from each group may show a preference to overlap other samples within the same treatment group. Intersections are only included if 10 or more sites are present. The top panel shows a boxplot of the min $q$-values produced by `macs2 callpeak` for each peak in the intersection as representative of the sample with the weakest signal for each peak. The y-axis for this panel is truncated at the 95^th^ percentile of values.*"}
+```{r all-reps-upset, fig.cap = "*UpSet plot showing all samples. Any potential sample/treatment mislabelling will show up clearly here as samples from each group may show a preference to overlap other samples within the same treatment group. Peaks shared between all samples, and exclusive to those within each treatment group, are highlighted if found. Intersections are only included if 10 or more sites are present. The top panel shows a boxplot of the min $q$-values produced by `macs2 callpeak` for each peak in the intersection as representative of the sample with the weakest signal for each peak. The y-axis for the top panel is truncated at the 95^th^ percentile of values.*"}
 df <- individual_peaks %>%
   makeConsensus(var = "qValue") %>% 
   as_tibble() %>% 
@@ -250,7 +286,39 @@ ql <- samples$accession %>%
       set = x, 
       fill = treat_colours[as.character(dplyr::filter(samples, accession == x)$treatment)]
     )
+  ) 
+## Add the set of common peaks
+if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
+  ql <- c(
+    ql, 
+    list(
+      upset_query(intersect = accessions, color = "royalblue", only_components = "intersections_matrix")
   )
+  )
+}
+## Treatment specific common peaks
+split_acc <- lapply(split(samples, samples$treatment), pull, accession)
+if (length(split_acc) > 1) {
+  treat_ql <- seq_along(split_acc) %>% 
+    lapply(
+      function(i) {
+        ids <- split_acc[[i]]
+        others <- setdiff(unlist(split_acc), ids)
+        nr <- df %>% 
+          dplyr::filter(!if_all(all_of(ids)), !if_any(all_of(others))) %>% 
+          nrow()
+        if (nr > 10) return(ids)
+        NULL
+      }
+    ) %>% 
+    .[vapply(., length, integer(1)) > 0] %>% 
+    lapply(
+      function(x) {
+        upset_query(intersect = x, color = "red", only_components = "intersections_matrix")        
+      }
+    )
+  if (length(treat_ql)) ql <- c(ql, treat_ql)
+}
 size <- get_size_mode('exclusive_intersection')
 df %>% 
   upset(
@@ -296,7 +364,7 @@ df %>%
     ),
     queries = ql,
     min_size = 10,
-    n_intersections = 50,
+    n_intersections = 35,
     sort_sets = FALSE
   ) +
   theme(
@@ -362,9 +430,36 @@ merged_logs %>%
   )
 ```
 
+### Merged Peak Overlaps
+
+```{r merged-peak-overlaps, fig.width=ifelse(length(treat_colours) > 2, 10, 8), fig.cap = "*Overlap between peaks in each treatment-specific set of peaks called by merging replicates.*"}
+plotOverlaps(merged_peaks, set_col = treat_colours)
+```
+
+
+### Merged Peak Widths
+
+```{r merged-peak-densities, fig.cap = glue("*Distributions of peak widths when using merged samples for {target} within each treatment group*")}
+merged_peaks %>% 
+  lapply(as_tibble, rangeAsChar = FALSE) %>% 
+  bind_rows(.id = "treatment") %>% 
+  ggplot(aes(width, after_stat(density), fill = treatment, colour = treatment)) +
+  geom_density(alpha = 0.3) +
+  scale_x_log10(expand = expansion(c(0, 0.05))) +
+  scale_y_continuous(expand = expansion(c(0, 0.05))) +
+  scale_fill_manual(values = treat_colours) +
+  scale_colour_manual(values = treat_colours) +
+  labs(x = "Peak Width (bp)", y  = "Density", fill = "Treatment", colour = "Treatment") +
+  ggtitle(
+    glue("{target}: Peak Width Distributions for Merged Samples")
+  )
+```
+
+
+
 ### Merged Peaks By Individal Replicate
 
-```{r merged-by-replicate, fig.cap = "*Peaks indentified using merged samples and the overlap with individual samples. Bar heights indicate the total number o peaks identified in each replicate, with the blue segments indicating those also identified when merging replicates.*"}
+```{r merged-by-replicate, fig.cap = "*Peaks indentified using merged samples and the overlap with individual samples. Bar heights indicate the total number of peaks identified in each replicate, with the blue segments indicating those also identified when merging replicates.*"}
 samples %>% 
   split(.$treatment) %>% 
   lapply(
@@ -385,14 +480,14 @@ samples %>%
     aes(accession, 0.5 * ol, label = percent(p, 0.1)),
     fill = "white", alpha = 0.7
   ) +
-  facet_wrap(~treatment, nrow = 1) +
+  facet_wrap(~treatment, nrow = 1, scales = "free_x") +
   scale_y_continuous(expand = expansion(c(0, 0.05)), labels = comma) +
   labs(x = "Sample", y = "Individual Peaks")
 ```
 
 ### Merged Peaks By Number Of Overlaps
 
-```{r merged-by-overlap, fig.cap = "*Treatment-specific peaks called by merging individual replcates are shown by the number of individual replicates they overlap. The percentages peaks with each overlapping number are shown within each bar.*"}
+```{r merged-by-overlap, fig.cap = "*Treatment-specific peaks called by merging individual replcates are shown by the number of individual replicates they overlap. The percentages of peaks with each overlapping number are shown within each bar.*"}
 samples %>% 
   split(.$treatment) %>% 
   lapply(
@@ -423,11 +518,6 @@ samples %>%
   labs(x = "Treatment", y = "Merged Peaks", fill = "Overlapping\nReplicates")
 ```
 
-### Merged Peak Overlaps
-
-```{r merged-peak-overlaps, fig.cap = "*Overlap between peaks in each treatment-specific set of peaks called by merging replicates.*"}
-plotOverlaps(merged_peaks, set_col = treat_colours)
-```
 
 
 ## References

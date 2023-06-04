@@ -20,9 +20,25 @@ snakemake --use-conda --cores 16
 
 If running on an HPC cluster, a snakemake profile will required for submission to the queueing system and appropriate resource allocation.
 Please discuss this will your HPC support team.
+Nodes may also have restricted internet access and rules which download files may not work on many HPCs.
+Please see below or discuss this with your support team
 
 Whilst no snakemake wrappers are explicitly used in this workflow, the underlying scripts are utilised where possible to minimise any issues with HPC clusters with restrictions on internet access.
 These scripts are based on `v1.31.1` of the snakemake wrappers
+
+### Important Note Regarding OSX Systems
+
+It should be noted that this workflow is **currently incompatible with OSX-based systems**. 
+There are two unsolved issues
+
+1. `fasterq-dump` has a bug which is specific to conda environments. This has been updated in v3.0.3 but this patch has not yet been made available to conda environments for OSX.
+2. The following  error appears in some OSX-based R sessions, in a system-dependent manner:
+```
+Error in grid.Call(C_textBounds, as.graphicsAnnot(x$label), x$x, x$y,  : 
+  polygon edge not found
+```
+
+The fix for this bug is currently unknown
 
 ## Download Raw Data
 

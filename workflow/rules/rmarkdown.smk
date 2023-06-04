@@ -1,12 +1,3 @@
-# def get_treats_from_target(wildcards):
-#     ind = df.target == wildcards.target
-#     samples = set(df[ind]['treatment'])
-#     bam = expand(
-#         os.path.join(dedup_path, "{f}.sorted.bam"),
-#         f = samples
-#     )
-#     return(bam)
-
 rule create_site_yaml:
     input: 
         config['samples']
@@ -40,7 +31,7 @@ rule compile_index_html:
         runtime = "10m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """
 
 rule compile_qc_html:
@@ -63,7 +54,7 @@ rule compile_qc_html:
         runtime = "10m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """
 
 rule compile_alignment_qc_html:
@@ -87,7 +78,7 @@ rule compile_alignment_qc_html:
         runtime = "5m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """		
 
 rule create_macs2_summary:
@@ -107,7 +98,7 @@ rule create_macs2_summary:
         Rscript --vanilla \
             {input.r} \
             {wildcards.target} \
-            {output.rmd} &>> {log}
+            {output.rmd} >> {log} 2>&1
 
         ## Add the module directly as literal code
         cat {input.rmd} >> {output.rmd}
@@ -124,7 +115,10 @@ rule compile_macs2_summary:
         ),
         individual = lambda wildcards: expand(
             os.path.join(macs2_path, "{accession}", "{accession}_{f}"),
-            f = ['callpeak.log', 'peaks.narrowPeak', 'cross_correlations.tsv'],
+            f = [
+                'callpeak.log', 'peaks.narrowPeak', 'cross_correlations.tsv',
+                'frip.tsv'
+            ],
             accession = set(df[df.target == wildcards.target]['accession'])
         ),
         yml = "analysis/_site.yml"
@@ -137,5 +131,5 @@ rule compile_macs2_summary:
         runtime = "20m"
     shell:
         """
-        R -e "rmarkdown::render_site('{input.rmd}')" &>> {log}
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """

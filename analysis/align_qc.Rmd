@@ -143,12 +143,14 @@ bwt2_logs %>%
   mutate(Filename = str_remove_all(Filename, ".log")) %>% 
   dplyr::select(Filename, Unique_Unpaired, Multiple_Unpaired, Not_Aligned) %>% 
   pivot_longer(cols = contains("_"), names_to = "Status", values_to = "Reads") %>% 
+  left_join(samples, by = c("Filename" = "accession")) %>% 
   mutate(
     Status = Status %>% 
       str_remove_all("_Unpaired") %>% 
       str_replace_all("_", " ") %>% 
       factor() %>%
-      relevel(ref = "Unique")
+      relevel(ref = "Unique"),
+    treatment = str_replace_na(treatment, "")
   ) %>% 
   arrange(Status) %>% 
   mutate(cumsum = cumsum(Reads), p = Reads / sum(Reads), .by = "Filename") %>% 
@@ -160,16 +162,67 @@ bwt2_logs %>%
     data = . %>% dplyr::filter(p > 0.05),
     fill = "white", alpha = 0.6, show.legend = FALSE
   ) +
+  facet_grid(target + treatment ~ ., scales = "free", space = "free") +
   scale_y_continuous(
     labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
   ) +
   scale_fill_viridis_d(direction = -1) +
   labs(y = "Reads (millions)", fill = "Alignment\nStatus") +
   theme_bw() +
-  myTheme
+  myTheme +
+  coord_flip()
 ```
 
 ## DeDuplication Summary
+
+```{r dedup-summary, fig.cap = "*Summary of the final alignments after trimming, filtering and deduplicating. Percentages are shown only if greater than 3.3% to avoid overlapping labels*"}
+duplogs %>% 
+    dplyr::select(
+      Filename, Alignments = `Unpaired Reads Examined` , 
+      Duplicates = `Unpaired Read Duplicates`, `Percent Duplication`  
+    ) %>% 
+    left_join(samples, by = c("Filename" = "accession")) %>% 
+    dplyr::select(-input) %>% 
+    mutate(
+      Alignments = Alignments - Duplicates,
+      Discarded = Total_Sequences - Alignments - Duplicates
+    ) %>% 
+    dplyr::select(
+      Filename, Total_Sequences, Alignments, Discarded, Duplicates, everything()
+    ) %>% 
+  pivot_longer(
+    cols = all_of(c("Alignments", "Discarded", "Duplicates")),
+    names_to = "Status", values_to = "Reads"
+  ) %>% 
+  mutate(
+    Status = factor(Status, levels = c("Discarded", "Duplicates", "Alignments")),
+    treatment = str_replace_na(treatment, "")
+  ) %>% 
+  arrange(Filename, desc(Status)) %>% 
+  mutate(
+    p = Reads / sum(Reads),
+    y = cumsum(Reads) - 0.5 * Reads,
+    .by = Filename
+  ) %>% 
+  ggplot(aes(Filename, Reads, fill = Status )) +
+  geom_col() +
+  geom_label(
+    aes(Filename, y, label = percent(p, 0.1)),
+    data = . %>% dplyr::filter(p > 0.033),
+    fill = "white", alpha = 0.7, size = 3.5
+  ) +
+  facet_grid(target + treatment ~ ., scales = "free", space = "free") +
+  scale_y_continuous(
+    labels = comma_format(scale = 1e-6), expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_viridis_d(direction = -1) +
+  labs(y = "Reads (millions)", fill = "Alignment\nStatus") +
+  theme_bw() +
+  myTheme +
+  coord_flip()
+```
+
+## Summary Table
 
 ```{r tbl-duplication}
 div(
