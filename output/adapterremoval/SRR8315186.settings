@@ -1,0 +1,123 @@
+AdapterRemoval ver. 2.3.3
+Trimming of single-end reads
+
+
+[Adapter sequences]
+Adapter1[1]: AGATCGGAAGAGC
+Adapter2[1]: AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGTAGATCTCGGTGGTCGCCGTATCATT
+
+
+[Adapter trimming]
+RNG seed: NA
+Alignment shift value: 2
+Global mismatch threshold: 0.333333
+Quality format (input): Phred+33
+Quality score max (input): 41
+Quality format (output): Phred+33
+Quality score max (output): 41
+Mate-number separator (input): '/'
+Trimming 5p: 0
+Trimming 3p: 0
+Trimming Ns: No
+Trimming Phred scores <= 30: Yes
+Trimming using sliding windows: No
+Minimum genomic length: 50
+Maximum genomic length: 4294967295
+Collapse overlapping reads: No
+Deterministic collapse: No
+Conservative collapse: No
+Minimum overlap (in case of collapse): 11
+Minimum adapter overlap: 0
+
+
+[Trimming statistics]
+Total number of reads: 18193552
+Number of unaligned reads: 16610055
+Number of well aligned reads: 1583497
+Number of discarded mate 1 reads: 937219
+Number of singleton mate 1 reads: 17256333
+Number of reads with adapters[1]: 1583497
+Number of retained reads: 17256333
+Number of retained nucleotides: 1288194399
+Average length of retained reads: 74.6505
+
+
+[Length distribution]
+Length	Mate1	Discarded	All
+0	0	105890	105890
+1	0	17970	17970
+2	0	17011	17011
+3	0	16633	16633
+4	0	17564	17564
+5	0	16884	16884
+6	0	16699	16699
+7	0	16483	16483
+8	0	16680	16680
+9	0	16739	16739
+10	0	16354	16354
+11	0	16089	16089
+12	0	16079	16079
+13	0	16257	16257
+14	0	16096	16096
+15	0	16366	16366
+16	0	16343	16343
+17	0	16295	16295
+18	0	16455	16455
+19	0	16310	16310
+20	0	16236	16236
+21	0	16184	16184
+22	0	16479	16479
+23	0	16372	16372
+24	0	16825	16825
+25	0	16303	16303
+26	0	16295	16295
+27	0	16230	16230
+28	0	16455	16455
+29	0	16666	16666
+30	0	16569	16569
+31	0	16505	16505
+32	0	16581	16581
+33	0	16547	16547
+34	0	16896	16896
+35	0	16898	16898
+36	0	16665	16665
+37	0	16810	16810
+38	0	16930	16930
+39	0	17062	17062
+40	0	17423	17423
+41	0	17477	17477
+42	0	17331	17331
+43	0	18110	18110
+44	0	18119	18119
+45	0	18160	18160
+46	0	18566	18566
+47	0	18883	18883
+48	0	19374	19374
+49	0	19765	19765
+50	19841	0	19841
+51	20658	0	20658
+52	21023	1	21024
+53	21639	1	21640
+54	22231	0	22231
+55	22542	0	22542
+56	23700	3	23703
+57	24396	4	24400
+58	25264	1	25265
+59	26462	3	26465
+60	28113	0	28113
+61	30728	5	30733
+62	34765	14	34779
+63	38366	0	38366
+64	41427	4	41431
+65	31441	8	31449
+66	39168	6	39174
+67	35229	22	35251
+68	47722	9	47731
+69	74783	13	74796
+70	118027	14	118041
+71	175475	45	175520
+72	366036	82	366118
+73	715379	132	715511
+74	1940017	123	1940140
+75	5018729	396	5019125
+76	8293172	420	8293592
