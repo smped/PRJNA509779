@@ -1,8 +1,9 @@
 name: rmarkdown
 channels:
   - bioconda
+  - conda-forge
   - r
   - nodefaults
 dependencies:
-  - r-base=4.2.3
+  - r-base=4.23
   - bioconductor-greylistchip
