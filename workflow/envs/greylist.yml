@@ -5,5 +5,5 @@ channels:
   - r
   - nodefaults
 dependencies:
-  - r-base=4.23
+  - r-base
   - bioconductor-greylistchip
