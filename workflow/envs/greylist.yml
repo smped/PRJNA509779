@@ -1,0 +1,8 @@
+name: rmarkdown
+channels:
+  - bioconda
+  - r
+  - nodefaults
+dependencies:
+  - r-base=4.2.3
+  - bioconductor-greylistchip
