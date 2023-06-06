@@ -10,10 +10,16 @@ if (conda_pre != "") {
 library(GreyListChIP)
 
 args <- commandArgs(TRUE)
-bam <- args[[1]]
-chrom_sizes <- args[[2]]
+bam <- here::here(args[[1]])
+chrom_sizes <- here::here(args[[2]])
 genome <- args[[3]]
-bed <- args[[4]]
+bed <- here::here(args[[4]])
+
+## Example code for running interactively
+# bam <- here::here("data/deduplicated/SRR8315192.sorted.bam")
+# chrom_sizes <- here::here("output/annotations.chrom.sizes")
+# genome <- "GRCh37"
+# bed <- here::here("output/macs2/SRR8315192/SRR8315192_greylist.bed")
 
 df <- read.table(chrom_sizes)
 colnames(df) <- c("seqnames", "seqlengths")
