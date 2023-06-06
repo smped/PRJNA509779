@@ -17,7 +17,7 @@ bed <- here::here(args[[4]])
 
 ## Example code for running interactively
 # bam <- here::here("data/deduplicated/SRR8315192.sorted.bam")
-# chrom_sizes <- here::here("output/annotations.chrom.sizes")
+# chrom_sizes <- here::here("output/annotations/chrom.sizes")
 # genome <- "GRCh37"
 # bed <- here::here("output/macs2/SRR8315192/SRR8315192_greylist.bed")
 
@@ -26,6 +26,9 @@ colnames(df) <- c("seqnames", "seqlengths")
 df$isCircular <- FALSE
 df$genome <- genome
 sq <- as(df, "Seqinfo")
+
+bed_dir <- dirname(bed)
+if (!dir.exists(bed_dir)) dir.create(bed_dir, recursive = TRUE)
 
 ## This is set for only a single input file
 gl <- new("GreyList", karyotype = sq)
