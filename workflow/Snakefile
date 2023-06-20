@@ -118,14 +118,12 @@ ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_QC)
 # ALL_OUTPUTS.extend(ALL_BAM)
 ALL_OUTPUTS.extend(ALL_PEAKS)
-## Conda environments for building greylists no longer work
-## Restore this once this is resolved
-# ALL_OUTPUTS.extend(
-#   expand(
-#     os.path.join(macs2_path, "{accession}", "{accession}_greylist.bed"),
-#     accession = input
-#   )
-# )
+ALL_OUTPUTS.extend(
+  expand(
+    os.path.join("output", "annotations", "{accession}_greylist.bed"),
+    accession = input
+  )
+)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
 ALL_OUTPUTS.extend(ALL_HTML)
 

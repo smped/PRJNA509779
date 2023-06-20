@@ -1,9 +1,5 @@
-name: rmarkdown
+name: greylist
 channels:
   - bioconda
-  - conda-forge
-  - r
-  - nodefaults
 dependencies:
-  - r-base
-  - bioconductor-greylistchip
+  - bioconductor-diffbind

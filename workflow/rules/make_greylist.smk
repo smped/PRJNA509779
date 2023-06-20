@@ -5,7 +5,7 @@ rule make_greylist:
     chrom_sizes = chrom_sizes,
     script = "workflow/scripts/make_greylist.R"
   output:
-    greylist = os.path.join(macs2_path, "{accession}", "{accession}_greylist.bed")
+    greylist = os.path.join("output", "annotations", "{accession}_greylist.bed")
   params:
     genome = config['reference']['name']
   conda: "../envs/greylist.yml"
