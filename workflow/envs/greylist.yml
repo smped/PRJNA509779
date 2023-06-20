@@ -2,4 +2,4 @@ name: greylist
 channels:
   - bioconda
 dependencies:
-  - bioconductor-diffbind
+  - bioconductor-diffbind=3.8
