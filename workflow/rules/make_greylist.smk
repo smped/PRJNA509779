@@ -10,6 +10,7 @@ rule make_greylist:
     genome = config['reference']['name']
   conda: "../envs/greylist.yml"
   threads: 1
+  log: "workflow/logs/make_greylist/{accession}.log"
   resources:
     runtime = "40m",
     mem_mb = "8192"
@@ -20,6 +21,6 @@ rule make_greylist:
       {input.bam} \
       {input.chrom_sizes} \
       {params.genome} \
-      {output.greylist}
+      {output.greylist} >> {log} 2>&1
     """
 

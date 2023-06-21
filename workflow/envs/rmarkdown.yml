@@ -1,25 +1,24 @@
 name: rmarkdown
 channels:
-  - bioconda
   - conda-forge
-  - r
+  - bioconda
   - nodefaults
 dependencies:
-  - r-base=4.2.3
+  - r-base =4.2.3
   - r-biocmanager
-  - r-complexupset
-  - r-diagrammer
-  - r-glue
-  - r-here
-  - r-knitr
-  - r-pander
-  - r-polychrome
-  - r-reactable
-  - r-rmarkdown
-  - r-scales
-  - r-tidyverse
-  - r-yaml
-  - bioconductor-extrachips
-  - bioconductor-ngsReports
-  - bioconductor-plyranges
-  - bioconductor-rtracklayer
+  - r-complexupset =1.3.3
+  - r-diagrammer =1.0
+  - r-glue =1.6
+  - r-here =1.0
+  - r-knitr =1.43
+  - r-pander = 0.6.5
+  - r-polychrome =1.5
+  - r-reactable =0.4
+  - r-rmarkdown =2.21
+  - r-scales =1.2
+  - r-tidyverse =2.0
+  - r-yaml =2.3
+  - bioconductor-extrachips =1.2
+  - bioconductor-ngsReports =2.0
+  - bioconductor-plyranges =1.18
+  - bioconductor-rtracklayer =1.58

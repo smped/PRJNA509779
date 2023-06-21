@@ -1,7 +1,8 @@
+name: adapterremoval
 channels:
   - defaults
   - bioconda
   - conda-forge
 dependencies:
-  - adapterremoval
+  - adapterremoval=2.3.2
   
