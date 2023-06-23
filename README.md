@@ -24,6 +24,12 @@ here::here("config/SraRunTable.txt") %>%
 	)
 ```
 
+Before running this on a slurm HPC cluster, be sure to include a suitable size request for the temporary directory (>10G) in your config file.
+If this is not set clearly, some clusters may limit the size of this directory and `macs2 callpeak` will appear to complete without throwing any errors, *despite multiple Exceptions being thrown* internally.
+These will be visible in the callpeak.log files.
+
+## Note for OSX Users
+
 It should be noted that this workflow is currently incompatible with OSX-based systems.
 There are two incompatibilities.
 

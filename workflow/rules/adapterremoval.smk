@@ -2,7 +2,7 @@ rule adapterremoval:
     input:
         sample = os.path.join(raw_path, "{accession}.fastq.gz")
     output:
-        fastq = os.path.join(trim_path, "{accession}.fastq.gz"), 
+        fastq = temp(os.path.join(trim_path, "{accession}.fastq.gz")), 
         settings = "output/adapterremoval/{accession}.settings" 
     conda: "../envs/adapterremoval.yml"
     log:

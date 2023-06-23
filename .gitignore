@@ -2,14 +2,16 @@
 *bai
 *bdg
 *bw
-*sam
+*chk
 *fastq
 *fastq.gz
 *fq
 *fq.gz
 *gtf
 *gtf.gz
+*sam
 logs
+slurm
 .snakemake
 .vscode
 .Rproj.user

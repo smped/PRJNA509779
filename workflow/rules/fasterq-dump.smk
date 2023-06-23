@@ -6,6 +6,7 @@ rule get_fastq:
     params:
         extra="--skip-technical",
     threads: 2
+    retries: 3
     resources:
         runtime = "2h"    
     script:

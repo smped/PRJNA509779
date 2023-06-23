@@ -15,8 +15,6 @@ navbar:
       href: align_qc.html
   - text: Results
     menu:
-    - text: AR
-      href: AR_macs2_summary.html
     - text: ERa
       href: ERa_macs2_summary.html
     - text: H3K27ac

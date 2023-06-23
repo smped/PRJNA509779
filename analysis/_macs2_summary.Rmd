@@ -280,12 +280,19 @@ df <- individual_peaks %>%
   makeConsensus(var = "qValue") %>% 
   as_tibble() %>% 
   mutate(qValue = vapply(qValue, min, numeric(1))) 
+has_peaks <- vapply(accessions, function(x) sum(df[[x]]) > 0, logical(1)) %>%
+  which() %>%
+  names()
 ql <- samples$accession %>% 
+  intersect(has_peaks) %>%
   lapply(
-    function(x) upset_query(
-      set = x, 
-      fill = treat_colours[as.character(dplyr::filter(samples, accession == x)$treatment)]
-    )
+    function(x) {
+      col <- as.character(dplyr::filter(samples, accession == x)$treatment)
+      upset_query(
+        set = x, 
+        fill = treat_colours[col]
+      )
+    }
   ) 
 ## Add the set of common peaks
 if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
@@ -293,11 +300,12 @@ if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
     ql, 
     list(
       upset_query(intersect = accessions, color = "royalblue", only_components = "intersections_matrix")
-  )
+    )
   )
 }
 ## Treatment specific common peaks
-split_acc <- lapply(split(samples, samples$treatment), pull, accession)
+split_acc <- lapply(split(samples, samples$treatment), pull, accession) %>%
+  lapply(intersect, has_peaks)
 if (length(split_acc) > 1) {
   treat_ql <- seq_along(split_acc) %>% 
     lapply(

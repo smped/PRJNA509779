@@ -4,6 +4,7 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
+  - icu =72
   - r-base =4.2.3
   - r-biocmanager
   - r-complexupset =1.3.3

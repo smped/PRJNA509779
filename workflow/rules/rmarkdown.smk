@@ -13,6 +13,7 @@ rule create_site_yaml:
 
 rule compile_index_html:
     input:
+        dag = "workflow/rules/rulegraph.dot",
         macs2_html = expand(
             "docs/{target}_macs2_summary.html", target = targets
         ),
@@ -28,28 +29,55 @@ rule compile_index_html:
     conda: "../envs/rmarkdown.yml"
     log: "workflow/logs/rmd/compile_index_html.log"
     resources:
+        runtime = "10m",
+    shell:
+        """
+        R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
+        """
+
+rule compile_raw_qc_html:
+    input:
+        fqc = expand(
+            os.path.join(qc_path, "raw", "{f}_fastqc.{suffix}"),
+            f = accessions, suffix = ['zip', 'html']
+        ),
+        multiqc = os.path.join(qc_path, "raw", "multiqc.html"),
+        references = "analysis/references.bib",
+        rmd = "analysis/raw_qc.Rmd",
+        site = "analysis/_site.yml",
+        yaml = "config/config.yml"		
+    output:
+        html = "docs/raw_qc.html"
+    threads: 1
+    conda: "../envs/rmarkdown.yml"
+    log: "workflow/logs/rmd/compile_raw_qc_html.log"
+    resources:
         runtime = "10m"
     shell:
         """
         R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1
         """
 
-rule compile_qc_html:
+rule compile_trimmed_qc_html:
     input:
         fqc = expand(
-            os.path.join(qc_path, "{{step}}", "{f}_fastqc.{suffix}"),
+            os.path.join(qc_path, "trimmed", "{f}_fastqc.{suffix}"),
             f = accessions, suffix = ['zip', 'html']
         ),
-        multiqc = os.path.join(qc_path, "{step}", "multiqc.html"),
+        logs = expand(
+            os.path.join("output", "adapterremoval", "{f}.settings"),
+            f = accessions
+        ),
+        multiqc = os.path.join(qc_path, "trimmed", "multiqc.html"),
         references = "analysis/references.bib",
-        rmd = "analysis/{step}_qc.Rmd",
+        rmd = "analysis/trimmed_qc.Rmd",
         site = "analysis/_site.yml",
         yaml = "config/config.yml"		
     output:
-        html = "docs/{step}_qc.html"
+        html = "docs/trimmed_qc.html"
     threads: 1
     conda: "../envs/rmarkdown.yml"
-    log: "workflow/logs/rmd/compile_{step}_qc_html.log"
+    log: "workflow/logs/rmd/compile_trimmed_qc_html.log"
     resources:
         runtime = "10m"
     shell:
@@ -89,7 +117,7 @@ rule create_macs2_summary:
         rmd = "analysis/{target}_macs2_summary.Rmd"
     threads: 1
     resources:
-        runtime = "1m"
+        runtime = "2m"
     conda: "../envs/rmarkdown.yml"
     log: "workflow/logs/rmd/create_{target}_macs2_summary.log"
     shell:
@@ -110,14 +138,14 @@ rule compile_macs2_summary:
         rmd = "analysis/{target}_macs2_summary.Rmd",
         merged = lambda wildcards: expand(
             os.path.join(macs2_path, "{{target}}", "{treat}_merged_{f}"),
-            f = ['callpeak.log', 'peaks.narrowPeak'],
+            f = ['callpeak.log', 'peaks.narrowPeak', 'callpeak.chk'],
             treat = set(df[df.target == wildcards.target]['treatment'])
         ),
         individual = lambda wildcards: expand(
             os.path.join(macs2_path, "{accession}", "{accession}_{f}"),
             f = [
                 'callpeak.log', 'peaks.narrowPeak', 'cross_correlations.tsv',
-                'frip.tsv'
+                'frip.tsv', 'callpeak.chk'
             ],
             accession = set(df[df.target == wildcards.target]['accession'])
         ),
@@ -128,7 +156,8 @@ rule compile_macs2_summary:
     conda: "../envs/rmarkdown.yml"
     log: "workflow/logs/rmd/compile_{target}_macs2_summary.log"
     resources:
-        runtime = "20m"
+        runtime = "20m",
+        mem_mb = 4096
     shell:
         """
         R -e "rmarkdown::render_site('{input.rmd}')" >> {log} 2>&1

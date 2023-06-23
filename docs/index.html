@@ -13,7 +13,7 @@
 
 <title>Home</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -385,9 +385,6 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="AR_macs2_summary.html">AR</a>
-    </li>
-    <li>
       <a href="ERa_macs2_summary.html">ERa</a>
     </li>
     <li>
@@ -421,7 +418,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Home</h1>
-<h4 class="date">21 June, 2023</h4>
+<h4 class="date">23 June, 2023</h4>
 
 </div>
 
@@ -443,15 +440,17 @@ samples &lt;- read_tsv(here::here(config$samples))</code></pre>
 <li>Download files from the <a
 href="https://www.ncbi.nlm.nih.gov/sra">Sequence Read Archive</a></li>
 <li>Remove adapter sequences and low quality reads using AdapterRemoval
-<span class="citation">(<a href="#ref-Schubert2016-br">Schubert,
-Lindgreen, and Orlando 2016</a>)</span></li>
+<span class="citation">(<a href="#ref-Schubert2016-br"
+role="doc-biblioref">Schubert, Lindgreen, and Orlando
+2016</a>)</span></li>
 <li>Use <code>bowtie2</code> to align to the genome <span
-class="citation">(<a href="#ref-Langmead2012-qc">Langmead and Salzberg
-2012</a>)</span></li>
+class="citation">(<a href="#ref-Langmead2012-qc"
+role="doc-biblioref">Langmead and Salzberg 2012</a>)</span></li>
 <li>De-duplicate reads is <a
 href="https://broadinstitute.github.io/picard"><code>markDuplicates</code></a></li>
 <li>Run <code>macs2 callpeak</code> <span class="citation">(<a
-href="#ref-Zhang2008-ms">Zhang et al. 2008</a>)</span> on
+href="#ref-Zhang2008-ms" role="doc-biblioref">Zhang et al.
+2008</a>)</span> on
 <ol style="list-style-type: lower-alpha">
 <li>All individual samples</li>
 <li>All samples within a common target and treatment group</li>
@@ -459,9 +458,10 @@ href="#ref-Zhang2008-ms">Zhang et al. 2008</a>)</span> on
 </ol>
 <p>Multiple QC reports are created throughout the workflow using <a
 href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a>,
-MultiQC <span class="citation">(<a href="#ref-Ewels2016-ix">Ewels et al.
-2016</a>)</span> and ngsReports <span class="citation">(<a
-href="#ref-Ward2020-fn">Ward, To, and Pederson 2020</a>)</span></p>
+MultiQC <span class="citation">(<a href="#ref-Ewels2016-ix"
+role="doc-biblioref">Ewels et al. 2016</a>)</span> and ngsReports <span
+class="citation">(<a href="#ref-Ward2020-fn" role="doc-biblioref">Ward,
+To, and Pederson 2020</a>)</span></p>
 <p>A full description of the workflow is available at <a
 href="https://github.com/smped/prepareChIPs"
 class="uri">https://github.com/smped/prepareChIPs</a>, with the
@@ -478,8 +478,8 @@ rulegraph summarised below.</p>
   (function(x) gsub(&quot;(\\nfastq.+)(color.+)(style)&quot;, &quot;\\1color = \\\&quot;red\\\&quot;,\\3&quot;, x)) %&gt;%
   grViz()</code></pre>
 <div class="figure">
-<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-f7e7b7fa3347f2bb79dd" style="width:960px;height:768px;"></div>
-<script type="application/json" data-for="htmlwidget-f7e7b7fa3347f2bb79dd">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"red\",style=\"rounded\"];\n\t1[label = \"macs2\ncallpeak\", color = \"red\",style=\"rounded\"];\n\t2[label = \"picard\nmarkduplicates\", color = \"red\",style=\"rounded\"];\n\t3[label = \"samtools\nsort\", color = \"red\",style=\"rounded\"];\n\t4[label = \"bowtie2\nalign\", color = \"red\",style=\"rounded\"];\n\t5[label = \"adapterremoval\", color = \"red\",style=\"rounded\"];\n\t6[label = \"get\nfastq\", color = \"red\",style=\"rounded\"];\n\t7[label = \"samtools\nindex\", color = \"red\",style=\"rounded\"];\n\t8[label = \"macs2\ncallpeak\nmerged\", color = \"red\",style=\"rounded\"];\n\t9[label = \"make\ngreylist\", color = \"red\",style=\"rounded\"];\n\t10[label = \"get\nchrom\nsizes\", color = \"royalblue\",style=\"rounded\"];\n\t11[label = \"bedgraph\nto\nbigwig\", color = \"red\",style=\"rounded\", rankdir = LR];\n\t12[label = \"macs2\nbdgcmp\nmerged\", color = \"red\",style=\"rounded\"];\n\t13[label = \"compile\nindex\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t14[label = \"compile\nmacs2\nsummary\", color = \"forestgreen\",style=\"rounded\"];\n\t15[label = \"create\nmacs2\nsummary\", color = \"forestgreen\",style=\"rounded\"];\n\t16[label = \"get\ncross\ncorrelations\", color = \"royalblue\",style=\"rounded\"];\n\t17[label = \"get\nfrip\", color = \"royalblue\",style=\"rounded\"];\n\t18[label = \"create\nsite\nyaml\", color = \"forestgreen\",style=\"rounded\"];\n\t19[label = \"compile\nqc\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t20[label = \"fastqc\", color = \"forestgreen\",style=\"rounded\"];\n\t21[label = \"multiqc\", color = \"forestgreen\",style=\"rounded\"];\n\t22[label = \"compile\nalignment\nqc\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t1 -> 0\n\t11 -> 0\n\t13 -> 0\n\t9 -> 0\n\t8 -> 0\n\t7 -> 1\n\t2 -> 1\n\t3 -> 2\n\t4 -> 3\n\t5 -> 4\n\t6 -> 5\n\t2 -> 7\n\t7 -> 8\n\t2 -> 8\n\t7 -> 9\n\t2 -> 9\n\t10 -> 9\n\t1 -> 11\n\t10 -> 11\n\t12 -> 11\n\t8 -> 11\n\t8 -> 12\n\t19 -> 13\n\t22 -> 13\n\t14 -> 13\n\t18 -> 13\n\t1 -> 14\n\t17 -> 14\n\t10 -> 14\n\t15 -> 14\n\t16 -> 14\n\t8 -> 14\n\t18 -> 14\n\t7 -> 16\n\t2 -> 16\n\t7 -> 17\n\t2 -> 17\n\t1 -> 17\n\t20 -> 19\n\t21 -> 19\n\t18 -> 19\n\t6 -> 20\n\t5 -> 20\n\t20 -> 21\n\t2 -> 22\n\t4 -> 22\n\t18 -> 22\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div class="grViz html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3bdf2c0387481bf56783" style="width:960px;height:768px;"></div>
+<script type="application/json" data-for="htmlwidget-3bdf2c0387481bf56783">{"x":{"diagram":"digraph snakemakg_dag {\n    graph[bgcolor=white, margin=0, rankdir = LR];\n    node[shape=box, style=rounded, fontname=sans,                 fontsize=12, penwidth=2];\n    edge[penwidth=2, color=grey];\n\t0[label = \"all\", color = \"red\",style=\"rounded\"];\n\t1[label = \"macs2\ncallpeak\", color = \"red\",style=\"rounded\"];\n\t2[label = \"picard\nmarkduplicates\", color = \"red\",style=\"rounded\"];\n\t3[label = \"samtools\nsort\", color = \"red\",style=\"rounded\"];\n\t4[label = \"bowtie2\nalign\", color = \"red\",style=\"rounded\"];\n\t5[label = \"adapterremoval\", color = \"red\",style=\"rounded\"];\n\t6[label = \"get\nfastq\", color = \"red\",style=\"rounded\"];\n\t7[label = \"samtools\nindex\", color = \"red\",style=\"rounded\"];\n\t8[label = \"macs2\ncallpeak\nmerged\", color = \"red\",style=\"rounded\"];\n\t9[label = \"make\ngreylist\", color = \"red\",style=\"rounded\"];\n\t10[label = \"get\nchrom\nsizes\", color = \"royalblue\",style=\"rounded\"];\n\t11[label = \"bedgraph\nto\nbigwig\", color = \"red\",style=\"rounded\", rankdir = LR];\n\t12[label = \"sort\nbedgraph\", color = \"red\",style=\"rounded\", rankdir = LR];\n\t13[label = \"macs2\nbdgcmp\nmerged\", color = \"red\",style=\"rounded\"];\n\t14[label = \"compile\nindex\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t15[label = \"compile\nmacs2\nsummary\", color = \"forestgreen\",style=\"rounded\"];\n\t16[label = \"create\nmacs2\nsummary\", color = \"forestgreen\",style=\"rounded\"];\n\t17[label = \"check\ncallpeak\nlogs\", color = \"red\",style=\"rounded\"];\n\t18[label = \"get\ncross\ncorrelations\", color = \"royalblue\",style=\"rounded\"];\n\t19[label = \"get\nfrip\", color = \"royalblue\",style=\"rounded\"];\n\t20[label = \"create\nsite\nyaml\", color = \"forestgreen\",style=\"rounded\"];\n\t21[label = \"compile\nraw\nqc\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t22[label = \"fastqc\", color = \"forestgreen\",style=\"rounded\"];\n\t23[label = \"multiqc\", color = \"forestgreen\",style=\"rounded\"];\n\t24[label = \"compile\ntrimmed\nqc\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t25[label = \"compile\nalignment\nqc\nhtml\", color = \"forestgreen\",style=\"rounded\"];\n\t9 -> 0\n\t1 -> 0\n\t14 -> 0\n\t8 -> 0\n\t11 -> 0\n\t2 -> 1\n\t7 -> 1\n\t3 -> 2\n\t4 -> 3\n\t5 -> 4\n\t6 -> 5\n\t2 -> 7\n\t2 -> 8\n\t7 -> 8\n\t2 -> 9\n\t10 -> 9\n\t7 -> 9\n\t10 -> 11\n\t12 -> 11\n\t13 -> 12\n\t1 -> 12\n\t8 -> 12\n\t8 -> 13\n\t21 -> 14\n\t20 -> 14\n\t24 -> 14\n\t15 -> 14\n\t25 -> 14\n\t10 -> 15\n\t16 -> 15\n\t18 -> 15\n\t20 -> 15\n\t17 -> 15\n\t1 -> 15\n\t19 -> 15\n\t8 -> 15\n\t1 -> 17\n\t8 -> 17\n\t2 -> 18\n\t7 -> 18\n\t2 -> 19\n\t1 -> 19\n\t7 -> 19\n\t22 -> 21\n\t23 -> 21\n\t20 -> 21\n\t5 -> 22\n\t6 -> 22\n\t22 -> 23\n\t5 -> 24\n\t22 -> 24\n\t23 -> 24\n\t20 -> 24\n\t4 -> 25\n\t2 -> 25\n\t20 -> 25\n}            ","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 <em>Snakemake rulegraph for the prepareChIPs workflow. The primary data
 processing workflow is showin in red, with QC and reporting steps shown
@@ -499,14 +499,14 @@ table</p>
     sortable = TRUE, filterable = TRUE, resizable = TRUE,
     showPageSizeOptions = TRUE
   )</code></pre>
-<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-378b5a7c55a1a8fa3539" style="width:auto;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-378b5a7c55a1a8fa3539">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315174","SRR8315175","SRR8315176","SRR8315177","SRR8315178","SRR8315179","SRR8315180","SRR8315181","SRR8315182","SRR8315183","SRR8315184","SRR8315185","SRR8315186","SRR8315187","SRR8315188","SRR8315189","SRR8315190","SRR8315191"],"Target":["AR","AR","AR","AR","AR","AR","ERa","ERa","ERa","ERa","ERa","ERa","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac"],"Treatment":["E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT"],"Input":["SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192"],"Cell Line":["ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1"],"Sample Name":["GSM3511082","GSM3511082","GSM3511082","GSM3511083","GSM3511083","GSM3511083","GSM3511084","GSM3511084","GSM3511084","GSM3511085","GSM3511085","GSM3511085","GSM3511086","GSM3511086","GSM3511086","GSM3511087","GSM3511087","GSM3511087"],"Experiment":["SRX5128130","SRX5128130","SRX5128130","SRX5128131","SRX5128131","SRX5128131","SRX5128132","SRX5128132","SRX5128132","SRX5128133","SRX5128133","SRX5128133","SRX5128134","SRX5128134","SRX5128134","SRX5128135","SRX5128135","SRX5128135"],"Source Name":["ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"},{"id":"Cell Line","name":"Cell Line","type":"character"},{"id":"Sample Name","name":"Sample Name","type":"character"},{"id":"Experiment","name":"Experiment","type":"character"},{"id":"Source Name","name":"Source Name","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"15a5dd100e375a221ed3f11cdf2da6ac"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div class="reactable html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-cd9776149e850b6d0115" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-cd9776149e850b6d0115">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"Accession":["SRR8315174","SRR8315175","SRR8315176","SRR8315177","SRR8315178","SRR8315179","SRR8315180","SRR8315181","SRR8315182","SRR8315183","SRR8315184","SRR8315185","SRR8315186","SRR8315187","SRR8315188","SRR8315189","SRR8315190","SRR8315191"],"Target":["AR","AR","AR","AR","AR","AR","ERa","ERa","ERa","ERa","ERa","ERa","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac","H3K27ac"],"Treatment":["E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT","E2","E2","E2","E2DHT","E2DHT","E2DHT"],"Input":["SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192","SRR8315192"],"Cell Line":["ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1","ZR-75-1"],"Sample Name":["GSM3511082","GSM3511082","GSM3511082","GSM3511083","GSM3511083","GSM3511083","GSM3511084","GSM3511084","GSM3511084","GSM3511085","GSM3511085","GSM3511085","GSM3511086","GSM3511086","GSM3511086","GSM3511087","GSM3511087","GSM3511087"],"Experiment":["SRX5128130","SRX5128130","SRX5128130","SRX5128131","SRX5128131","SRX5128131","SRX5128132","SRX5128132","SRX5128132","SRX5128133","SRX5128133","SRX5128133","SRX5128134","SRX5128134","SRX5128134","SRX5128135","SRX5128135","SRX5128135"],"Source Name":["ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT","ZR-75-1_E2+DHT"]},"columns":[{"id":"Accession","name":"Accession","type":"character"},{"id":"Target","name":"Target","type":"character"},{"id":"Treatment","name":"Treatment","type":"character"},{"id":"Input","name":"Input","type":"character"},{"id":"Cell Line","name":"Cell Line","type":"character"},{"id":"Sample Name","name":"Sample Name","type":"character"},{"id":"Experiment","name":"Experiment","type":"character"},{"id":"Source Name","name":"Source Name","type":"character"}],"resizable":true,"filterable":true,"showPageSizeOptions":true,"dataKey":"15a5dd100e375a221ed3f11cdf2da6ac"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="workflow-parameters" class="section level2">
 <h2>Workflow Parameters</h2>
 <p>Downloaded files are to be aligned to a genome located in
-/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/ with the prefix
-GRCh37</p>
+/hpcfs/users/a1018048/refs/gencode-release-33/GRCh37/dna/bt2/ with the
+prefix GRCh37.primary_assembly.genome</p>
 <p>All other parameters were specified to be</p>
 <ul>
 <li><p><strong>adapterremoval</strong>:</p>
@@ -571,8 +571,8 @@ Johnson, Bradley E Bernstein, Chad Nusbaum, et al. 2008.
 Session information </button>
 </p>
 <div id="sessioninfo" class="collapse">
-<p><strong>R version 4.3.0 (2023-04-21)</strong></p>
-<p><strong>Platform:</strong> x86_64-pc-linux-gnu (64-bit)</p>
+<p><strong>R version 4.2.3 (2023-03-15)</strong></p>
+<p><strong>Platform:</strong> x86_64-conda-linux-gnu (64-bit)</p>
 <p><strong>locale:</strong> <em>LC_CTYPE=en_AU.UTF-8</em>,
 <em>LC_NUMERIC=C</em>, <em>LC_TIME=en_AU.UTF-8</em>,
 <em>LC_COLLATE=en_AU.UTF-8</em>, <em>LC_MONETARY=en_AU.UTF-8</em>,
@@ -592,32 +592,31 @@ Session information </button>
 <em>ggplot2(v.3.4.2)</em>, <em>tidyverse(v.2.0.0)</em> and
 <em>DiagrammeR(v.1.0.10)</em></p>
 <p><strong>loaded via a namespace (and not attached):</strong>
-<em>sass(v.0.4.6)</em>, <em>utf8(v.1.2.3)</em>,
-<em>generics(v.0.1.3)</em>, <em>stringi(v.1.7.12)</em>,
-<em>hms(v.1.1.3)</em>, <em>digest(v.0.6.31)</em>,
-<em>magrittr(v.2.0.3)</em>, <em>timechange(v.0.2.0)</em>,
-<em>evaluate(v.0.21)</em>, <em>grid(v.4.3.0)</em>,
-<em>RColorBrewer(v.1.1-3)</em>, <em>fastmap(v.1.1.1)</em>,
-<em>rprojroot(v.2.0.3)</em>, <em>jsonlite(v.1.8.4)</em>,
-<em>fansi(v.1.0.4)</em>, <em>crosstalk(v.1.2.0)</em>,
-<em>scales(v.1.2.1)</em>, <em>jquerylib(v.0.1.4)</em>,
-<em>cli(v.3.6.1)</em>, <em>crayon(v.1.5.2)</em>,
-<em>rlang(v.1.1.1)</em>, <em>visNetwork(v.2.1.2)</em>,
-<em>ellipsis(v.0.3.2)</em>, <em>bit64(v.4.0.5)</em>,
-<em>munsell(v.0.5.0)</em>, <em>reactR(v.0.4.4)</em>,
-<em>withr(v.2.5.0)</em>, <em>cachem(v.1.0.8)</em>,
-<em>parallel(v.4.3.0)</em>, <em>tools(v.4.3.0)</em>,
-<em>tzdb(v.0.4.0)</em>, <em>colorspace(v.2.1-0)</em>,
-<em>vctrs(v.0.6.2)</em>, <em>R6(v.2.5.1)</em>,
-<em>lifecycle(v.1.0.3)</em>, <em>bit(v.4.0.5)</em>,
-<em>htmlwidgets(v.1.6.2)</em>, <em>vroom(v.1.6.3)</em>,
-<em>pkgconfig(v.2.0.3)</em>, <em>pillar(v.1.9.0)</em>,
-<em>bslib(v.0.4.2)</em>, <em>gtable(v.0.3.3)</em>,
-<em>Rcpp(v.1.0.10)</em>, <em>xfun(v.0.39)</em>,
-<em>tidyselect(v.1.2.0)</em>, <em>rstudioapi(v.0.14)</em>,
-<em>knitr(v.1.43)</em>, <em>htmltools(v.0.5.5)</em>,
-<em>patchwork(v.1.1.2)</em>, <em>rmarkdown(v.2.22)</em> and
-<em>compiler(v.4.3.0)</em></p>
+<em>tidyselect(v.1.2.0)</em>, <em>xfun(v.0.39)</em>,
+<em>bslib(v.0.5.0)</em>, <em>colorspace(v.2.1-0)</em>,
+<em>vctrs(v.0.6.3)</em>, <em>generics(v.0.1.3)</em>,
+<em>htmltools(v.0.5.5)</em>, <em>utf8(v.1.2.3)</em>,
+<em>rlang(v.1.1.1)</em>, <em>jquerylib(v.0.1.4)</em>,
+<em>pillar(v.1.9.0)</em>, <em>reactR(v.0.4.4)</em>,
+<em>withr(v.2.5.0)</em>, <em>bit64(v.4.0.5)</em>,
+<em>RColorBrewer(v.1.1-3)</em>, <em>lifecycle(v.1.0.3)</em>,
+<em>munsell(v.0.5.0)</em>, <em>gtable(v.0.3.3)</em>,
+<em>visNetwork(v.2.1.2)</em>, <em>htmlwidgets(v.1.6.2)</em>,
+<em>evaluate(v.0.21)</em>, <em>knitr(v.1.43)</em>,
+<em>tzdb(v.0.4.0)</em>, <em>fastmap(v.1.1.1)</em>,
+<em>crosstalk(v.1.2.0)</em>, <em>parallel(v.4.2.3)</em>,
+<em>fansi(v.1.0.4)</em>, <em>Rcpp(v.1.0.10)</em>,
+<em>scales(v.1.2.1)</em>, <em>cachem(v.1.0.8)</em>,
+<em>vroom(v.1.6.3)</em>, <em>jsonlite(v.1.8.5)</em>,
+<em>bit(v.4.0.5)</em>, <em>hms(v.1.1.3)</em>, <em>digest(v.0.6.31)</em>,
+<em>stringi(v.1.7.12)</em>, <em>grid(v.4.2.3)</em>,
+<em>rprojroot(v.2.0.3)</em>, <em>cli(v.3.6.1)</em>,
+<em>tools(v.4.2.3)</em>, <em>magrittr(v.2.0.3)</em>,
+<em>sass(v.0.4.6)</em>, <em>crayon(v.1.5.2)</em>,
+<em>pkgconfig(v.2.0.3)</em>, <em>ellipsis(v.0.3.2)</em>,
+<em>timechange(v.0.2.0)</em>, <em>rmarkdown(v.2.21)</em>,
+<em>rstudioapi(v.0.14)</em>, <em>R6(v.2.5.1)</em> and
+<em>compiler(v.4.2.3)</em></p>
 </div>
 </div>
 

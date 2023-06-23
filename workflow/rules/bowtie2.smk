@@ -13,6 +13,8 @@ rule bowtie2_align:
     params:
         extra = config['params']['bowtie2'],
     threads: 8  
+    resources:
+        mem_mb = lambda wildcards, threads: (threads * 2048)
     script:
         "../scripts/bowtie2.py"
 

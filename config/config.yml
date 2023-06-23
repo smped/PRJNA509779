@@ -24,6 +24,6 @@ params:
     index: ""
 
 reference:
-  path : "/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/" #"/Volumes/Accelsior-4M2/shared/reference_genomes/Homo_sapiens/GENCODE_v41/GRCh37/bwt2/"
-  index: "GRCh37"
+  path : "/hpcfs/users/a1018048/refs/gencode-release-33/GRCh37/dna/bt2/" #"/data/tki_bodl/data/references/gencode_v41/GRCh37/bwt2/" "/Volumes/Accelsior-4M2/shared/reference_genomes/Homo_sapiens/GENCODE_v41/GRCh37/bwt2/"
+  index: "GRCh37.primary_assembly.genome"
   name: "GRCh37"

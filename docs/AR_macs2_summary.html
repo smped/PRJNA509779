@@ -13,7 +13,7 @@
 
 <title>AR: MACS2 Summary</title>
 
-<script src="site_libs/header-attrs-2.22/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.21/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
@@ -29,7 +29,7 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
@@ -375,9 +375,6 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="AR_macs2_summary.html">AR</a>
-    </li>
-    <li>
       <a href="ERa_macs2_summary.html">ERa</a>
     </li>
     <li>
@@ -411,7 +408,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">AR: MACS2 Summary</h1>
-<h4 class="date">05 June, 2023</h4>
+<h4 class="date">23 June, 2023</h4>
 
 </div>
 
@@ -786,12 +783,19 @@ each replicate is shown using an UpSet plot below.</p>
   makeConsensus(var = &quot;qValue&quot;) %&gt;% 
   as_tibble() %&gt;% 
   mutate(qValue = vapply(qValue, min, numeric(1))) 
+has_peaks &lt;- vapply(accessions, function(x) sum(df[[x]]) &gt; 0, logical(1)) %&gt;%
+  which() %&gt;%
+  names()
 ql &lt;- samples$accession %&gt;% 
+  intersect(has_peaks) %&gt;%
   lapply(
-    function(x) upset_query(
-      set = x, 
-      fill = treat_colours[as.character(dplyr::filter(samples, accession == x)$treatment)]
-    )
+    function(x) {
+      col &lt;- as.character(dplyr::filter(samples, accession == x)$treatment)
+      upset_query(
+        set = x, 
+        fill = treat_colours[col]
+      )
+    }
   ) 
 ## Add the set of common peaks
 if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
@@ -799,11 +803,12 @@ if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
     ql, 
     list(
       upset_query(intersect = accessions, color = &quot;royalblue&quot;, only_components = &quot;intersections_matrix&quot;)
-  )
+    )
   )
 }
 ## Treatment specific common peaks
-split_acc &lt;- lapply(split(samples, samples$treatment), pull, accession)
+split_acc &lt;- lapply(split(samples, samples$treatment), pull, accession) %&gt;%
+  lapply(intersect, has_peaks)
 if (length(split_acc) &gt; 1) {
   treat_ql &lt;- seq_along(split_acc) %&gt;% 
     lapply(
@@ -981,9 +986,9 @@ peak calling process. The fragment length as estimated by
 <tr class="even">
 <td align="left">AR</td>
 <td align="left">E2DHT</td>
-<td align="right">16,522</td>
+<td align="right">16,528</td>
 <td align="right">52,618,434</td>
-<td align="right">69</td>
+<td align="right">71</td>
 <td align="right">188</td>
 </tr>
 </tbody>
@@ -1121,8 +1126,8 @@ Johnson, Bradley E Bernstein, Chad Nusbaum, et al. 2008.
 Session information </button>
 </p>
 <div id="sessioninfo" class="collapse">
-<p><strong>R version 4.3.0 (2023-04-21)</strong></p>
-<p><strong>Platform:</strong> x86_64-pc-linux-gnu (64-bit)</p>
+<p><strong>R version 4.2.3 (2023-03-15)</strong></p>
+<p><strong>Platform:</strong> x86_64-conda-linux-gnu (64-bit)</p>
 <p><strong>locale:</strong> <em>LC_CTYPE=en_AU.UTF-8</em>,
 <em>LC_NUMERIC=C</em>, <em>LC_TIME=en_AU.UTF-8</em>,
 <em>LC_COLLATE=en_AU.UTF-8</em>, <em>LC_MONETARY=en_AU.UTF-8</em>,
@@ -1133,101 +1138,95 @@ Session information </button>
 <em>stats</em>, <em>graphics</em>, <em>grDevices</em>, <em>utils</em>,
 <em>datasets</em>, <em>methods</em> and <em>base</em></p>
 <p><strong>other attached packages:</strong>
-<em>extraChIPs(v.1.5.2)</em>, <em>SummarizedExperiment(v.1.30.1)</em>,
-<em>Biobase(v.2.60.0)</em>, <em>MatrixGenerics(v.1.12.0)</em>,
-<em>matrixStats(v.1.0.0)</em>, <em>BiocParallel(v.1.34.2)</em>,
-<em>ComplexUpset(v.1.3.3)</em>, <em>plyranges(v.1.20.0)</em>,
-<em>rtracklayer(v.1.60.0)</em>, <em>GenomicRanges(v.1.52.0)</em>,
-<em>GenomeInfoDb(v.1.36.0)</em>, <em>IRanges(v.2.34.0)</em>,
-<em>S4Vectors(v.0.38.1)</em>, <em>magrittr(v.2.0.3)</em>,
-<em>DiagrammeR(v.1.0.10)</em>, <em>Polychrome(v.1.5.1)</em>,
-<em>htmltools(v.0.5.5)</em>, <em>scales(v.1.2.1)</em>,
-<em>ngsReports(v.2.3.3)</em>, <em>patchwork(v.1.1.2)</em>,
-<em>BiocGenerics(v.0.46.0)</em>, <em>pander(v.0.6.5)</em>,
-<em>reactable(v.0.4.4)</em>, <em>here(v.1.0.1)</em>,
-<em>yaml(v.2.3.7)</em>, <em>glue(v.1.6.2)</em>,
-<em>lubridate(v.1.9.2)</em>, <em>forcats(v.1.0.0)</em>,
-<em>stringr(v.1.5.0)</em>, <em>dplyr(v.1.1.2)</em>,
-<em>purrr(v.1.0.1)</em>, <em>readr(v.2.1.4)</em>,
-<em>tidyr(v.1.3.0)</em>, <em>tibble(v.3.2.1)</em>,
-<em>ggplot2(v.3.4.2)</em> and <em>tidyverse(v.2.0.0)</em></p>
+<em>extraChIPs(v.1.2.0)</em>, <em>SummarizedExperiment(v.1.28.0)</em>,
+<em>Biobase(v.2.58.0)</em>, <em>MatrixGenerics(v.1.10.0)</em>,
+<em>matrixStats(v.1.0.0)</em>, <em>BiocParallel(v.1.32.5)</em>,
+<em>ComplexUpset(v.1.3.3)</em>, <em>ngsReports(v.2.0.0)</em>,
+<em>patchwork(v.1.1.2)</em>, <em>yaml(v.2.3.7)</em>,
+<em>plyranges(v.1.18.0)</em>, <em>scales(v.1.2.1)</em>,
+<em>pander(v.0.6.5)</em>, <em>glue(v.1.6.2)</em>,
+<em>rtracklayer(v.1.58.0)</em>, <em>GenomicRanges(v.1.50.0)</em>,
+<em>GenomeInfoDb(v.1.34.9)</em>, <em>IRanges(v.2.32.0)</em>,
+<em>S4Vectors(v.0.36.0)</em>, <em>BiocGenerics(v.0.44.0)</em>,
+<em>magrittr(v.2.0.3)</em>, <em>lubridate(v.1.9.2)</em>,
+<em>forcats(v.1.0.0)</em>, <em>stringr(v.1.5.0)</em>,
+<em>dplyr(v.1.1.2)</em>, <em>purrr(v.1.0.1)</em>,
+<em>readr(v.2.1.4)</em>, <em>tidyr(v.1.3.0)</em>,
+<em>tibble(v.3.2.1)</em>, <em>ggplot2(v.3.4.2)</em> and
+<em>tidyverse(v.2.0.0)</em></p>
 <p><strong>loaded via a namespace (and not attached):</strong>
-<em>splines(v.4.3.0)</em>, <em>BiocIO(v.1.10.0)</em>,
-<em>bitops(v.1.0-7)</em>, <em>filelock(v.1.0.2)</em>,
-<em>polyclip(v.1.10-4)</em>, <em>XML(v.3.99-0.14)</em>,
-<em>rpart(v.4.1.19)</em>, <em>lifecycle(v.1.0.3)</em>,
-<em>edgeR(v.3.42.4)</em>, <em>doParallel(v.1.0.17)</em>,
-<em>rprojroot(v.2.0.3)</em>, <em>ensembldb(v.2.24.0)</em>,
-<em>lattice(v.0.21-8)</em>, <em>vroom(v.1.6.3)</em>,
-<em>MASS(v.7.3-60)</em>, <em>crosstalk(v.1.2.0)</em>,
-<em>backports(v.1.4.1)</em>, <em>limma(v.3.56.1)</em>,
-<em>Hmisc(v.5.1-0)</em>, <em>plotly(v.4.10.1)</em>,
-<em>sass(v.0.4.6)</em>, <em>rmarkdown(v.2.22)</em>,
-<em>jquerylib(v.0.1.4)</em>, <em>metapod(v.1.8.0)</em>,
-<em>ggside(v.0.2.2)</em>, <em>Gviz(v.1.44.0)</em>,
-<em>DBI(v.1.1.3)</em>, <em>RColorBrewer(v.1.1-3)</em>,
-<em>zlibbioc(v.1.46.0)</em>, <em>AnnotationFilter(v.1.24.0)</em>,
-<em>biovizBase(v.1.48.0)</em>, <em>RCurl(v.1.98-1.12)</em>,
-<em>nnet(v.7.3-18)</em>, <em>tweenr(v.2.0.2)</em>,
-<em>VariantAnnotation(v.1.46.0)</em>, <em>rappdirs(v.0.3.3)</em>,
-<em>circlize(v.0.4.15)</em>, <em>GenomeInfoDbData(v.1.2.10)</em>,
-<em>ggrepel(v.0.9.3)</em>, <em>codetools(v.0.2-19)</em>,
-<em>DelayedArray(v.0.26.3)</em>, <em>ggforce(v.0.4.1)</em>,
-<em>DT(v.0.28)</em>, <em>xml2(v.1.3.4)</em>,
-<em>tidyselect(v.1.2.0)</em>, <em>shape(v.1.4.6)</em>,
-<em>futile.logger(v.1.4.3)</em>, <em>farver(v.2.1.1)</em>,
-<em>BiocFileCache(v.2.8.0)</em>, <em>base64enc(v.0.1-3)</em>,
-<em>GenomicAlignments(v.1.36.0)</em>, <em>jsonlite(v.1.8.4)</em>,
-<em>GetoptLong(v.1.0.5)</em>, <em>ellipsis(v.0.3.2)</em>,
-<em>Formula(v.1.2-5)</em>, <em>iterators(v.1.0.14)</em>,
-<em>foreach(v.1.5.2)</em>, <em>tools(v.4.3.0)</em>,
-<em>progress(v.1.2.2)</em>, <em>Rcpp(v.1.0.10)</em>,
-<em>gridExtra(v.2.3)</em>, <em>mgcv(v.1.8-42)</em>,
-<em>xfun(v.0.39)</em>, <em>withr(v.2.5.0)</em>,
-<em>formatR(v.1.14)</em>, <em>fastmap(v.1.1.1)</em>,
-<em>latticeExtra(v.0.6-30)</em>, <em>fansi(v.1.0.4)</em>,
-<em>digest(v.0.6.31)</em>, <em>timechange(v.0.2.0)</em>,
-<em>R6(v.2.5.1)</em>, <em>colorspace(v.2.1-0)</em>,
-<em>jpeg(v.0.1-10)</em>, <em>dichromat(v.2.0-0.1)</em>,
-<em>biomaRt(v.2.56.0)</em>, <em>RSQLite(v.2.3.1)</em>,
-<em>utf8(v.1.2.3)</em>, <em>generics(v.0.1.3)</em>,
-<em>data.table(v.1.14.8)</em>, <em>InteractionSet(v.1.28.0)</em>,
-<em>prettyunits(v.1.1.1)</em>, <em>httr(v.1.4.6)</em>,
-<em>htmlwidgets(v.1.6.2)</em>, <em>S4Arrays(v.1.0.4)</em>,
-<em>scatterplot3d(v.0.3-44)</em>, <em>pkgconfig(v.2.0.3)</em>,
-<em>gtable(v.0.3.3)</em>, <em>blob(v.1.2.4)</em>,
-<em>ComplexHeatmap(v.2.16.0)</em>, <em>XVector(v.0.40.0)</em>,
-<em>ProtGenerics(v.1.32.0)</em>, <em>clue(v.0.3-64)</em>,
-<em>png(v.0.1-8)</em>, <em>ggdendro(v.0.1.23)</em>,
-<em>lambda.r(v.1.2.4)</em>, <em>knitr(v.1.43)</em>,
-<em>rstudioapi(v.0.14)</em>, <em>tzdb(v.0.4.0)</em>,
-<em>reshape2(v.1.4.4)</em>, <em>rjson(v.0.2.21)</em>,
-<em>nlme(v.3.1-162)</em>, <em>visNetwork(v.2.1.2)</em>,
-<em>checkmate(v.2.2.0)</em>, <em>curl(v.5.0.0)</em>,
-<em>cachem(v.1.0.8)</em>, <em>zoo(v.1.8-12)</em>,
-<em>GlobalOptions(v.0.1.2)</em>, <em>parallel(v.4.3.0)</em>,
-<em>foreign(v.0.8-84)</em>, <em>AnnotationDbi(v.1.62.1)</em>,
-<em>restfulr(v.0.0.15)</em>, <em>pillar(v.1.9.0)</em>,
-<em>grid(v.4.3.0)</em>, <em>vctrs(v.0.6.2)</em>,
-<em>dbplyr(v.2.3.2)</em>, <em>cluster(v.2.1.4)</em>,
-<em>htmlTable(v.2.4.1)</em>, <em>evaluate(v.0.21)</em>,
-<em>VennDiagram(v.1.7.3)</em>, <em>EnrichedHeatmap(v.1.30.0)</em>,
-<em>GenomicFeatures(v.1.52.0)</em>, <em>futile.options(v.1.0.1)</em>,
-<em>cli(v.3.6.1)</em>, <em>locfit(v.1.5-9.7)</em>,
-<em>compiler(v.4.3.0)</em>, <em>Rsamtools(v.2.16.0)</em>,
-<em>rlang(v.1.1.1)</em>, <em>crayon(v.1.5.2)</em>,
-<em>labeling(v.0.4.2)</em>, <em>interp(v.1.1-4)</em>,
-<em>reactR(v.0.4.4)</em>, <em>plyr(v.1.8.8)</em>,
-<em>stringi(v.1.7.12)</em>, <em>deldir(v.1.0-9)</em>,
-<em>viridisLite(v.0.4.2)</em>, <em>munsell(v.0.5.0)</em>,
-<em>Biostrings(v.2.68.1)</em>, <em>lazyeval(v.0.2.2)</em>,
-<em>csaw(v.1.34.0)</em>, <em>Matrix(v.1.5-4.1)</em>,
-<em>BSgenome(v.1.68.0)</em>, <em>hms(v.1.1.3)</em>,
-<em>bit64(v.4.0.5)</em>, <em>KEGGREST(v.1.40.0)</em>,
-<em>highr(v.0.10)</em>, <em>fontawesome(v.0.5.1)</em>,
-<em>broom(v.1.0.4)</em>, <em>igraph(v.1.4.3)</em>,
-<em>memoise(v.2.0.1)</em>, <em>bslib(v.0.4.2)</em>,
-<em>bit(v.4.0.5)</em> and <em>GenomicInteractions(v.1.34.0)</em></p>
+<em>utf8(v.1.2.3)</em>, <em>tidyselect(v.1.2.0)</em>,
+<em>RSQLite(v.2.3.1)</em>, <em>AnnotationDbi(v.1.60.0)</em>,
+<em>htmlwidgets(v.1.6.2)</em>, <em>grid(v.4.2.3)</em>,
+<em>munsell(v.0.5.0)</em>, <em>codetools(v.0.2-19)</em>,
+<em>interp(v.1.1-4)</em>, <em>DT(v.0.28)</em>, <em>withr(v.2.5.0)</em>,
+<em>colorspace(v.2.1-0)</em>, <em>filelock(v.1.0.2)</em>,
+<em>highr(v.0.10)</em>, <em>knitr(v.1.43)</em>,
+<em>rstudioapi(v.0.14)</em>, <em>ggside(v.0.2.2)</em>,
+<em>labeling(v.0.4.2)</em>, <em>GenomeInfoDbData(v.1.2.9)</em>,
+<em>polyclip(v.1.10-4)</em>, <em>bit64(v.4.0.5)</em>,
+<em>farver(v.2.1.1)</em>, <em>rprojroot(v.2.0.3)</em>,
+<em>vctrs(v.0.6.3)</em>, <em>generics(v.0.1.3)</em>,
+<em>lambda.r(v.1.2.4)</em>, <em>xfun(v.0.39)</em>,
+<em>biovizBase(v.1.46.0)</em>, <em>timechange(v.0.2.0)</em>,
+<em>csaw(v.1.32.0)</em>, <em>BiocFileCache(v.2.6.0)</em>,
+<em>R6(v.2.5.1)</em>, <em>doParallel(v.1.0.17)</em>,
+<em>clue(v.0.3-64)</em>, <em>locfit(v.1.5-9.8)</em>,
+<em>AnnotationFilter(v.1.22.0)</em>, <em>bitops(v.1.0-7)</em>,
+<em>cachem(v.1.0.8)</em>, <em>DelayedArray(v.0.24.0)</em>,
+<em>vroom(v.1.6.3)</em>, <em>BiocIO(v.1.8.0)</em>,
+<em>nnet(v.7.3-19)</em>, <em>gtable(v.0.3.3)</em>,
+<em>ensembldb(v.2.22.0)</em>, <em>rlang(v.1.1.1)</em>,
+<em>splines(v.4.2.3)</em>, <em>GlobalOptions(v.0.1.2)</em>,
+<em>lazyeval(v.0.2.2)</em>, <em>dichromat(v.2.0-0.1)</em>,
+<em>broom(v.1.0.5)</em>, <em>checkmate(v.2.2.0)</em>,
+<em>GenomicFeatures(v.1.50.2)</em>, <em>backports(v.1.4.1)</em>,
+<em>Hmisc(v.5.1-0)</em>, <em>EnrichedHeatmap(v.1.27.2)</em>,
+<em>tools(v.4.2.3)</em>, <em>jquerylib(v.0.1.4)</em>,
+<em>RColorBrewer(v.1.1-3)</em>, <em>ggdendro(v.0.1.23)</em>,
+<em>Rcpp(v.1.0.10)</em>, <em>base64enc(v.0.1-3)</em>,
+<em>progress(v.1.2.2)</em>, <em>zlibbioc(v.1.44.0)</em>,
+<em>RCurl(v.1.98-1.12)</em>, <em>prettyunits(v.1.1.1)</em>,
+<em>rpart(v.4.1.19)</em>, <em>deldir(v.1.0-9)</em>,
+<em>GetoptLong(v.1.0.5)</em>, <em>zoo(v.1.8-12)</em>,
+<em>ggrepel(v.0.9.3)</em>, <em>cluster(v.2.1.4)</em>,
+<em>here(v.1.0.1)</em>, <em>data.table(v.1.14.8)</em>,
+<em>futile.options(v.1.0.1)</em>, <em>circlize(v.0.4.15)</em>,
+<em>ProtGenerics(v.1.30.0)</em>, <em>hms(v.1.1.3)</em>,
+<em>evaluate(v.0.21)</em>, <em>XML(v.3.99-0.14)</em>,
+<em>VennDiagram(v.1.7.3)</em>, <em>jpeg(v.0.1-10)</em>,
+<em>gridExtra(v.2.3)</em>, <em>shape(v.1.4.6)</em>,
+<em>compiler(v.4.2.3)</em>, <em>biomaRt(v.2.54.0)</em>,
+<em>crayon(v.1.5.2)</em>, <em>htmltools(v.0.5.5)</em>,
+<em>mgcv(v.1.8-42)</em>, <em>tzdb(v.0.4.0)</em>,
+<em>Formula(v.1.2-5)</em>, <em>DBI(v.1.1.3)</em>,
+<em>tweenr(v.2.0.2)</em>, <em>formatR(v.1.14)</em>,
+<em>dbplyr(v.2.3.2)</em>, <em>ComplexHeatmap(v.2.14.0)</em>,
+<em>MASS(v.7.3-60)</em>, <em>GenomicInteractions(v.1.32.0)</em>,
+<em>rappdirs(v.0.3.3)</em>, <em>Matrix(v.1.5-4.1)</em>,
+<em>cli(v.3.6.1)</em>, <em>parallel(v.4.2.3)</em>,
+<em>Gviz(v.1.42.0)</em>, <em>metapod(v.1.6.0)</em>,
+<em>igraph(v.1.4.3)</em>, <em>pkgconfig(v.2.0.3)</em>,
+<em>GenomicAlignments(v.1.34.0)</em>, <em>foreign(v.0.8-84)</em>,
+<em>plotly(v.4.10.2)</em>, <em>xml2(v.1.3.4)</em>,
+<em>InteractionSet(v.1.26.0)</em>, <em>foreach(v.1.5.2)</em>,
+<em>bslib(v.0.5.0)</em>, <em>XVector(v.0.38.0)</em>,
+<em>VariantAnnotation(v.1.44.0)</em>, <em>digest(v.0.6.31)</em>,
+<em>Biostrings(v.2.66.0)</em>, <em>rmarkdown(v.2.21)</em>,
+<em>htmlTable(v.2.4.1)</em>, <em>edgeR(v.3.40.0)</em>,
+<em>restfulr(v.0.0.15)</em>, <em>curl(v.5.0.1)</em>,
+<em>Rsamtools(v.2.14.0)</em>, <em>rjson(v.0.2.21)</em>,
+<em>nlme(v.3.1-162)</em>, <em>lifecycle(v.1.0.3)</em>,
+<em>jsonlite(v.1.8.5)</em>, <em>futile.logger(v.1.4.3)</em>,
+<em>viridisLite(v.0.4.2)</em>, <em>limma(v.3.54.0)</em>,
+<em>BSgenome(v.1.66.3)</em>, <em>fansi(v.1.0.4)</em>,
+<em>pillar(v.1.9.0)</em>, <em>lattice(v.0.21-8)</em>,
+<em>KEGGREST(v.1.38.0)</em>, <em>fastmap(v.1.1.1)</em>,
+<em>httr(v.1.4.6)</em>, <em>png(v.0.1-8)</em>,
+<em>iterators(v.1.0.14)</em>, <em>bit(v.4.0.5)</em>,
+<em>ggforce(v.0.4.1)</em>, <em>stringi(v.1.7.12)</em>,
+<em>sass(v.0.4.6)</em>, <em>blob(v.1.2.4)</em>,
+<em>latticeExtra(v.0.6-30)</em> and <em>memoise(v.2.0.1)</em></p>
 </div>
 </div>
 

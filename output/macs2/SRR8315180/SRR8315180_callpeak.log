@@ -1,4 +1,4 @@
-INFO  @ Sun, 04 Jun 2023 01:32:13: 
+INFO  @ Fri, 23 Jun 2023 12:03:55: 
 # Command line: callpeak -t data/deduplicated/SRR8315180.sorted.bam -c data/deduplicated/SRR8315192.sorted.bam -f BAM --bdg --SPMR -g hs --keep-dup all -q 0.05 -n SRR8315180 --outdir output/macs2/SRR8315180
 # ARGUMENTS LIST:
 # name = SRR8315180
@@ -17,69 +17,69 @@ INFO  @ Sun, 04 Jun 2023 01:32:13:
 # Paired-End mode is off
 # MACS will save fragment pileup signal per million reads
  
-INFO  @ Sun, 04 Jun 2023 01:32:13: #1 read tag files... 
-INFO  @ Sun, 04 Jun 2023 01:32:13: #1 read treatment tags... 
-INFO  @ Sun, 04 Jun 2023 01:32:14:  1000000 
-INFO  @ Sun, 04 Jun 2023 01:32:16:  2000000 
-INFO  @ Sun, 04 Jun 2023 01:32:18:  3000000 
-INFO  @ Sun, 04 Jun 2023 01:32:20:  4000000 
-INFO  @ Sun, 04 Jun 2023 01:32:21:  5000000 
-INFO  @ Sun, 04 Jun 2023 01:32:23:  6000000 
-INFO  @ Sun, 04 Jun 2023 01:32:25:  7000000 
-INFO  @ Sun, 04 Jun 2023 01:32:27:  8000000 
-INFO  @ Sun, 04 Jun 2023 01:32:28:  9000000 
-INFO  @ Sun, 04 Jun 2023 01:32:30:  10000000 
-INFO  @ Sun, 04 Jun 2023 01:32:32:  11000000 
-INFO  @ Sun, 04 Jun 2023 01:32:33:  12000000 
-INFO  @ Sun, 04 Jun 2023 01:32:35:  13000000 
-INFO  @ Sun, 04 Jun 2023 01:32:37:  14000000 
-INFO  @ Sun, 04 Jun 2023 01:32:39:  15000000 
-INFO  @ Sun, 04 Jun 2023 01:32:40:  16000000 
-INFO  @ Sun, 04 Jun 2023 01:32:41: 16373508 reads have been read. 
-INFO  @ Sun, 04 Jun 2023 01:32:41: #1.2 read input tags... 
-INFO  @ Sun, 04 Jun 2023 01:32:43:  1000000 
-INFO  @ Sun, 04 Jun 2023 01:32:44:  2000000 
-INFO  @ Sun, 04 Jun 2023 01:32:46:  3000000 
-INFO  @ Sun, 04 Jun 2023 01:32:48:  4000000 
-INFO  @ Sun, 04 Jun 2023 01:32:49:  5000000 
-INFO  @ Sun, 04 Jun 2023 01:32:51:  6000000 
-INFO  @ Sun, 04 Jun 2023 01:32:53:  7000000 
-INFO  @ Sun, 04 Jun 2023 01:32:55:  8000000 
-INFO  @ Sun, 04 Jun 2023 01:32:56:  9000000 
-INFO  @ Sun, 04 Jun 2023 01:32:58:  10000000 
-INFO  @ Sun, 04 Jun 2023 01:33:00:  11000000 
-INFO  @ Sun, 04 Jun 2023 01:33:01:  12000000 
-INFO  @ Sun, 04 Jun 2023 01:33:03:  13000000 
-INFO  @ Sun, 04 Jun 2023 01:33:05:  14000000 
-INFO  @ Sun, 04 Jun 2023 01:33:07:  15000000 
-INFO  @ Sun, 04 Jun 2023 01:33:08:  16000000 
-INFO  @ Sun, 04 Jun 2023 01:33:10:  17000000 
-INFO  @ Sun, 04 Jun 2023 01:33:12:  18000000 
-INFO  @ Sun, 04 Jun 2023 01:33:13:  19000000 
-INFO  @ Sun, 04 Jun 2023 01:33:14: 19309861 reads have been read. 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #1 tag size is determined as 68 bps 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #1 tag size = 68.0 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #1  total tags in treatment: 16373508 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #1  total tags in control: 19309861 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #1 finished! 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #2 Build Peak Model... 
-INFO  @ Sun, 04 Jun 2023 01:33:14: #2 looking for paired plus/minus strand peaks... 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #2 number of paired peaks: 6960 
-INFO  @ Sun, 04 Jun 2023 01:33:16: start model_add_line... 
-INFO  @ Sun, 04 Jun 2023 01:33:16: start X-correlation... 
-INFO  @ Sun, 04 Jun 2023 01:33:16: end of X-cor 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #2 finished! 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #2 predicted fragment length is 155 bps 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #2 alternative fragment length(s) may be 155 bps 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #2.2 Generate R script for model : output/macs2/SRR8315180/SRR8315180_model.r 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #3 Call peaks... 
-INFO  @ Sun, 04 Jun 2023 01:33:16: #3 Pre-compute pvalue-qvalue table... 
-INFO  @ Sun, 04 Jun 2023 01:34:21: #3 In the peak calling step, the following will be performed simultaneously: 
-INFO  @ Sun, 04 Jun 2023 01:34:21: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... SRR8315180_treat_pileup.bdg 
-INFO  @ Sun, 04 Jun 2023 01:34:21: #3   Write bedGraph files for control lambda (after scaling if necessary)... SRR8315180_control_lambda.bdg 
-INFO  @ Sun, 04 Jun 2023 01:34:21: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
-INFO  @ Sun, 04 Jun 2023 01:34:21: #3 Call peaks for each chromosome... 
-INFO  @ Sun, 04 Jun 2023 01:35:24: #4 Write output xls file... output/macs2/SRR8315180/SRR8315180_peaks.xls 
-INFO  @ Sun, 04 Jun 2023 01:35:24: #4 Write peak in narrowPeak format file... output/macs2/SRR8315180/SRR8315180_peaks.narrowPeak 
-INFO  @ Sun, 04 Jun 2023 01:35:24: #4 Write summits bed file... output/macs2/SRR8315180/SRR8315180_summits.bed 
-INFO  @ Sun, 04 Jun 2023 01:35:24: Done! 
+INFO  @ Fri, 23 Jun 2023 12:03:55: #1 read tag files... 
+INFO  @ Fri, 23 Jun 2023 12:03:55: #1 read treatment tags... 
+INFO  @ Fri, 23 Jun 2023 12:03:57:  1000000 
+INFO  @ Fri, 23 Jun 2023 12:03:59:  2000000 
+INFO  @ Fri, 23 Jun 2023 12:04:01:  3000000 
+INFO  @ Fri, 23 Jun 2023 12:04:03:  4000000 
+INFO  @ Fri, 23 Jun 2023 12:04:04:  5000000 
+INFO  @ Fri, 23 Jun 2023 12:04:06:  6000000 
+INFO  @ Fri, 23 Jun 2023 12:04:08:  7000000 
+INFO  @ Fri, 23 Jun 2023 12:04:10:  8000000 
+INFO  @ Fri, 23 Jun 2023 12:04:12:  9000000 
+INFO  @ Fri, 23 Jun 2023 12:04:14:  10000000 
+INFO  @ Fri, 23 Jun 2023 12:04:16:  11000000 
+INFO  @ Fri, 23 Jun 2023 12:04:18:  12000000 
+INFO  @ Fri, 23 Jun 2023 12:04:20:  13000000 
+INFO  @ Fri, 23 Jun 2023 12:04:21:  14000000 
+INFO  @ Fri, 23 Jun 2023 12:04:23:  15000000 
+INFO  @ Fri, 23 Jun 2023 12:04:25:  16000000 
+INFO  @ Fri, 23 Jun 2023 12:04:26: 16373508 reads have been read. 
+INFO  @ Fri, 23 Jun 2023 12:04:26: #1.2 read input tags... 
+INFO  @ Fri, 23 Jun 2023 12:04:28:  1000000 
+INFO  @ Fri, 23 Jun 2023 12:04:30:  2000000 
+INFO  @ Fri, 23 Jun 2023 12:04:32:  3000000 
+INFO  @ Fri, 23 Jun 2023 12:04:34:  4000000 
+INFO  @ Fri, 23 Jun 2023 12:04:36:  5000000 
+INFO  @ Fri, 23 Jun 2023 12:04:37:  6000000 
+INFO  @ Fri, 23 Jun 2023 12:04:39:  7000000 
+INFO  @ Fri, 23 Jun 2023 12:04:41:  8000000 
+INFO  @ Fri, 23 Jun 2023 12:04:43:  9000000 
+INFO  @ Fri, 23 Jun 2023 12:04:45:  10000000 
+INFO  @ Fri, 23 Jun 2023 12:04:47:  11000000 
+INFO  @ Fri, 23 Jun 2023 12:04:49:  12000000 
+INFO  @ Fri, 23 Jun 2023 12:04:51:  13000000 
+INFO  @ Fri, 23 Jun 2023 12:04:52:  14000000 
+INFO  @ Fri, 23 Jun 2023 12:04:54:  15000000 
+INFO  @ Fri, 23 Jun 2023 12:04:56:  16000000 
+INFO  @ Fri, 23 Jun 2023 12:04:58:  17000000 
+INFO  @ Fri, 23 Jun 2023 12:05:00:  18000000 
+INFO  @ Fri, 23 Jun 2023 12:05:02:  19000000 
+INFO  @ Fri, 23 Jun 2023 12:05:03: 19309861 reads have been read. 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #1 tag size is determined as 68 bps 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #1 tag size = 68.0 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #1  total tags in treatment: 16373508 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #1  total tags in control: 19309861 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #1 finished! 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #2 Build Peak Model... 
+INFO  @ Fri, 23 Jun 2023 12:05:03: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #2 number of paired peaks: 6960 
+INFO  @ Fri, 23 Jun 2023 12:05:04: start model_add_line... 
+INFO  @ Fri, 23 Jun 2023 12:05:04: start X-correlation... 
+INFO  @ Fri, 23 Jun 2023 12:05:04: end of X-cor 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #2 finished! 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #2 predicted fragment length is 155 bps 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #2 alternative fragment length(s) may be 155 bps 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #2.2 Generate R script for model : output/macs2/SRR8315180/SRR8315180_model.r 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #3 Call peaks... 
+INFO  @ Fri, 23 Jun 2023 12:05:04: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Fri, 23 Jun 2023 12:06:06: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Fri, 23 Jun 2023 12:06:06: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... SRR8315180_treat_pileup.bdg 
+INFO  @ Fri, 23 Jun 2023 12:06:06: #3   Write bedGraph files for control lambda (after scaling if necessary)... SRR8315180_control_lambda.bdg 
+INFO  @ Fri, 23 Jun 2023 12:06:06: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
+INFO  @ Fri, 23 Jun 2023 12:06:06: #3 Call peaks for each chromosome... 
+INFO  @ Fri, 23 Jun 2023 12:07:12: #4 Write output xls file... output/macs2/SRR8315180/SRR8315180_peaks.xls 
+INFO  @ Fri, 23 Jun 2023 12:07:12: #4 Write peak in narrowPeak format file... output/macs2/SRR8315180/SRR8315180_peaks.narrowPeak 
+INFO  @ Fri, 23 Jun 2023 12:07:12: #4 Write summits bed file... output/macs2/SRR8315180/SRR8315180_summits.bed 
+INFO  @ Fri, 23 Jun 2023 12:07:12: Done! 
