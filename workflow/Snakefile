@@ -116,7 +116,7 @@ ALL_HTML = expand(
 
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_QC)
-# ALL_OUTPUTS.extend(ALL_BAM)
+ALL_OUTPUTS.extend(ALL_BAM)
 ALL_OUTPUTS.extend(ALL_PEAKS)
 ALL_OUTPUTS.extend(
  expand(
