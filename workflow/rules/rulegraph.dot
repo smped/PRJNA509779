@@ -2,69 +2,86 @@ digraph snakemake_dag {
     graph[bgcolor=white, margin=0];
     node[shape=box, style=rounded, fontname=sans,                 fontsize=10, penwidth=2];
     edge[penwidth=2, color=grey];
-	0[label = "all", color = "0.45 0.6 0.85", style="rounded"];
-	1[label = "macs2_callpeak", color = "0.39 0.6 0.85", style="rounded"];
-	2[label = "picard_markduplicates", color = "0.30 0.6 0.85", style="rounded"];
-	3[label = "samtools_sort", color = "0.42 0.6 0.85", style="rounded"];
-	4[label = "bowtie2_align", color = "0.55 0.6 0.85", style="rounded"];
-	5[label = "adapterremoval", color = "0.09 0.6 0.85", style="rounded"];
-	6[label = "get_fastq", color = "0.61 0.6 0.85", style="rounded"];
-	7[label = "samtools_index", color = "0.00 0.6 0.85", style="rounded"];
-	8[label = "macs2_callpeak_merged", color = "0.18 0.6 0.85", style="rounded"];
-	9[label = "bedgraph_to_bigwig", color = "0.06 0.6 0.85", style="rounded"];
-	10[label = "get_chrom_sizes", color = "0.36 0.6 0.85", style="rounded"];
-	11[label = "macs2_bdgcmp_merged", color = "0.64 0.6 0.85", style="rounded"];
-	12[label = "compile_index_html", color = "0.33 0.6 0.85", style="rounded"];
-	13[label = "compile_macs2_summary", color = "0.24 0.6 0.85", style="rounded"];
-	14[label = "create_macs2_summary", color = "0.58 0.6 0.85", style="rounded"];
-	15[label = "get_cross_correlations", color = "0.15 0.6 0.85", style="rounded"];
-	16[label = "get_frip", color = "0.27 0.6 0.85", style="rounded"];
-	17[label = "create_site_yaml", color = "0.52 0.6 0.85", style="rounded"];
-	18[label = "compile_qc_html", color = "0.12 0.6 0.85", style="rounded"];
-	19[label = "fastqc", color = "0.21 0.6 0.85", style="rounded"];
-	20[label = "multiqc", color = "0.48 0.6 0.85", style="rounded"];
-	21[label = "compile_alignment_qc_html", color = "0.03 0.6 0.85", style="rounded"];
-	8 -> 0
+	0[label = "all", color = "0.31 0.6 0.85", style="rounded"];
+	1[label = "macs2_callpeak", color = "0.18 0.6 0.85", style="rounded"];
+	2[label = "picard_markduplicates", color = "0.03 0.6 0.85", style="rounded"];
+	3[label = "samtools_sort", color = "0.15 0.6 0.85", style="rounded"];
+	4[label = "bowtie2_align", color = "0.44 0.6 0.85", style="rounded"];
+	5[label = "adapterremoval", color = "0.46 0.6 0.85", style="rounded"];
+	6[label = "get_fastq", color = "0.49 0.6 0.85", style="rounded"];
+	7[label = "samtools_index", color = "0.54 0.6 0.85", style="rounded"];
+	8[label = "macs2_callpeak_merged", color = "0.36 0.6 0.85", style="rounded"];
+	9[label = "make_greylist", color = "0.51 0.6 0.85", style="rounded"];
+	10[label = "get_chrom_sizes", color = "0.00 0.6 0.85", style="rounded"];
+	11[label = "bedgraph_to_bigwig", color = "0.64 0.6 0.85", style="rounded"];
+	12[label = "sort_bedgraph", color = "0.59 0.6 0.85", style="rounded"];
+	13[label = "macs2_bdgcmp_merged", color = "0.21 0.6 0.85", style="rounded"];
+	14[label = "compile_index_html", color = "0.62 0.6 0.85", style="rounded"];
+	15[label = "compile_macs2_summary", color = "0.10 0.6 0.85", style="rounded"];
+	16[label = "create_macs2_summary", color = "0.05 0.6 0.85", style="rounded"];
+	17[label = "check_callpeak_logs", color = "0.28 0.6 0.85", style="rounded"];
+	18[label = "get_cross_correlations", color = "0.56 0.6 0.85", style="rounded"];
+	19[label = "get_frip", color = "0.08 0.6 0.85", style="rounded"];
+	20[label = "create_site_yaml", color = "0.26 0.6 0.85", style="rounded"];
+	21[label = "compile_raw_qc_html", color = "0.41 0.6 0.85", style="rounded"];
+	22[label = "fastqc", color = "0.23 0.6 0.85", style="rounded"];
+	23[label = "multiqc", color = "0.13 0.6 0.85", style="rounded"];
+	24[label = "compile_trimmed_qc_html", color = "0.33 0.6 0.85", style="rounded"];
+	25[label = "compile_alignment_qc_html", color = "0.38 0.6 0.85", style="rounded"];
 	9 -> 0
 	1 -> 0
-	12 -> 0
-	7 -> 1
+	14 -> 0
+	8 -> 0
+	11 -> 0
 	2 -> 1
+	7 -> 1
 	3 -> 2
 	4 -> 3
 	5 -> 4
 	6 -> 5
 	2 -> 7
-	7 -> 8
 	2 -> 8
+	7 -> 8
+	2 -> 9
 	10 -> 9
-	8 -> 9
-	1 -> 9
-	11 -> 9
-	8 -> 11
-	21 -> 12
+	7 -> 9
+	10 -> 11
+	12 -> 11
 	13 -> 12
-	18 -> 12
-	17 -> 12
-	1 -> 13
+	1 -> 12
+	8 -> 12
 	8 -> 13
-	10 -> 13
-	17 -> 13
-	14 -> 13
-	15 -> 13
-	16 -> 13
-	7 -> 15
-	2 -> 15
-	1 -> 16
-	7 -> 16
-	2 -> 16
-	20 -> 18
-	19 -> 18
-	17 -> 18
-	5 -> 19
-	6 -> 19
-	19 -> 20
-	17 -> 21
-	4 -> 21
-	2 -> 21
+	21 -> 14
+	20 -> 14
+	24 -> 14
+	15 -> 14
+	25 -> 14
+	10 -> 15
+	16 -> 15
+	18 -> 15
+	20 -> 15
+	17 -> 15
+	1 -> 15
+	19 -> 15
+	8 -> 15
+	1 -> 17
+	8 -> 17
+	2 -> 18
+	7 -> 18
+	2 -> 19
+	1 -> 19
+	7 -> 19
+	22 -> 21
+	23 -> 21
+	20 -> 21
+	5 -> 22
+	6 -> 22
+	22 -> 23
+	5 -> 24
+	22 -> 24
+	23 -> 24
+	20 -> 24
+	4 -> 25
+	2 -> 25
+	20 -> 25
 }            

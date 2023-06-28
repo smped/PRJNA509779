@@ -116,8 +116,14 @@ ALL_HTML = expand(
 
 ALL_OUTPUTS = []
 # ALL_OUTPUTS.extend(ALL_QC)
-# ALL_OUTPUTS.extend(ALL_BAM)
+ALL_OUTPUTS.extend(ALL_BAM)
 ALL_OUTPUTS.extend(ALL_PEAKS)
+ALL_OUTPUTS.extend(
+ expand(
+   os.path.join("output", "annotations", "{accession}_greylist.bed"),
+   accession = input
+ )
+)
 ALL_OUTPUTS.extend(ALL_BIGWIG)
 ALL_OUTPUTS.extend(ALL_HTML)
 
@@ -134,4 +140,6 @@ include: "rules/samtools.smk"
 include: "rules/picard_markduplicates.smk"
 include: "rules/peak_stats.smk"
 include: "rules/macs2.smk"
+include: "rules/bedgraph_to_bigwig.smk"
 include: "rules/rmarkdown.smk"
+include: "rules/make_greylist.smk"

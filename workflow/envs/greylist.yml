@@ -1,0 +1,9 @@
+name: greylist
+channels:
+  - conda-forge
+  - bioconda
+  - nodefaults
+dependencies:
+  - r-base=4.2.3
+  - r-here=1.0
+  - bioconductor-diffbind=3.8

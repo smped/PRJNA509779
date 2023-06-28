@@ -59,27 +59,26 @@ rule macs2_callpeak:
         ),
         log = os.path.join(macs2_path, "{sample}", "{sample}_callpeak.log")
     conda: "../envs/macs2.yml"
-    log: 
-        "workflow/logs/macs2_callpeak/{sample}_callpeak.log"
     params:
         extra = config['params']['macs2']['callpeak'],
         prefix = "{sample}",
         outdir = os.path.join(macs2_path, "{sample}")
+    log:
+        "workflow/logs/macs2_callpeak/{sample}_callpeak.log"
     threads: 1
     resources:
-        mem_mb = 8192,
+        mem_mb = 16384,
         runtime = "1h",
     shell:
         """
-        echo -e "Running macs2 call peak on:\n{input.bam}" >> {log}
-        echo -e "The specified control sample is:\n{input.control}" >> {log}
         macs2 callpeak \
             -t {input.bam}\
             -c {input.control} \
             -f BAM --bdg --SPMR \
             {params.extra} \
             -n {params.prefix} \
-            --outdir {params.outdir} 2> {output.log}
+            --outdir {params.outdir} 2> {log}
+        cp {log} {output.log}
         """
 
 rule macs2_callpeak_merged:
@@ -113,15 +112,14 @@ rule macs2_callpeak_merged:
         runtime = "1h"
     shell:
         """
-        echo -e "Running macs2 call peak on:\n{input.bam}" >> {log}
-        echo -e "The specified control sample is:\n{input.control}" >> {log}
         macs2 callpeak \
             -t {input.bam}\
             -c {input.control} \
             -f BAM --bdg --SPMR \
             {params.extra} \
             -n {params.prefix} \
-            --outdir {params.outdir} 2> {output.log}
+            --outdir {params.outdir} 2> {log}
+        cp {log} {output.log}
         """
 
 rule macs2_bdgcmp_merged:
@@ -157,38 +155,18 @@ rule macs2_bdgcmp_merged:
             -o {output} 2> {log}
         """
 
-
-rule bedgraph_to_bigwig:
-    input:
-        bedgraph = "{file}.bdg",
-        chrom_sizes = chrom_sizes
-    output:
-        bigwig = "{file}.bw"
-    conda: "../envs/bedgraph_to_bigwig.yml"
-    log: "workflow/logs/bedgraph_to_bigwig/{file}.log"
+rule check_callpeak_logs:
+    input: 
+        log = "{file}_callpeak.log",
+        script = "workflow/scripts/check_callpeak_logs.R"
+    output: temp("{file}_callpeak.chk")
     threads: 1
+    log: "workflow/logs/check_callpeak_logs/{file}.log"
+    conda: "../envs/rmarkdown.yml"
     resources:
-        runtime = "4h",
-        mem_mb = 8192
+        mem_mb = 1024,
+        runtime = "5m"
     shell:
         """
-        echo -e "Converting {input.bedgraph} to BigWig\n" >> {log}
-        echo -e "Starting conversion at $(date)\n" >> {log}
-
-        TEMPDIR=$(mktemp -d -t bdgXXXXXXXXXX)
-        SORTED_BDG=$TEMPDIR/temp.bdg
-
-        ## Sort the file
-        echo -e "Sorting as $SORTED_BDG...\n" >> {log}
-        sort -k1,1 -k2,2n {input.bedgraph} | egrep $'^chr[0-9XY]+\t' > $SORTED_BDG
-
-        ## Convert the file
-        echo -e "Sorting complete\nConverting to bigWig...\n" >> {log}
-        bedGraphToBigWig $SORTED_BDG {input.chrom_sizes} {output.bigwig}
-        echo -e "Finished conversion at $(date)\n" >> {log}
-
-        ## Remove the temp sorted file
-        echo -e "Cleaning up temp files\n" >> {log}
-        rm -rf $TEMPDIR
-        echo -e "Done" >> {log}
+        Rscript --vanilla {input.script} {input.log} {output}  >> {log} 2>&1
         """
