@@ -1,9 +1,9 @@
-INFO  @ Fri, 23 Jun 2023 12:03:55: 
-# Command line: callpeak -t data/deduplicated/SRR8315182.sorted.bam data/deduplicated/SRR8315181.sorted.bam data/deduplicated/SRR8315180.sorted.bam -c data/deduplicated/SRR8315192.sorted.bam -f BAM --bdg --SPMR -g hs --keep-dup all -q 0.05 -n E2_merged --outdir output/macs2/ERa
+INFO  @ Thu, 06 Jul 2023 22:57:41: 
+# Command line: callpeak -t data/deduplicated/SRR8315181.sorted.bam data/deduplicated/SRR8315180.sorted.bam data/deduplicated/SRR8315182.sorted.bam -c data/deduplicated/SRR8315192.sorted.bam -f BAM --bdg --SPMR -g hs --keep-dup all -q 0.05 -n E2_merged --outdir output/macs2/ERa
 # ARGUMENTS LIST:
 # name = E2_merged
 # format = BAM
-# ChIP-seq file = ['data/deduplicated/SRR8315182.sorted.bam', 'data/deduplicated/SRR8315181.sorted.bam', 'data/deduplicated/SRR8315180.sorted.bam']
+# ChIP-seq file = ['data/deduplicated/SRR8315181.sorted.bam', 'data/deduplicated/SRR8315180.sorted.bam', 'data/deduplicated/SRR8315182.sorted.bam']
 # control file = ['data/deduplicated/SRR8315192.sorted.bam']
 # effective genome size = 2.70e+09
 # band width = 300
@@ -17,105 +17,105 @@ INFO  @ Fri, 23 Jun 2023 12:03:55:
 # Paired-End mode is off
 # MACS will save fragment pileup signal per million reads
  
-INFO  @ Fri, 23 Jun 2023 12:03:55: #1 read tag files... 
-INFO  @ Fri, 23 Jun 2023 12:03:55: #1 read treatment tags... 
-INFO  @ Fri, 23 Jun 2023 12:03:57:  1000000 
-INFO  @ Fri, 23 Jun 2023 12:03:58:  2000000 
-INFO  @ Fri, 23 Jun 2023 12:04:00:  3000000 
-INFO  @ Fri, 23 Jun 2023 12:04:02:  4000000 
-INFO  @ Fri, 23 Jun 2023 12:04:04:  5000000 
-INFO  @ Fri, 23 Jun 2023 12:04:06:  6000000 
-INFO  @ Fri, 23 Jun 2023 12:04:08:  7000000 
-INFO  @ Fri, 23 Jun 2023 12:04:09:  8000000 
-INFO  @ Fri, 23 Jun 2023 12:04:11:  9000000 
-INFO  @ Fri, 23 Jun 2023 12:04:13:  10000000 
-INFO  @ Fri, 23 Jun 2023 12:04:15:  11000000 
-INFO  @ Fri, 23 Jun 2023 12:04:17:  12000000 
-INFO  @ Fri, 23 Jun 2023 12:04:18:  13000000 
-INFO  @ Fri, 23 Jun 2023 12:04:20:  14000000 
-INFO  @ Fri, 23 Jun 2023 12:04:22:  15000000 
-INFO  @ Fri, 23 Jun 2023 12:04:24:  16000000 
-INFO  @ Fri, 23 Jun 2023 12:04:26:  17000000 
-INFO  @ Fri, 23 Jun 2023 12:04:27: 17641037 reads have been read. 
-INFO  @ Fri, 23 Jun 2023 12:04:29:  1000000 
-INFO  @ Fri, 23 Jun 2023 12:04:31:  2000000 
-INFO  @ Fri, 23 Jun 2023 12:04:33:  3000000 
-INFO  @ Fri, 23 Jun 2023 12:04:34:  4000000 
-INFO  @ Fri, 23 Jun 2023 12:04:36:  5000000 
-INFO  @ Fri, 23 Jun 2023 12:04:38:  6000000 
-INFO  @ Fri, 23 Jun 2023 12:04:40:  7000000 
-INFO  @ Fri, 23 Jun 2023 12:04:42:  8000000 
-INFO  @ Fri, 23 Jun 2023 12:04:44:  9000000 
-INFO  @ Fri, 23 Jun 2023 12:04:46:  10000000 
-INFO  @ Fri, 23 Jun 2023 12:04:48:  11000000 
-INFO  @ Fri, 23 Jun 2023 12:04:49:  12000000 
-INFO  @ Fri, 23 Jun 2023 12:04:51:  13000000 
-INFO  @ Fri, 23 Jun 2023 12:04:53:  14000000 
-INFO  @ Fri, 23 Jun 2023 12:04:55:  15000000 
-INFO  @ Fri, 23 Jun 2023 12:04:57:  16000000 
-INFO  @ Fri, 23 Jun 2023 12:04:59:  17000000 
-INFO  @ Fri, 23 Jun 2023 12:05:00: 17581871 reads have been read. 
-INFO  @ Fri, 23 Jun 2023 12:05:02:  1000000 
-INFO  @ Fri, 23 Jun 2023 12:05:04:  2000000 
-INFO  @ Fri, 23 Jun 2023 12:05:06:  3000000 
-INFO  @ Fri, 23 Jun 2023 12:05:08:  4000000 
-INFO  @ Fri, 23 Jun 2023 12:05:09:  5000000 
-INFO  @ Fri, 23 Jun 2023 12:05:11:  6000000 
-INFO  @ Fri, 23 Jun 2023 12:05:13:  7000000 
-INFO  @ Fri, 23 Jun 2023 12:05:15:  8000000 
-INFO  @ Fri, 23 Jun 2023 12:05:17:  9000000 
-INFO  @ Fri, 23 Jun 2023 12:05:19:  10000000 
-INFO  @ Fri, 23 Jun 2023 12:05:21:  11000000 
-INFO  @ Fri, 23 Jun 2023 12:05:23:  12000000 
-INFO  @ Fri, 23 Jun 2023 12:05:25:  13000000 
-INFO  @ Fri, 23 Jun 2023 12:05:26:  14000000 
-INFO  @ Fri, 23 Jun 2023 12:05:28:  15000000 
-INFO  @ Fri, 23 Jun 2023 12:05:30:  16000000 
-INFO  @ Fri, 23 Jun 2023 12:05:31: 16373508 reads have been read. 
-INFO  @ Fri, 23 Jun 2023 12:05:32: #1.2 read input tags... 
-INFO  @ Fri, 23 Jun 2023 12:05:34:  1000000 
-INFO  @ Fri, 23 Jun 2023 12:05:36:  2000000 
-INFO  @ Fri, 23 Jun 2023 12:05:38:  3000000 
-INFO  @ Fri, 23 Jun 2023 12:05:40:  4000000 
-INFO  @ Fri, 23 Jun 2023 12:05:41:  5000000 
-INFO  @ Fri, 23 Jun 2023 12:05:43:  6000000 
-INFO  @ Fri, 23 Jun 2023 12:05:45:  7000000 
-INFO  @ Fri, 23 Jun 2023 12:05:47:  8000000 
-INFO  @ Fri, 23 Jun 2023 12:05:49:  9000000 
-INFO  @ Fri, 23 Jun 2023 12:05:50:  10000000 
-INFO  @ Fri, 23 Jun 2023 12:05:52:  11000000 
-INFO  @ Fri, 23 Jun 2023 12:05:54:  12000000 
-INFO  @ Fri, 23 Jun 2023 12:05:56:  13000000 
-INFO  @ Fri, 23 Jun 2023 12:05:58:  14000000 
-INFO  @ Fri, 23 Jun 2023 12:05:59:  15000000 
-INFO  @ Fri, 23 Jun 2023 12:06:01:  16000000 
-INFO  @ Fri, 23 Jun 2023 12:06:03:  17000000 
-INFO  @ Fri, 23 Jun 2023 12:06:05:  18000000 
-INFO  @ Fri, 23 Jun 2023 12:06:07:  19000000 
-INFO  @ Fri, 23 Jun 2023 12:06:07: 19309861 reads have been read. 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #1 tag size is determined as 73 bps 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #1 tag size = 73.0 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #1  total tags in treatment: 51596416 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #1  total tags in control: 19309861 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #1 finished! 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #2 Build Peak Model... 
-INFO  @ Fri, 23 Jun 2023 12:06:07: #2 looking for paired plus/minus strand peaks... 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #2 number of paired peaks: 8280 
-INFO  @ Fri, 23 Jun 2023 12:06:11: start model_add_line... 
-INFO  @ Fri, 23 Jun 2023 12:06:11: start X-correlation... 
-INFO  @ Fri, 23 Jun 2023 12:06:11: end of X-cor 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #2 finished! 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #2 predicted fragment length is 168 bps 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #2 alternative fragment length(s) may be 168 bps 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #2.2 Generate R script for model : output/macs2/ERa/E2_merged_model.r 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #3 Call peaks... 
-INFO  @ Fri, 23 Jun 2023 12:06:11: #3 Pre-compute pvalue-qvalue table... 
-INFO  @ Fri, 23 Jun 2023 12:07:41: #3 In the peak calling step, the following will be performed simultaneously: 
-INFO  @ Fri, 23 Jun 2023 12:07:41: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... E2_merged_treat_pileup.bdg 
-INFO  @ Fri, 23 Jun 2023 12:07:41: #3   Write bedGraph files for control lambda (after scaling if necessary)... E2_merged_control_lambda.bdg 
-INFO  @ Fri, 23 Jun 2023 12:07:41: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
-INFO  @ Fri, 23 Jun 2023 12:07:41: #3 Call peaks for each chromosome... 
-INFO  @ Fri, 23 Jun 2023 12:09:31: #4 Write output xls file... output/macs2/ERa/E2_merged_peaks.xls 
-INFO  @ Fri, 23 Jun 2023 12:09:31: #4 Write peak in narrowPeak format file... output/macs2/ERa/E2_merged_peaks.narrowPeak 
-INFO  @ Fri, 23 Jun 2023 12:09:31: #4 Write summits bed file... output/macs2/ERa/E2_merged_summits.bed 
-INFO  @ Fri, 23 Jun 2023 12:09:31: Done! 
+INFO  @ Thu, 06 Jul 2023 22:57:41: #1 read tag files... 
+INFO  @ Thu, 06 Jul 2023 22:57:41: #1 read treatment tags... 
+INFO  @ Thu, 06 Jul 2023 22:57:43:  1000000 
+INFO  @ Thu, 06 Jul 2023 22:57:45:  2000000 
+INFO  @ Thu, 06 Jul 2023 22:57:46:  3000000 
+INFO  @ Thu, 06 Jul 2023 22:57:48:  4000000 
+INFO  @ Thu, 06 Jul 2023 22:57:50:  5000000 
+INFO  @ Thu, 06 Jul 2023 22:57:52:  6000000 
+INFO  @ Thu, 06 Jul 2023 22:57:54:  7000000 
+INFO  @ Thu, 06 Jul 2023 22:57:55:  8000000 
+INFO  @ Thu, 06 Jul 2023 22:57:57:  9000000 
+INFO  @ Thu, 06 Jul 2023 22:57:59:  10000000 
+INFO  @ Thu, 06 Jul 2023 22:58:01:  11000000 
+INFO  @ Thu, 06 Jul 2023 22:58:03:  12000000 
+INFO  @ Thu, 06 Jul 2023 22:58:04:  13000000 
+INFO  @ Thu, 06 Jul 2023 22:58:06:  14000000 
+INFO  @ Thu, 06 Jul 2023 22:58:08:  15000000 
+INFO  @ Thu, 06 Jul 2023 22:58:10:  16000000 
+INFO  @ Thu, 06 Jul 2023 22:58:12:  17000000 
+INFO  @ Thu, 06 Jul 2023 22:58:13: 17581871 reads have been read. 
+INFO  @ Thu, 06 Jul 2023 22:58:15:  1000000 
+INFO  @ Thu, 06 Jul 2023 22:58:17:  2000000 
+INFO  @ Thu, 06 Jul 2023 22:58:18:  3000000 
+INFO  @ Thu, 06 Jul 2023 22:58:20:  4000000 
+INFO  @ Thu, 06 Jul 2023 22:58:22:  5000000 
+INFO  @ Thu, 06 Jul 2023 22:58:24:  6000000 
+INFO  @ Thu, 06 Jul 2023 22:58:26:  7000000 
+INFO  @ Thu, 06 Jul 2023 22:58:28:  8000000 
+INFO  @ Thu, 06 Jul 2023 22:58:30:  9000000 
+INFO  @ Thu, 06 Jul 2023 22:58:32:  10000000 
+INFO  @ Thu, 06 Jul 2023 22:58:33:  11000000 
+INFO  @ Thu, 06 Jul 2023 22:58:35:  12000000 
+INFO  @ Thu, 06 Jul 2023 22:58:37:  13000000 
+INFO  @ Thu, 06 Jul 2023 22:58:39:  14000000 
+INFO  @ Thu, 06 Jul 2023 22:58:41:  15000000 
+INFO  @ Thu, 06 Jul 2023 22:58:43:  16000000 
+INFO  @ Thu, 06 Jul 2023 22:58:44: 16373508 reads have been read. 
+INFO  @ Thu, 06 Jul 2023 22:58:45:  1000000 
+INFO  @ Thu, 06 Jul 2023 22:58:47:  2000000 
+INFO  @ Thu, 06 Jul 2023 22:58:49:  3000000 
+INFO  @ Thu, 06 Jul 2023 22:58:51:  4000000 
+INFO  @ Thu, 06 Jul 2023 22:58:53:  5000000 
+INFO  @ Thu, 06 Jul 2023 22:58:55:  6000000 
+INFO  @ Thu, 06 Jul 2023 22:58:57:  7000000 
+INFO  @ Thu, 06 Jul 2023 22:58:59:  8000000 
+INFO  @ Thu, 06 Jul 2023 22:59:00:  9000000 
+INFO  @ Thu, 06 Jul 2023 22:59:02:  10000000 
+INFO  @ Thu, 06 Jul 2023 22:59:04:  11000000 
+INFO  @ Thu, 06 Jul 2023 22:59:06:  12000000 
+INFO  @ Thu, 06 Jul 2023 22:59:08:  13000000 
+INFO  @ Thu, 06 Jul 2023 22:59:10:  14000000 
+INFO  @ Thu, 06 Jul 2023 22:59:12:  15000000 
+INFO  @ Thu, 06 Jul 2023 22:59:14:  16000000 
+INFO  @ Thu, 06 Jul 2023 22:59:15:  17000000 
+INFO  @ Thu, 06 Jul 2023 22:59:17: 17641037 reads have been read. 
+INFO  @ Thu, 06 Jul 2023 22:59:18: #1.2 read input tags... 
+INFO  @ Thu, 06 Jul 2023 22:59:20:  1000000 
+INFO  @ Thu, 06 Jul 2023 22:59:22:  2000000 
+INFO  @ Thu, 06 Jul 2023 22:59:24:  3000000 
+INFO  @ Thu, 06 Jul 2023 22:59:25:  4000000 
+INFO  @ Thu, 06 Jul 2023 22:59:27:  5000000 
+INFO  @ Thu, 06 Jul 2023 22:59:29:  6000000 
+INFO  @ Thu, 06 Jul 2023 22:59:31:  7000000 
+INFO  @ Thu, 06 Jul 2023 22:59:32:  8000000 
+INFO  @ Thu, 06 Jul 2023 22:59:34:  9000000 
+INFO  @ Thu, 06 Jul 2023 22:59:36:  10000000 
+INFO  @ Thu, 06 Jul 2023 22:59:38:  11000000 
+INFO  @ Thu, 06 Jul 2023 22:59:40:  12000000 
+INFO  @ Thu, 06 Jul 2023 22:59:41:  13000000 
+INFO  @ Thu, 06 Jul 2023 22:59:43:  14000000 
+INFO  @ Thu, 06 Jul 2023 22:59:45:  15000000 
+INFO  @ Thu, 06 Jul 2023 22:59:47:  16000000 
+INFO  @ Thu, 06 Jul 2023 22:59:49:  17000000 
+INFO  @ Thu, 06 Jul 2023 22:59:50:  18000000 
+INFO  @ Thu, 06 Jul 2023 22:59:52:  19000000 
+INFO  @ Thu, 06 Jul 2023 22:59:53: 19309861 reads have been read. 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #1 tag size is determined as 65 bps 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #1 tag size = 65.0 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #1  total tags in treatment: 51596416 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #1  total tags in control: 19309861 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #1 finished! 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #2 Build Peak Model... 
+INFO  @ Thu, 06 Jul 2023 22:59:53: #2 looking for paired plus/minus strand peaks... 
+INFO  @ Thu, 06 Jul 2023 22:59:56: #2 number of paired peaks: 8280 
+INFO  @ Thu, 06 Jul 2023 22:59:56: start model_add_line... 
+INFO  @ Thu, 06 Jul 2023 22:59:57: start X-correlation... 
+INFO  @ Thu, 06 Jul 2023 22:59:57: end of X-cor 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #2 finished! 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #2 predicted fragment length is 168 bps 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #2 alternative fragment length(s) may be 168 bps 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #2.2 Generate R script for model : output/macs2/ERa/E2_merged_model.r 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #3 Call peaks... 
+INFO  @ Thu, 06 Jul 2023 22:59:57: #3 Pre-compute pvalue-qvalue table... 
+INFO  @ Thu, 06 Jul 2023 23:01:30: #3 In the peak calling step, the following will be performed simultaneously: 
+INFO  @ Thu, 06 Jul 2023 23:01:30: #3   Write bedGraph files for treatment pileup (after scaling if necessary)... E2_merged_treat_pileup.bdg 
+INFO  @ Thu, 06 Jul 2023 23:01:30: #3   Write bedGraph files for control lambda (after scaling if necessary)... E2_merged_control_lambda.bdg 
+INFO  @ Thu, 06 Jul 2023 23:01:30: #3   --SPMR is requested, so pileup will be normalized by sequencing depth in million reads. 
+INFO  @ Thu, 06 Jul 2023 23:01:30: #3 Call peaks for each chromosome... 
+INFO  @ Thu, 06 Jul 2023 23:03:21: #4 Write output xls file... output/macs2/ERa/E2_merged_peaks.xls 
+INFO  @ Thu, 06 Jul 2023 23:03:21: #4 Write peak in narrowPeak format file... output/macs2/ERa/E2_merged_peaks.narrowPeak 
+INFO  @ Thu, 06 Jul 2023 23:03:21: #4 Write summits bed file... output/macs2/ERa/E2_merged_summits.bed 
+INFO  @ Thu, 06 Jul 2023 23:03:21: Done! 
