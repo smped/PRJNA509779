@@ -365,6 +365,7 @@ df %>%
     queries = ql,
     min_size = 10,
     n_intersections = 35,
+    keep_empty_groups = TRUE,
     sort_sets = FALSE
   ) +
   theme(
