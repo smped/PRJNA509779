@@ -1,7 +1,7 @@
 rule get_cross_correlations:
     input:
-        bam = os.path.join(dedup_path, "{sample}.sorted.bam"),
-        bai = os.path.join(dedup_path, "{sample}.sorted.bam.bai"),
+        bam = os.path.join(dedup_path, "{sample}.bam"),
+        bai = os.path.join(dedup_path, "{sample}.bam.bai"),
         script = "workflow/scripts/cross_correlations.R"
     output:
         os.path.join(
@@ -23,8 +23,8 @@ rule get_cross_correlations:
 
 rule get_frip:
     input:
-        bam = os.path.join(dedup_path, "{sample}.sorted.bam"),
-        bai = os.path.join(dedup_path, "{sample}.sorted.bam.bai"),
+        bam = os.path.join(dedup_path, "{sample}.bam"),
+        bai = os.path.join(dedup_path, "{sample}.bam.bai"),
         peaks = os.path.join(
             macs2_path, "{sample}", "{sample}_peaks.narrowPeak"
         ),

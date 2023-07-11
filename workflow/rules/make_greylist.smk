@@ -1,7 +1,7 @@
 rule make_greylist:
   input:
-    bam = os.path.join(dedup_path, "{accession}.sorted.bam"),
-    bai = os.path.join(dedup_path, "{accession}.sorted.bam.bai"),
+    bam = os.path.join(dedup_path, "{accession}.bam"),
+    bai = os.path.join(dedup_path, "{accession}.bam.bai"),
     chrom_sizes = chrom_sizes,
     script = "workflow/scripts/make_greylist.R"
   output:

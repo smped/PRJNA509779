@@ -116,7 +116,7 @@ duplogs <- here::here("output", "markDuplicates", glue("{samples$accession}.metr
   sapply(readLines, simplify = FALSE) %>% 
   .parseLogs() %>% 
   mutate(
-    Filename = gsub(".sorted.+", "", basename(Library))
+    Filename = gsub(".bam$", "", basename(Library))
   ) %>% 
   dplyr::select(Filename, everything())
 qc_path <- here::here(config$paths$qc, "raw")

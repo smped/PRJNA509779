@@ -2,7 +2,7 @@ rule picard_markduplicates:
     input:
         bams = os.path.join(aln_path, "{accession}.sorted.bam"),
     output:
-        bam = os.path.join(dedup_path, "{accession}.sorted.bam"),
+        bam = os.path.join(dedup_path, "{accession}.bam"),
         metrics = "output/markDuplicates/{accession}.metrics.txt",
     conda: "../envs/picard_markduplicates.yml"
     log:
