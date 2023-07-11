@@ -10,6 +10,6 @@ rule picard_markduplicates:
     params:
         extra = config['params']['markduplicates'],
     resources:
-        mem_mb=1024,
+        mem_mb=8192,
     script:
         "../scripts/picard_markduplicates.py"
