@@ -67,7 +67,7 @@ ref_pre = os.path.join(ref_path, config['reference']['index'])
 # Define se fastq output only
 ALL_FQ = expand(os.path.join(trim_path, "{f}.fastq.gz"), f = accessions)
 ALL_BAM = expand(
-	os.path.join(dedup_path, "{f}.sorted.{suffix}"),
+	os.path.join(dedup_path, "{f}.{suffix}"),
 	f = accessions, suffix = ['bam', 'bam.bai']
 )
 ALL_QC = expand(

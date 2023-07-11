@@ -2,7 +2,7 @@ def get_treat_bam(wildcards):
     ind = (df.treatment == wildcards.treat) & (df.target == wildcards.target)
     samples = set(df[ind]['accession'])
     bam = expand(
-        os.path.join(dedup_path, "{f}.sorted.bam"),
+        os.path.join(dedup_path, "{f}.bam"),
         f = samples
     )
     return(bam)
@@ -11,7 +11,7 @@ def get_treat_bai(wildcards):
     ind = (df.treatment == wildcards.treat) & (df.target == wildcards.target)
     samples = set(df[ind]['accession'])
     bai = expand(
-        os.path.join(dedup_path, "{f}.sorted.bam.bai"),
+        os.path.join(dedup_path, "{f}.bam.bai"),
         f = samples
     )
     return(bai)
@@ -20,7 +20,7 @@ def get_treat_input(wildcards):
     ind = (df.treatment == wildcards.treat) & (df.target == wildcards.target)
     samples = set(df[ind]['input'])
     bam = expand(
-        os.path.join(dedup_path, "{f}.sorted.bam"),
+        os.path.join(dedup_path, "{f}.bam"),
         f = samples
     )
     return(bam)
@@ -29,21 +29,21 @@ def get_treat_input_bai(wildcards):
     ind = (df.treatment == wildcards.treat) & (df.target == wildcards.target)
     samples = set(df[ind]['input'])
     bai = expand(
-        os.path.join(dedup_path, "{f}.sorted.bam.bai"),
+        os.path.join(dedup_path, "{f}.bam.bai"),
         f = samples
     )
     return(bai)
 
 rule macs2_callpeak:
     input:
-        bam = os.path.join(dedup_path, "{sample}.sorted.bam"),  
-        bai = os.path.join(dedup_path, "{sample}.sorted.bam.bai"),  
+        bam = os.path.join(dedup_path, "{sample}.bam"),  
+        bai = os.path.join(dedup_path, "{sample}.bam.bai"),  
         control = lambda wildcards: expand(
-            os.path.join(dedup_path, "{input}.sorted.bam"),
+            os.path.join(dedup_path, "{input}.bam"),
             input = df[df.accession == wildcards.sample]['input']
         ),
         control_bai = lambda wildcards: expand(
-            os.path.join(dedup_path, "{input}.sorted.bam.bai"),
+            os.path.join(dedup_path, "{input}.bam.bai"),
             input = df[df.accession == wildcards.sample]['input']
         )
     output:

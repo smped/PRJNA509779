@@ -16,7 +16,7 @@ genome <- args[[3]]
 bed <- here::here(args[[4]])
 
 ## Example code for running interactively
-# bam <- here::here("data/deduplicated/SRR8315192.sorted.bam")
+# bam <- here::here("data/deduplicated/SRR8315192.bam")
 # chrom_sizes <- here::here("output/annotations/chrom.sizes")
 # genome <- "GRCh37"
 # bed <- here::here("output/macs2/SRR8315192/SRR8315192_greylist.bed")
