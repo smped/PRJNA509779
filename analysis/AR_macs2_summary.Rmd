@@ -310,11 +310,19 @@ if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
     list(
       upset_query(intersect = accessions, color = "royalblue", only_components = "intersections_matrix")
     )
+  ) 
+}
+## Add the set of common peaks
+if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
+  ql <- c(
+    ql, 
+    list(
+      upset_query(intersect = accessions, color = "royalblue", only_components = "intersections_matrix")
+  )
   )
 }
 ## Treatment specific common peaks
-split_acc <- lapply(split(samples, samples$treatment), pull, accession) %>%
-  lapply(intersect, has_peaks)
+split_acc <- lapply(split(samples, samples$treatment), pull, accession)
 if (length(split_acc) > 1) {
   treat_ql <- seq_along(split_acc) %>% 
     lapply(
@@ -382,6 +390,7 @@ df %>%
     queries = ql,
     min_size = 10,
     n_intersections = 35,
+    keep_empty_groups = TRUE,
     sort_sets = FALSE
   ) +
   theme(

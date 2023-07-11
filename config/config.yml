@@ -7,13 +7,6 @@ paths:
   macs2: "output/macs2"
   qc: "docs/qc"
 
-paths:
-  fastq: "data/fastq"
-  aligned: "data/aligned"
-  deduplicated: "data/deduplicated"
-  macs2: "output/macs2"
-  qc: "docs/qc"
-
 params:
   adapterremoval:
     extra: "--maxns 1 --minlength 50 --minquality 30 --gzip --trimqualities"

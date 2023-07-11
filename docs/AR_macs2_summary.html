@@ -411,7 +411,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">AR: MACS2 Summary</h1>
-<h4 class="date">06 July, 2023</h4>
+<h4 class="date">12 July, 2023</h4>
 
 </div>
 
@@ -807,11 +807,19 @@ if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
     list(
       upset_query(intersect = accessions, color = &quot;royalblue&quot;, only_components = &quot;intersections_matrix&quot;)
     )
+  ) 
+}
+## Add the set of common peaks
+if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
+  ql &lt;- c(
+    ql, 
+    list(
+      upset_query(intersect = accessions, color = &quot;royalblue&quot;, only_components = &quot;intersections_matrix&quot;)
+  )
   )
 }
 ## Treatment specific common peaks
-split_acc &lt;- lapply(split(samples, samples$treatment), pull, accession) %&gt;%
-  lapply(intersect, has_peaks)
+split_acc &lt;- lapply(split(samples, samples$treatment), pull, accession)
 if (length(split_acc) &gt; 1) {
   treat_ql &lt;- seq_along(split_acc) %&gt;% 
     lapply(
@@ -879,6 +887,7 @@ df %&gt;%
     queries = ql,
     min_size = 10,
     n_intersections = 35,
+    keep_empty_groups = TRUE,
     sort_sets = FALSE
   ) +
   theme(
@@ -983,15 +992,15 @@ peak calling process. The fragment length as estimated by
 <td align="left">E2</td>
 <td align="right">2,173</td>
 <td align="right">50,272,735</td>
-<td align="right">73</td>
+<td align="right">72</td>
 <td align="right">156</td>
 </tr>
 <tr class="even">
 <td align="left">AR</td>
 <td align="left">E2DHT</td>
-<td align="right">16,524</td>
+<td align="right">16,528</td>
 <td align="right">52,618,434</td>
-<td align="right">70</td>
+<td align="right">71</td>
 <td align="right">188</td>
 </tr>
 </tbody>

@@ -302,6 +302,7 @@ if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
       upset_query(intersect = accessions, color = "royalblue", only_components = "intersections_matrix")
     )
   ) 
+}
 ## Add the set of common peaks
 if (nrow(dplyr::filter(df, if_all(all_of(accessions))))) {
   ql <- c(
