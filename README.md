@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/646152412.svg)](https://zenodo.org/badge/latestdoi/646152412)
+
 # PRJNA509779
 
 This repository is an execution of the [prepareChiPS](https://github.com/smped/prepareChIPs) workflow on the BioProject [PRJNA509779](https://www.ncbi.nlm.nih.gov/Traces/study/?acc=PRJNA509779&o=acc_s%3Aa).
